@@ -36,35 +36,9 @@
     </script>
     <style>
 
-        .page-header .subtitle { font-size: 13px; color: var(--muted); }
-        .page-header-right { display: flex; align-items: center; gap: 12px; }
-
-        /* 统一按钮容器 */
-        .header-btn-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .header-btn {
-            height: 32px;
-            padding: 0 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            background: var(--primary);
-            color: var(--on-primary);
-            text-decoration: none;
-            font-family: var(--font-body);
-            white-space: nowrap;
-        }
-        .header-btn:hover { background: var(--primary-active); }
+        .content-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md); flex-wrap: wrap; gap: var(--space-sm); }
+        .toolbar-subtitle { font-size: 13px; color: var(--muted); }
+        .toolbar-actions { display: flex; align-items: center; gap: var(--space-sm); }
 
         /* Subscription tooltip */
         .subscribe-tooltip {
@@ -575,16 +549,15 @@
     <main>
         <div class="page-header">
             <h1>📅 日程</h1>
-            <div class="page-header-right">
-                <span class="subtitle" id="dateRange">加载中...</span>
-                <div class="header-btn-group">
-                    <a href="/add-schedule.html" class="header-btn">
-                        <span>+</span> 发起活动
-                    </a>
+        </div>
+
+        <div class="content">
+            <div class="content-toolbar">
+                <span class="toolbar-subtitle" id="dateRange">加载中...</span>
+                <div class="toolbar-actions">
+                    <a href="/add-schedule.html" class="btn-primary">+ 发起活动</a>
                     <div style="position: relative;">
-                        <button class="header-btn" onclick="toggleSubscribeTooltip()">
-                            <span>📅</span> 订阅日历
-                        </button>
+                        <button class="btn-secondary" onclick="toggleSubscribeTooltip()">📅 订阅日历</button>
                         <div class="subscribe-tooltip" id="subscribeTooltip">
                         <h4>📱 订阅到系统日历</h4>
                         <p>订阅后,所有班级日程将自动同步到您的手机日历,每日0点自动更新。</p>
@@ -593,9 +566,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="content">
             <div class="main-content" id="scheduleList">
                 <div class="loading">加载中</div>
             </div>
