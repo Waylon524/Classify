@@ -115,7 +115,7 @@
             top: 100%;
             right: 0;
             margin-top: 8px;
-            background: rgba(10, 20, 42, 0.95);
+            background: var(--canvas);
             border: 1px solid rgba(204,120,92,0.15);
             border-radius: 16px;
             padding: 20px;
@@ -131,7 +131,7 @@
         .subscribe-tooltip h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
         .subscribe-tooltip p { font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.4; }
         .subscribe-tooltip .subscribe-url-box {
-            background: rgba(8, 16, 36, 0.8);
+            background: var(--surface-card);
             border: 1px solid rgba(204,120,92,0.1);
             border-radius: 10px;
             padding: 10px;
@@ -157,9 +157,9 @@
         .content { max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; gap: 32px; }
         .main-content { flex: 1; min-width: 0; }
         .sidebar { width: 320px; flex-shrink: 0; }
-        .sidebar-section { background: var(--canvas); border: 1px solid rgba(204,120,92,0.08); border-radius: 16px; padding: 20px; margin-bottom: 16px;  }
+        .sidebar-section { background: var(--canvas); border: 1px solid var(--hairline); border-radius: 16px; padding: 20px; margin-bottom: 16px;  }
         .sidebar-section h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-        .long-term-item { padding: 12px 0; border-bottom: 1px solid rgba(200, 215, 240, 0.06); }
+        .long-term-item { padding: 12px 0; border-bottom: 1px solid var(--hairline-soft); }
         .long-term-item:last-child { border-bottom: none; padding-bottom: 0; }
         .long-term-item:first-child { padding-top: 0; }
         .long-term-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
@@ -171,12 +171,12 @@
 
 
         .day-group { margin-bottom: 32px; }
-        .day-header { font-size: 21px; font-weight: 600; color: var(--ink); padding: 16px 0 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.08); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+        .day-header { font-size: 21px; font-weight: 600; color: var(--ink); padding: 16px 0 12px; border-bottom: 1px solid var(--hairline); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
         .day-header .weekday { font-size: 14px; font-weight: 400; color: var(--muted); }
         .day-header.today { color: var(--primary); }
         .day-header.today::before { content: '●'; color: var(--primary); margin-right: 4px; }
 
-        .schedule-item { background: var(--surface-card); border: 1px solid rgba(204,120,92,0.08); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; border-left: 4px solid var(--primary); position: relative;  }
+        .schedule-item { background: var(--surface-card); border: 1px solid var(--hairline); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; border-left: 4px solid var(--primary); position: relative;  }
         .schedule-item.past { opacity: 0.6; border-left-color: #999; }
         .schedule-item .time-col {
             display: flex;
@@ -189,9 +189,9 @@
             min-width: 90px;
             text-align: center;
             padding: 8px 12px;
-            background: rgba(8, 16, 36, 0.6);
-            border: 1px solid rgba(204,120,92,0.08);
-            border-radius: 10px;
+            background: var(--surface-card);
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-md);
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -260,9 +260,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(8, 16, 36, 0.6);
-            border: 1px solid rgba(204,120,92,0.08);
-            border-radius: 10px;
+            background: var(--surface-card);
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-md);
             font-size: 14px;
             gap: 4px;
         }
@@ -414,7 +414,7 @@
             transition: all 0.2s;
         }
         .btn-edit {
-            background: rgba(8, 16, 36, 0.6);
+            background: var(--surface-card);
             color: var(--ink);
             border: 1px solid rgba(204,120,92,0.1);
         }
@@ -441,7 +441,7 @@
             .schedule-item {
                 display: block;
                 background: var(--surface-card);
-                border: 1px solid rgba(204,120,92,0.08);
+                border: 1px solid var(--hairline);
                 border-left: 4px solid var(--primary);
                 padding-left: 8px;
                 padding-right: 8px;
@@ -535,8 +535,8 @@
             .mobile-tabs {
                 display: flex;
                 justify-content: center;
-                background: rgba(10, 20, 42, 0.9);
-                border-bottom: 1px solid rgba(204,120,92,0.08);
+                background: var(--canvas);
+                border-bottom: 1px solid var(--hairline);
                 position: sticky;
                 top: 56px;
                 z-index: 99;
@@ -582,7 +582,7 @@
         }
         .modal-overlay.show { display: block; }
         .modal-content {
-            background: rgba(10, 20, 42, 0.95);
+            background: var(--canvas);
             border: 1px solid rgba(204,120,92,0.1);
             border-radius: 20px;
             width: 100%;
@@ -611,7 +611,7 @@
             cursor: pointer; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
         }
-        .modal-close:hover { background: rgba(200, 215, 240, 0.08); }
+        .modal-close:hover { background: var(--hairline); }
         #addForm, #editForm { padding: 0; }
         #addForm .form-group, #editForm .form-group { width: 100%; max-width: 100%; box-sizing: border-box; }
         .form-group { margin-bottom: 20px; width: 100%; box-sizing: border-box; max-width: 100%; }
@@ -622,14 +622,14 @@
         .form-group label .hint { font-weight: 400; color: var(--muted); font-size: 12px; }
         .form-group input, .form-group select, .form-group textarea, .form-group input[type="datetime-local"] {
             width: 100%; max-width: 100%; padding: 14px 16px; font-size: 16px;
-            border: 1px solid rgba(204,120,92,0.12); border-radius: 12px;
-            background: rgba(8, 16, 36, 0.6); color: var(--ink);
+            border: 1px solid var(--hairline); border-radius: 12px;
+            background: var(--surface-card); color: var(--ink);
             font-family: inherit;
             box-sizing: border-box;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none; border-color: rgba(204,120,92,0.4);
-            box-shadow: 0 0 0 3px rgba(204,120,92,0.08);
+            box-shadow: 0 0 0 3px var(--hairline);
         }
         .form-group textarea { resize: vertical; min-height: 80px; }
         .form-row { display: flex; gap: 12px; }
@@ -658,7 +658,7 @@
         .member-tags { display: flex; flex-wrap: wrap; gap: 4px; }
         .member-tag {
             padding: 3px 8px; font-size: 11px;
-            background: rgba(8, 16, 36, 0.6); border: 1px solid rgba(204,120,92,0.08); border-radius: 10px;
+            background: var(--surface-card); border: 1px solid var(--hairline); border-radius: 10px;
             color: var(--ink);
         }
         .member-tag.organizer {
@@ -692,7 +692,7 @@
 </head>
 <body>
     <nav>
-        <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
+        <div class="logo"><a href="/">🏫</a><a href="/">Classify</a></div>
         <div class="nav-links">
             <a href="/">首页</a>
             <a href="/schedule.html" class="active">日程</a>
