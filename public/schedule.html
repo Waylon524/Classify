@@ -131,13 +131,17 @@
         .day-header.today { color: var(--primary); }
         .day-header.today::before { content: '●'; color: var(--primary); margin-right: 4px; }
 
-        .schedule-item { background: var(--surface-card); border: 1px solid var(--hairline); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; border-left: 4px solid var(--primary); position: relative;  }
+        .schedule-item { background: var(--surface-card); border: 1px solid var(--hairline); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 12px; border-left: 4px solid var(--primary); position: relative; }
+        .schedule-item .timebar, .schedule-item .time-row { order: 1; }
+        .schedule-item .schedule-details { order: 0; }
         .schedule-item.past { opacity: 0.6; border-left-color: #999; }
         .schedule-item .time-col {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            flex-direction: row;
+            align-items: center;
             gap: 8px;
+            order: 1;
+            margin-top: 4px;
         }
 
         .schedule-time {
@@ -203,15 +207,15 @@
             gap: 6px;
         }
 
-        /* 桌面端时间栏:上下布局 */
+        /* 桌面端时间栏 */
         .timebar {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
         }
         .timebar .schedule-time {
-            width: 120px;
-            height: 36px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -222,20 +226,22 @@
             gap: 4px;
         }
         .timebar .join-btn {
-            width: 120px;
-            height: 28px;
+            padding: 6px 14px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: var(--primary);
             color: var(--canvas);
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            box-sizing: border-box;
+            font-family: var(--font-body);
+            transition: background 0.2s;
         }
+        .timebar .join-btn:hover { background: var(--primary-active); }
         .timebar .join-btn.joined {
             background: #34c759;
         }
@@ -363,7 +369,7 @@
             .subscribe-btn { display: block; }
         }
         .schedule-source a { color: var(--primary); }
-        .schedule-details { flex: 1; }
+        .schedule-details { }
 
         .footer { text-align: center; padding: 40px 24px; color: var(--muted-soft); font-size: 12px; position: relative; z-index: 2; }
 
