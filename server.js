@@ -71,6 +71,7 @@ const userRouter = require('./routes/user');
 const votesRouter = require('./routes/votes');
 const rateLimitRouter = require('./routes/rateLimit');
 const miscRouter = require('./routes/misc');
+const adminRouter = require('./routes/admin');
 
 // Map routes
 app.use('/api/folders', foldersRouter);
@@ -85,6 +86,7 @@ app.use('/api/rate-limit', rateLimitRouter);
 app.use('/api', authRouter);
 app.use('/api', userRouter);
 app.use('/api', miscRouter);
+app.use('/api/admin', adminRouter);
 
 // ----------------------------------------------------
 // ICS Subscriptions (kept here for simplicity as they map to root paths)

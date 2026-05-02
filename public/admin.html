@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 · Classify</title>
+    <link rel="stylesheet" href="/common.css">
+    <style>
+        .admin-layout { max-width: 1400px; margin: 0 auto; padding: 24px; }
+        .admin-tabs { display: flex; gap: 4px; margin-bottom: 24px; flex-wrap: wrap; }
+        .admin-tab {
+            padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(200,215,240,0.08);
+            background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+            font-size: 14px; font-weight: 500; transition: all 0.2s; font-family: var(--font-body);
+        }
+        .admin-tab:hover { border-color: rgba(0,229,160,0.2); color: var(--text-light); }
+        .admin-tab.active { background: rgba(0,229,160,0.1); border-color: var(--accent); color: var(--accent); }
+        .admin-panel { display: none; }
+        .admin-panel.active { display: block; }
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .admin-table th, .admin-table td {
+            padding: 12px 16px; text-align: left;
+            border-bottom: 1px solid rgba(200,215,240,0.06);
+        }
+        .admin-table th { color: var(--text-secondary); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .admin-table tr:hover { background: rgba(0,229,160,0.03); }
+        .admin-table .actions { display: flex; gap: 8px; }
+        .btn-sm {
+            padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(200,215,240,0.12);
+            background: transparent; color: var(--text-secondary); cursor: pointer;
+            font-size: 12px; transition: all 0.2s; font-family: var(--font-body);
+        }
+        .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-sm.danger:hover { border-color: #ff5050; color: #ff5050; }
+        .btn-primary {
+            padding: 10px 24px; border-radius: 10px; border: none;
+            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
+            color: var(--bg-abyss); cursor: pointer; font-size: 14px; font-weight: 600;
+            transition: all 0.2s; font-family: var(--font-body);
+        }
+        .btn-primary:hover { box-shadow: 0 4px 16px rgba(0,229,160,0.3); }
+        .card { padding: 20px; margin-bottom: 20px; }
+        .card h3 { font-size: 18px; margin-bottom: 16px; color: var(--text-light); }
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--bg-card); border: 1px solid rgba(0,229,160,0.08); border-radius: 16px; padding: 24px; text-align: center; }
+        .stat-card .num { font-size: 36px; font-weight: 700; color: var(--accent); }
+        .stat-card .label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+        .form-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-end; }
+        .form-row input, .form-row textarea {
+            flex: 1; padding: 10px 14px; border: 1px solid rgba(0,229,160,0.12);
+            border-radius: 10px; background: rgba(8,16,36,0.6); color: var(--text-light);
+            font-family: var(--font-body); font-size: 14px;
+        }
+        .form-row input:focus, .form-row textarea:focus { outline: none; border-color: var(--accent); }
+        .form-row textarea { resize: vertical; min-height: 60px; }
+        .empty { text-align: center; padding: 48px; color: var(--text-secondary); }
+        .badge { font-size: 11px; padding: 2px 8px; border-radius: 8px; }
+        .badge-green { background: rgba(0,229,160,0.15); color: var(--accent); }
+        .badge-red { background: rgba(255,80,80,0.15); color: #ff5050; }
+        @media (max-width: 768px) {
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-row { flex-direction: column; }
+            .admin-table { font-size: 12px; }
+            .admin-table th, .admin-table td { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="noise-overlay"></div>
+<nav>
+    <div class="logo"><a href="/">🏫</a><a href="/">Classify</a></div>
+    <div class="nav-links">
+        <a href="/">首页</a>
+        <a href="/schedule.html">日程</a>
+        <a href="/files.html">文件</a>
+        <a href="/navi.html">导航</a>
+        <a href="/notices.html">通知</a>
+        <a href="/form.html">表单</a>
+        <a href="/admin.html" class="active" id="navAdmin" style="display:none">管理</a>
+        <button onclick="logout()" class="logout-btn-nav">退出登录</button>
+    </div>
+</nav>
+
+<main>
+    <div class="page-header">
+        <h1>⚙️ 管理后台</h1>
+        <span style="font-size:13px;color:var(--text-secondary)" id="adminName"></span>
+    </div>
+
+    <div class="admin-layout">
+        <!-- Stats -->
+        <div class="stat-grid" id="statGrid"></div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="schedules">📅 日程</button>
+            <button class="admin-tab" data-tab="students">👥 人员</button>
+            <button class="admin-tab" data-tab="notices">📢 通知</button>
+            <button class="admin-tab" data-tab="votes">📋 表单</button>
+            <button class="admin-tab" data-tab="changelog">📝 更新日志</button>
+        </div>
+
+        <!-- Panel: Schedules -->
+        <div class="admin-panel active" id="panel-schedules">
+            <div class="card"><h3>全部日程（<span id="schedCount">0</span>）</h3>
+            <div style="overflow-x:auto"><table class="admin-table">
+                <thead><tr><th>日期</th><th>时间</th><th>标题</th><th>发起人</th><th>参与</th><th>操作</th></tr></thead>
+                <tbody id="schedTable"></tbody>
+            </table></div></div>
+        </div>
+
+        <!-- Panel: Students -->
+        <div class="admin-panel" id="panel-students">
+            <div class="card"><h3>添加学生</h3>
+                <div class="form-row">
+                    <input type="text" id="newStudentName" placeholder="姓名">
+                    <input type="text" id="newStudentId" placeholder="学号">
+                    <button class="btn-primary" onclick="addStudent()">添加</button>
+                </div>
+            </div>
+            <div class="card"><h3>批量导入</h3>
+                <div class="form-row">
+                    <textarea id="bulkStudents" placeholder="每行一条：姓名,学号&#10;张三,20240001&#10;李四,20240002"></textarea>
+                    <button class="btn-primary" onclick="importStudents()">导入</button>
+                </div>
+            </div>
+            <div class="card"><h3>人员列表（<span id="stuCount">0</span>）</h3>
+            <input type="text" id="stuSearch" placeholder="搜索姓名或学号..." style="width:100%;padding:10px;margin-bottom:16px;border:1px solid rgba(0,229,160,0.12);border-radius:10px;background:rgba(8,16,36,0.6);color:var(--text-light);font-size:14px" oninput="renderStudents()">
+            <div style="overflow-x:auto"><table class="admin-table">
+                <thead><tr><th>姓名</th><th>学号</th><th>操作</th></tr></thead>
+                <tbody id="stuTable"></tbody>
+            </table></div></div>
+        </div>
+
+        <!-- Panel: Notices -->
+        <div class="admin-panel" id="panel-notices">
+            <div class="card"><h3>通知列表（<span id="noticeCount">0</span>）</h3>
+            <div style="overflow-x:auto"><table class="admin-table">
+                <thead><tr><th>日期</th><th>标题</th><th>来源</th><th>置顶</th><th>操作</th></tr></thead>
+                <tbody id="noticeTable"></tbody>
+            </table></div></div>
+        </div>
+
+        <!-- Panel: Votes -->
+        <div class="admin-panel" id="panel-votes">
+            <div class="card"><h3>投票列表（<span id="voteCount">0</span>）</h3>
+            <div style="overflow-x:auto"><table class="admin-table">
+                <thead><tr><th>标题</th><th>截止日期</th><th>类型</th><th>最多选</th><th>候选人</th><th>状态</th></tr></thead>
+                <tbody id="voteTable"></tbody>
+            </table></div></div>
+        </div>
+
+        <!-- Panel: Changelog -->
+        <div class="admin-panel" id="panel-changelog">
+            <div class="card"><h3>添加日志</h3>
+                <div class="form-row">
+                    <input type="date" id="logDate">
+                    <input type="text" id="logVersion" placeholder="版本号，如 v1.0.0">
+                    <button class="btn-primary" onclick="addChangelog()">添加</button>
+                </div>
+                <div class="form-row">
+                    <textarea id="logContent" placeholder="更新内容"></textarea>
+                </div>
+            </div>
+            <div class="card"><h3>更新日志（<span id="logCount">0</span>）</h3>
+            <div style="overflow-x:auto"><table class="admin-table">
+                <thead><tr><th>日期</th><th>版本</th><th>内容</th></tr></thead>
+                <tbody id="logTable"></tbody>
+            </table></div></div>
+        </div>
+    </div>
+</main>
+
+<script src="/auth-check.js"></script>
+<script src="/config.js"></script>
+<script>
+const API = '';
+let allData = {};
+let currentTab = 'schedules';
+
+// Check admin on load
+async function init() {
+    const token = localStorage.getItem('classify_token');
+    if (!token) return;
+
+    try {
+        const res = await fetch('/api/admin/check', { headers: { 'Authorization': 'Bearer ' + token } });
+        const r = await res.json();
+        if (!r.admin) {
+            document.body.innerHTML = '<main><div class="empty-state"><div class="icon">🔒</div><h3>无权限</h3><p>仅管理员可访问此页面</p><a href="/">返回首页</a></div></main>';
+            return;
+        }
+        document.getElementById('adminName').textContent = '管理员：' + r.name;
+        document.getElementById('navAdmin').style.display = '';
+        loadData();
+    } catch (e) {
+        document.body.innerHTML = '<main><div class="empty-state"><div class="icon">⚠️</div><h3>加载失败</h3><p>' + e.message + '</p></div></main>';
+    }
+}
+
+async function loadData() {
+    const token = localStorage.getItem('classify_token');
+    const res = await fetch('/api/admin/data', { headers: { 'Authorization': 'Bearer ' + token } });
+    allData = await res.json();
+    renderStats();
+    renderSchedules();
+    renderStudents();
+    renderNotices();
+    renderVotes();
+    renderChangelog();
+}
+
+function renderStats() {
+    document.getElementById('statGrid').innerHTML =
+        `<div class="stat-card"><div class="num">${allData.schedules.length}</div><div class="label">日程</div></div>` +
+        `<div class="stat-card"><div class="num">${allData.students.length}</div><div class="label">学生</div></div>` +
+        `<div class="stat-card"><div class="num">${allData.notices.length}</div><div class="label">通知</div></div>` +
+        `<div class="stat-card"><div class="num">${allData.votes.length}</div><div class="label">投票</div></div>`;
+}
+
+// ── Tab switching ──
+document.querySelectorAll('.admin-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        currentTab = this.dataset.tab;
+        document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel-' + currentTab).classList.add('active');
+    });
+});
+
+// ── Schedules ──
+function renderSchedules() {
+    const data = [...allData.schedules].sort((a, b) => b.date.localeCompare(a.date));
+    document.getElementById('schedCount').textContent = data.length;
+    document.getElementById('schedTable').innerHTML = data.map(s =>
+        `<tr>
+            <td>${s.date}</td><td>${s.time || '-'}</td><td>${esc(s.title)}</td>
+            <td>${esc(s.organizer || s.source || '-')}</td>
+            <td>${(s.members||[]).length}人</td>
+            <td class="actions"><button class="btn-sm danger" onclick="deleteSchedule('${s.id}')">删除</button></td>
+        </tr>`
+    ).join('') || '<tr><td colspan="6" class="empty">无数据</td></tr>';
+}
+
+async function deleteSchedule(id) {
+    if (!confirm('确定删除此日程？')) return;
+    const token = localStorage.getItem('classify_token');
+    const name = localStorage.getItem('classify_name');
+    const res = await fetch('/api/schedules/' + id + '?name=' + encodeURIComponent(name), {
+        method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (res.ok) loadData(); else alert('删除失败');
+}
+
+// ── Students ──
+function renderStudents() {
+    const q = (document.getElementById('stuSearch')?.value || '').toLowerCase();
+    const data = [...allData.students].filter(s =>
+        !q || s.name.toLowerCase().includes(q) || s.student_id.includes(q)
+    );
+    document.getElementById('stuCount').textContent = data.length;
+    document.getElementById('stuTable').innerHTML = data.map(s =>
+        `<tr>
+            <td>${esc(s.name)}</td><td>${esc(s.student_id)}</td>
+            <td class="actions"><button class="btn-sm danger" onclick="removeStudent('${s.student_id}')">删除</button></td>
+        </tr>`
+    ).join('') || '<tr><td colspan="3" class="empty">无数据</td></tr>';
+}
+
+async function addStudent() {
+    const name = document.getElementById('newStudentName').value.trim();
+    const student_id = document.getElementById('newStudentId').value.trim();
+    if (!name || !student_id) return alert('姓名和学号必填');
+    const token = localStorage.getItem('classify_token');
+    const res = await fetch('/api/admin/students', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ name, student_id })
+    });
+    if (res.ok) {
+        document.getElementById('newStudentName').value = '';
+        document.getElementById('newStudentId').value = '';
+        loadData();
+    } else {
+        const r = await res.json(); alert(r.error);
+    }
+}
+
+async function removeStudent(id) {
+    if (!confirm('确定删除学生 ' + id + '？')) return;
+    const token = localStorage.getItem('classify_token');
+    const res = await fetch('/api/admin/students/' + id, {
+        method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (res.ok) loadData(); else alert('删除失败');
+}
+
+async function importStudents() {
+    const text = document.getElementById('bulkStudents').value.trim();
+    if (!text) return alert('请输入学生数据');
+    const students = text.split('\n').map(line => {
+        const parts = line.split(/[,，\t]+/);
+        if (parts.length >= 2) return { name: parts[0].trim(), student_id: parts[1].trim() };
+        return null;
+    }).filter(Boolean);
+    if (!students.length) return alert('未解析到有效数据');
+    const token = localStorage.getItem('classify_token');
+    const res = await fetch('/api/admin/students/import', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ students })
+    });
+    const r = await res.json();
+    alert('导入完成：新增 ' + r.added + ' 人，共 ' + r.total + ' 人');
+    document.getElementById('bulkStudents').value = '';
+    loadData();
+}
+
+// ── Notices ──
+function renderNotices() {
+    const data = [...allData.notices].sort((a, b) => b.date.localeCompare(a.date));
+    document.getElementById('noticeCount').textContent = data.length;
+    document.getElementById('noticeTable').innerHTML = data.map(n =>
+        `<tr>
+            <td>${n.date}</td><td>${esc(n.title)}</td><td>${esc(n.source||'')}</td>
+            <td><span class="badge ${n.pinned?'badge-green':'badge-red'}">${n.pinned?'是':'否'}</span></td>
+            <td class="actions">
+                <button class="btn-sm" onclick="togglePin(${n.id})">${n.pinned?'取消置顶':'置顶'}</button>
+                <button class="btn-sm danger" onclick="deleteNotice(${n.id})">删除</button>
+            </td>
+        </tr>`
+    ).join('') || '<tr><td colspan="5" class="empty">无数据</td></tr>';
+}
+
+async function togglePin(id) {
+    const notices = [...allData.notices];
+    const n = notices.find(x => x.id === id);
+    if (n) { n.pinned = !n.pinned; }
+    await saveNotices(notices);
+}
+
+async function deleteNotice(id) {
+    if (!confirm('确定删除此通知？')) return;
+    const notices = allData.notices.filter(n => n.id !== id);
+    await saveNotices(notices);
+}
+
+async function saveNotices(notices) {
+    const token = localStorage.getItem('classify_token');
+    const res = await fetch('/api/admin/notices', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify(notices)
+    });
+    if (res.ok) loadData(); else alert('操作失败');
+}
+
+// ── Votes ──
+function renderVotes() {
+    document.getElementById('voteCount').textContent = allData.votes.length;
+    document.getElementById('voteTable').innerHTML = allData.votes.map(v => {
+        const ended = new Date(v.deadline) < new Date();
+        return `<tr>
+            <td>${esc(v.title)}</td><td>${v.deadline||'-'}</td>
+            <td>${v.type||'vote'}</td><td>${v.maxVotes||'-'}</td>
+            <td>${(v.candidates||[]).length}人</td>
+            <td><span class="badge ${ended?'badge-red':'badge-green'}">${ended?'已截止':'进行中'}</span></td>
+        </tr>`;
+    }).join('') || '<tr><td colspan="6" class="empty">无数据</td></tr>';
+}
+
+// ── Changelog ──
+function renderChangelog() {
+    const data = [...allData.changelog].sort((a, b) => b.date.localeCompare(a.date));
+    document.getElementById('logCount').textContent = data.length;
+    document.getElementById('logTable').innerHTML = data.map(l =>
+        `<tr><td>${l.date}</td><td>${esc(l.version)}</td><td>${esc(l.content||'')}</td></tr>`
+    ).join('') || '<tr><td colspan="3" class="empty">无数据</td></tr>';
+}
+
+async function addChangelog() {
+    const date = document.getElementById('logDate').value;
+    const version = document.getElementById('logVersion').value.trim();
+    const content = document.getElementById('logContent').value.trim();
+    if (!date || !version) return alert('日期和版本必填');
+    const token = localStorage.getItem('classify_token');
+    const res = await fetch('/api/changelog', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ date, version, content })
+    });
+    if (res.ok) {
+        document.getElementById('logDate').value = '';
+        document.getElementById('logVersion').value = '';
+        document.getElementById('logContent').value = '';
+        loadData();
+    } else { alert('添加失败'); }
+}
+
+function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function logout() {
+    localStorage.removeItem('classify_token');
+    localStorage.removeItem('classify_name');
+    localStorage.removeItem('classify_student_id');
+    window.location.href = '/login.html';
+}
+
+init();
+</script>
+<script src="/config-init.js"></script>
+</body>
+</html>
