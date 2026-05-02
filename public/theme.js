@@ -1,29 +1,65 @@
 /**
  * Theme toggle — light (cream canvas) / dark mode
+ * Uses event delegation, works regardless of script load order
  */
 (function() {
   'use strict';
   var KEY = 'classify_theme';
-  var current = localStorage.getItem(KEY);
+  var DARK = 'dark';
+  var LIGHT = 'light';
+  var ICONS = {};
+  ICONS[DARK] = '☀️';
+  ICONS[LIGHT] = '🌙';
 
-  if (current === 'dark') {
-    document.body.classList.add('dark');
+  // Apply saved theme
+  if (localStorage.getItem(KEY) === DARK) {
+    document.body.classList.add(DARK);
   }
 
-  window.toggleTheme = function() {
-    var isDark = document.body.classList.toggle('dark');
-    localStorage.setItem(KEY, isDark ? 'dark' : 'light');
-    updateToggleButtons();
-  };
+  function getMode() {
+    return document.body.classList.contains(DARK) ? DARK : LIGHT;
+  }
 
-  function updateToggleButtons() {
-    var isDark = document.body.classList.contains('dark');
+  function setMode(mode) {
+    if (mode === DARK) {
+      document.body.classList.add(DARK);
+    } else {
+      document.body.classList.remove(DARK);
+    }
+    localStorage.setItem(KEY, mode);
+    updateButtons();
+  }
+
+  function toggle() {
+    setMode(getMode() === DARK ? LIGHT : DARK);
+  }
+
+  function updateButtons() {
+    var mode = getMode();
     var buttons = document.querySelectorAll('.theme-toggle-btn');
-    buttons.forEach(function(btn) {
-      btn.textContent = isDark ? '☀️' : '🌙';
-      btn.title = isDark ? '切换到浅色模式' : '切换到深色模式';
-    });
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].textContent = ICONS[mode];
+      buttons[i].title = mode === DARK ? '切换到浅色模式' : '切换到深色模式';
+    }
   }
 
-  document.addEventListener('DOMContentLoaded', updateToggleButtons);
+  // Event delegation — no inline onclick needed
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.theme-toggle-btn')) {
+      toggle();
+    }
+  });
+
+  // Export for programmatic use
+  window.toggleTheme = toggle;
+
+  // Update button icons once DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateButtons);
+  } else {
+    updateButtons();
+  }
+
+  // Re-update after config-init.js modifies DOM
+  document.addEventListener('DOMContentLoaded', updateButtons);
 })();
