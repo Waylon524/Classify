@@ -79,7 +79,7 @@
       "page": "/add-schedule.html"
     }
   },
-  "admins": ["admin"],
+  "admins": [],
   "login": {
     "title": "Classify · 登录",
     "heading": "Classify",
