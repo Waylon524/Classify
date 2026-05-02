@@ -27,7 +27,7 @@
     "addSchedule": { "name": "添加活动", "icon": "➕", "page": "/add-schedule.html" }
   },
 
-  "admins": ["钱威伦"],
+  "admins": [],
 
   "login": {
     "title": "Classify · 登录",

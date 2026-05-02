@@ -1,14 +1,15 @@
 {
-  "name": "ecolony.cn",
+  "name": "classify",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "一站式班级服务平台",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["class", "management", "schedule", "vote", "express"],
+  "author": "Waylon524 <lendfuz524@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
