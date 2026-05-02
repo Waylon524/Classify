@@ -12,12 +12,12 @@
 - [配置指南](#配置指南)
 - [API 文档](#api-文档)
   - [认证](#认证)
-  - [e日程](#e日程)
-  - [e文件](#e文件)
-  - [e通知](#e通知)
-  - [e表单 / 投票](#e表单--投票)
-  - [e组队](#e组队)
-  - [e导航 / 个人链接](#e导航--个人链接)
+  - [日程](#日程)
+  - [文件](#文件)
+  - [通知](#通知)
+  - [表单 / 投票](#表单--投票)
+  - [组队](#组队)
+  - [导航 / 个人链接](#导航--个人链接)
   - [杂项](#杂项)
   - [频率限制](#频率限制)
 - [部署指南](#部署指南)
@@ -28,13 +28,13 @@
 | 模块 | 页面 | 功能 |
 |------|------|------|
 | 🏠 首页 | `index.html` | 功能卡片导航，含日程/文件/表单数量统计 |
-| 📅 e日程 | `schedule.html` | 15天日历视图，活动 CRUD，加入/退出，iCalendar 订阅 |
-| 📚 e文件 | `files.html` | 文件夹管理，Markdown 知识库浏览，文件上传 |
-| 💻 e导航 | `navi.html` | 浏览器主页，搜索引擎切换，个人链接管理 |
-| 📢 e通知 | `notices.html` | 通知列表 + 学工备忘阅读与已读追踪 |
-| 📋 e表单 | `form.html` | 投票创建与管理，带并发锁防重复投票 |
-| 👥 e组队 | `vote.html` | 活动组队，加入/退出队伍 |
-| 🤖 e生菌 AI | `aichat.html` | AI 对话，带频率限制 |
+| 📅 日程 | `schedule.html` | 15天日历视图，活动 CRUD，加入/退出，iCalendar 订阅 |
+| 📚 文件 | `files.html` | 文件夹管理，Markdown 知识库浏览，文件上传 |
+| 💻 导航 | `navi.html` | 浏览器主页，搜索引擎切换，个人链接管理 |
+| 📢 通知 | `notices.html` | 通知列表 + 学工备忘阅读与已读追踪 |
+| 📋 表单 | `form.html` | 投票创建与管理，带并发锁防重复投票 |
+| 👥 组队 | `vote.html` | 活动组队，加入/退出队伍 |
+| 🤖 AI 助手 | `aichat.html` | AI 对话，带频率限制 |
 | 🔑 登录 | `login.html` | 姓名+学号登录，设备记忆自动登录 |
 
 ## 快速开始
@@ -67,12 +67,12 @@ Classify/
 ├── package.json
 ├── public/                # 前端静态文件
 │   ├── index.html         # 首页
-│   ├── schedule.html      # e日程
-│   ├── files.html         # e文件
-│   ├── navi.html          # e导航
-│   ├── notices.html       # e通知
-│   ├── form.html          # e表单
-│   ├── vote.html          # e组队
+│   ├── schedule.html      # 日程
+│   ├── files.html         # 文件
+│   ├── navi.html          # 导航
+│   ├── notices.html       # 通知
+│   ├── form.html          # 表单
+│   ├── vote.html          # 组队
 │   ├── memo.html          # 学工备忘
 │   ├── aichat.html        # AI 助手
 │   ├── login.html         # 登录
@@ -117,8 +117,8 @@ Classify/
     "heroSubtitle": "一站式班级服务平台"
   },
   "sections": {
-    "schedule": { "name": "e 日程", "icon": "📅", "page": "/schedule.html" },
-    "files":    { "name": "e 文件", "icon": "📚", "page": "/files.html" },
+    "schedule": { "name": "日程", "icon": "📅", "page": "/schedule.html" },
+    "files":    { "name": "文件", "icon": "📚", "page": "/files.html" },
     // ... 更多栏目，可自由增删
   },
   "admins": ["管理员姓名"],           // 日程/文件管理员
@@ -224,7 +224,7 @@ Authorization: Bearer <token>
 
 ---
 
-### e日程
+### 日程
 
 #### GET /api/schedules
 
@@ -325,7 +325,7 @@ Authorization: Bearer <token>
 
 ---
 
-### e文件
+### 文件
 
 #### GET /api/folders
 
@@ -381,7 +381,7 @@ Authorization: Bearer <token>
 
 ---
 
-### e通知
+### 通知
 
 #### GET /api/notices
 
@@ -389,7 +389,7 @@ Authorization: Bearer <token>
 
 ---
 
-### e表单 / 投票
+### 表单 / 投票
 
 #### GET /api/votes
 
@@ -445,7 +445,7 @@ Authorization: Bearer <token>
 
 ---
 
-### e组队
+### 组队
 
 #### GET /api/teams
 
@@ -477,7 +477,7 @@ Authorization: Bearer <token>
 
 ---
 
-### e导航 / 个人链接
+### 导航 / 个人链接
 
 所有接口需要认证。
 
