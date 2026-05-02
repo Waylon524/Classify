@@ -1,7 +1,6 @@
 {
   "_comment": "===== Classify 站点配置文件 =====",
   "_usage": "修改此文件即可自定义站点名称、栏目名称、简介等，前后端自动同步",
-
   "site": {
     "name": "Classify",
     "nameCN": "班级服务",
@@ -14,47 +13,93 @@
     "icp": "",
     "icpUrl": "https://beian.miit.gov.cn"
   },
-
   "sections": {
-    "home":     { "name": "首页",     "icon": "🏠", "page": "/index.html" },
-    "schedule": { "name": "日程",     "icon": "📅", "page": "/schedule.html",     "desc": "班级日程与活动管理" },
-    "files":    { "name": "文件",     "icon": "📚", "page": "/files.html",        "desc": "知识库与文件共享" },
-    "navi":     { "name": "导航",     "icon": "💻", "page": "/navi.html",         "desc": "常用网站一站式导航" },
-    "notices":  { "name": "通知",     "icon": "📢", "page": "/notices.html",      "desc": "班级通知与备忘" },
-    "forms":    { "name": "表单",     "icon": "📋", "page": "/form.html",         "desc": "投票与表单收集" },
-    "teams":    { "name": "组队",     "icon": "👥", "page": "/vote.html",         "desc": "活动组队协作" },
-    "ai":       { "name": "AI 助手",  "icon": "🤖", "page": "/aichat.html",       "desc": "班级智能助手" },
-    "memo":     { "name": "备忘",     "icon": "📝", "page": "/memo.html",         "desc": "备忘阅读" },
-    "upload":   { "name": "上传文件", "icon": "📤", "page": "/upload.html",       "desc": "上传文件到知识库" },
-    "addSchedule": { "name": "添加活动", "icon": "➕", "page": "/add-schedule.html" }
+    "home": {
+      "name": "首页",
+      "icon": "🏠",
+      "page": "/index.html"
+    },
+    "schedule": {
+      "name": "日程",
+      "icon": "📅",
+      "page": "/schedule.html",
+      "desc": "班级日程与活动管理"
+    },
+    "files": {
+      "name": "文件",
+      "icon": "📚",
+      "page": "/files.html",
+      "desc": "知识库与文件共享"
+    },
+    "navi": {
+      "name": "导航",
+      "icon": "💻",
+      "page": "/navi.html",
+      "desc": "常用网站一站式导航"
+    },
+    "notices": {
+      "name": "通知",
+      "icon": "📢",
+      "page": "/notices.html",
+      "desc": "班级通知与备忘"
+    },
+    "forms": {
+      "name": "表单",
+      "icon": "📋",
+      "page": "/form.html",
+      "desc": "投票与表单收集"
+    },
+    "teams": {
+      "name": "组队",
+      "icon": "👥",
+      "page": "/vote.html",
+      "desc": "活动组队协作"
+    },
+    "ai": {
+      "name": "AI 助手",
+      "icon": "🤖",
+      "page": "/aichat.html",
+      "desc": "班级智能助手"
+    },
+    "memo": {
+      "name": "备忘",
+      "icon": "📝",
+      "page": "/memo.html",
+      "desc": "备忘阅读"
+    },
+    "upload": {
+      "name": "上传文件",
+      "icon": "📤",
+      "page": "/upload.html",
+      "desc": "上传文件到知识库"
+    },
+    "addSchedule": {
+      "name": "添加活动",
+      "icon": "➕",
+      "page": "/add-schedule.html"
+    }
   },
-
-  "admins": [],
-
+  "admins": ["admin"],
   "login": {
     "title": "Classify · 登录",
     "heading": "Classify",
     "subtitle": "一站式班级服务平台"
   },
-
   "ics": {
     "productId": "-//Classify//Schedule//CN",
     "calendarName": "班级日程",
     "filename": "schedule.ics"
   },
-
   "navi": {
     "searchPlaceholder": "搜索或输入网址...",
     "defaultEngine": "bing"
   },
-
   "aiConfig": {
     "provider": "deepseek",
     "baseUrl": "https://api.deepseek.com",
     "apiKey": "",
     "model": "deepseek-chat"
   },
-
   "memo": {
     "countdownSeconds": 30,
     "confirmText": "已阅读并确认知晓"

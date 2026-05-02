@@ -39,45 +39,6 @@
         .page-header .subtitle { font-size: 13px; color: var(--muted); }
         .page-header-right { display: flex; align-items: center; gap: 12px; }
 
-        /* Subscription button in header */
-        .header-subscribe-btn {
-            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
-            color: var(--canvas);
-            border: none;
-            border-radius: 10px;
-            padding: 6px 14px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            white-space: nowrap;
-        }
-        .header-subscribe-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(204,120,92,0.3); }
-        .header-subscribe-btn:active { transform: translateY(0); }
-
-        /* Add Activity button */
-        .header-add-btn {
-            background: var(--primary);
-            color: var(--canvas);
-            border: none;
-            border-radius: 10px;
-            padding: 6px 14px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            white-space: nowrap;
-        }
-        .header-add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(204,120,92,0.3); }
-        .header-add-btn:active { transform: translateY(0); }
-        .header-add-btn span { font-size: 16px; font-weight: 300; }
-
         /* 统一按钮容器 */
         .header-btn-group {
             display: flex;
@@ -85,29 +46,25 @@
             gap: 6px;
         }
         .header-btn {
-            height: 28px;
-            width: 80px;
+            height: 32px;
+            padding: 0 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 4px;
             border: none;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 600;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s;
             background: var(--primary);
-            color: var(--canvas);
+            color: var(--on-primary);
             text-decoration: none;
+            font-family: var(--font-body);
+            white-space: nowrap;
         }
-        .header-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(204,120,92,0.3);
-        }
-        .header-btn:active {
-            transform: translateY(0);
-        }
+        .header-btn:hover { background: var(--primary-active); }
 
         /* Subscription tooltip */
         .subscribe-tooltip {
@@ -124,8 +81,6 @@
             z-index: 1000;
             min-width: 280px;
             text-align: left;
-            
-            -webkit-
         }
         .subscribe-tooltip.show { display: block; }
         .subscribe-tooltip h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
@@ -142,17 +97,19 @@
             color: var(--primary);
         }
         .subscribe-tooltip .copy-btn-small {
-            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
-            color: var(--canvas);
+            background: var(--primary);
+            color: var(--on-primary);
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             padding: 8px 12px;
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
             width: 100%;
+            font-family: var(--font-body);
+            transition: background 0.2s;
         }
-        .subscribe-tooltip .copy-btn-small:hover { opacity: 0.9; }
+        .subscribe-tooltip .copy-btn-small:hover { background: var(--primary-active); }
 
         .content { max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; gap: 32px; }
         .main-content { flex: 1; min-width: 0; }
@@ -168,8 +125,6 @@
         .long-term-desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
         .long-term-dates { font-size: 12px; color: var(--primary); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
         .long-term-dates .expired { color: #ff3b30; }
-
-
         .day-group { margin-bottom: 32px; }
         .day-header { font-size: 21px; font-weight: 600; color: var(--ink); padding: 16px 0 12px; border-bottom: 1px solid var(--hairline); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
         .day-header .weekday { font-size: 14px; font-weight: 400; color: var(--muted); }
