@@ -196,37 +196,26 @@
         
         .edit-header {
             background: var(--canvas);
-            padding: 16px 24px;
+            padding: var(--space-md) var(--space-lg);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(204,120,92,0.08);
+            border-bottom: 1px solid var(--hairline);
             flex-shrink: 0;
-            
-            -webkit-
         }
-        
-        .edit-header h2 { font-size: 18px; font-weight: 600; }
-        
+        .edit-header h2 { font-family: var(--font-display); font-size: 22px; font-weight: 400; }
         .edit-header-btn {
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 10px;
-            transition: all 0.2s;
+            background: none; border: 1px solid var(--hairline);
+            font-size: 14px; font-weight: 500; cursor: pointer;
+            padding: 8px 16px; border-radius: var(--radius-md);
+            font-family: var(--font-body); transition: all 0.2s;
         }
-        
-        .edit-header-btn.cancel { color: var(--muted); }
-        .edit-header-btn.cancel:hover { background: rgba(200, 215, 240, 0.08); }
-        
+        .edit-header-btn.cancel { color: var(--muted); background: none; border-color: transparent; }
+        .edit-header-btn.cancel:hover { background: var(--surface-card); }
         .edit-header-btn.done {
-            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
-            color: var(--canvas);
+            background: var(--primary); color: var(--on-primary); border-color: var(--primary);
         }
-        
-        .edit-header-btn.done:hover { box-shadow: 0 4px 12px rgba(204,120,92,0.3); }
+        .edit-header-btn.done:hover { background: var(--primary-active); }
         
         .edit-content {
             flex: 1;
@@ -352,52 +341,43 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(4, 8, 16, 0.7);
-            
-            -webkit-
+            background: rgba(0,0,0,0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 3000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
-        
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        
         .modal {
-            background: rgba(10, 20, 42, 0.95);
-            border: 1px solid rgba(204,120,92,0.12);
-            border-radius: 20px;
-            padding: 24px;
+            background: var(--canvas);
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
             width: 90%;
             max-width: 400px;
-            transform: scale(0.9);
-            transition: transform 0.3s;
-            
-            -webkit-
+            transform: scale(0.95);
+            transition: transform 0.2s;
+            box-shadow: var(--shadow-sm);
         }
-        
         .modal-overlay.show .modal { transform: scale(1); }
-        
-        .modal h3 { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 20px; text-align: center; }
-        
+        .modal h3 { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--ink); margin-bottom: 20px; text-align: center; }
         .form-group { margin-bottom: 16px; }
         .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-        .form-group input { width: 100%; padding: 12px 14px; border: 1px solid rgba(204,120,92,0.12); border-radius: 10px; font-size: 15px; transition: border-color 0.2s; background: rgba(8, 16, 36, 0.6); color: var(--ink); }
-        .form-group input:focus { outline: none; border-color: rgba(204,120,92,0.4); box-shadow: 0 0 0 3px rgba(204,120,92,0.08); }
+        .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--hairline); border-radius: var(--radius-md); font-size: 15px; transition: border-color 0.2s; background: var(--canvas); color: var(--ink); font-family: var(--font-body); }
+        .form-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(204,120,92,0.1); }
         .form-group input::placeholder { color: var(--muted-soft); }
-        
-        .modal-buttons { display: flex; gap: 12px; margin-top: 24px; }
-        .modal-btn { flex: 1; padding: 12px; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
-        .modal-btn.cancel { background: rgba(8, 16, 36, 0.6); color: var(--ink); border: 1px solid rgba(204,120,92,0.1); }
-        .modal-btn.cancel:hover { background: rgba(204,120,92,0.08); }
-        .modal-btn.submit { background: linear-gradient(135deg, var(--primary), var(--accent-teal)); color: var(--canvas); }
-        .modal-btn.submit:hover { box-shadow: 0 4px 12px rgba(204,120,92,0.3); }
-        .modal-btn.delete { background: #ff3b30; color: white; }
-        .modal-btn.delete:hover { background: #d63030; }
-        .modal-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .modal-buttons { display: flex; gap: var(--space-sm); margin-top: var(--space-lg); }
+        .modal-btn { flex: 1; padding: 10px; border-radius: var(--radius-md); font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: background 0.2s; font-family: var(--font-body); }
+        .modal-btn.cancel { background: var(--surface-card); color: var(--ink); border: 1px solid var(--hairline); }
+        .modal-btn.cancel:hover { background: var(--surface-cream-strong); }
+        .modal-btn.submit { background: var(--primary); color: var(--on-primary); }
+        .modal-btn.submit:hover { background: var(--primary-active); }
+        .modal-btn.delete { background: var(--error); color: white; }
+        .modal-btn.delete:hover { background: #b33a3a; }
+        .modal-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         
         .delete-confirm {
             text-align: center;
