@@ -27,16 +27,16 @@
         .hero-title {
             font-size: 42px;
             font-weight: 700;
-            color: var(--text-light);
+            color: var(--ink);
             margin-bottom: 8px;
             letter-spacing: -1px;
         }
         
-        .hero-title span { color: var(--accent); }
+        .hero-title span { color: var(--primary); }
         
         .hero-subtitle {
             font-size: 16px;
-            color: var(--text-secondary);
+            color: var(--muted);
             margin-bottom: 32px;
         }
         
@@ -92,7 +92,7 @@
             padding: 10px 12px;
             font-size: 14px;
             height: 42px;
-            color: var(--text-light);
+            color: var(--ink);
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
@@ -142,19 +142,19 @@
             background: none;
             text-align: left;
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--muted);
             cursor: pointer;
             transition: all 0.15s;
         }
         
         .engine-option:hover {
             background: rgba(0, 229, 160, 0.06);
-            color: var(--text-light);
+            color: var(--ink);
         }
         
         .engine-option.active {
             background: rgba(0, 229, 160, 0.1);
-            color: var(--accent);
+            color: var(--primary);
             font-weight: 500;
         }
         
@@ -175,14 +175,14 @@
             font-size: 18px;
             padding: 12px 0;
             background: transparent;
-            color: var(--text-light);
+            color: var(--ink);
         }
         
-        .search-input::placeholder { color: var(--text-muted); }
+        .search-input::placeholder { color: var(--muted-soft); }
         
         .search-btn {
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
-            color: var(--bg-abyss);
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            color: var(--canvas);
             border: none;
             border-radius: 10px;
             padding: 12px 28px;
@@ -205,11 +205,11 @@
             padding-left: 4px;
         }
         
-        .section-title { font-size: 18px; font-weight: 600; color: var(--text-light); }
+        .section-title { font-size: 18px; font-weight: 600; color: var(--ink); }
         
         .edit-btn {
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
-            color: var(--bg-abyss);
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            color: var(--canvas);
             border: none;
             border-radius: 10px;
             padding: 6px 14px;
@@ -246,7 +246,7 @@
         }
         
         .link-card {
-            background: var(--bg-card);
+            background: var(--surface-card);
             border: 1px solid rgba(0, 229, 160, 0.08);
             border-radius: 14px;
             padding: 16px;
@@ -260,7 +260,7 @@
             -webkit-backdrop-filter: blur(8px);
         }
         
-        .link-card:hover { background: var(--bg-card-hover); border-color: rgba(0, 229, 160, 0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
+        .link-card:hover { background: var(--surface-cream-strong); border-color: rgba(0, 229, 160, 0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
         .link-card:active { transform: translateY(0); }
         
         .link-card.add-card {
@@ -270,25 +270,25 @@
             cursor: pointer;
         }
         
-        .link-card.add-card:hover { border-color: var(--accent); background: rgba(0, 229, 160, 0.04); transform: translateY(-2px); }
-        .link-card.add-card .plus-icon { font-size: 32px; color: var(--accent); font-weight: 300; }
+        .link-card.add-card:hover { border-color: var(--primary); background: rgba(0, 229, 160, 0.04); transform: translateY(-2px); }
+        .link-card.add-card .plus-icon { font-size: 32px; color: var(--primary); font-weight: 300; }
         
         .link-icon { font-size: 28px; flex-shrink: 0; }
         .link-info { flex: 1; min-width: 0; }
-        .link-name { font-size: 15px; font-weight: 600; color: var(--text-light); margin-bottom: 2px; }
-        .link-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .link-name { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+        .link-desc { font-size: 12px; color: var(--muted); line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         
-        .loading { text-align: center; padding: 60px 24px; color: var(--text-secondary); }
-        .loading::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid var(--accent); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 12px; vertical-align: middle; }
+        .loading { text-align: center; padding: 60px 24px; color: var(--muted); }
+        .loading::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 12px; vertical-align: middle; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        .empty-state { text-align: center; padding: 60px 24px; color: var(--text-secondary); }
+        .empty-state { text-align: center; padding: 60px 24px; color: var(--muted); }
         
         /* Edit Modal - Full Screen */
         .edit-modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg-abyss);
+            background: var(--canvas);
             z-index: 2000;
             display: none;
             flex-direction: column;
@@ -321,12 +321,12 @@
             transition: all 0.2s;
         }
         
-        .edit-header-btn.cancel { color: var(--text-secondary); }
+        .edit-header-btn.cancel { color: var(--muted); }
         .edit-header-btn.cancel:hover { background: rgba(200, 215, 240, 0.08); }
         
         .edit-header-btn.done {
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
-            color: var(--bg-abyss);
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            color: var(--canvas);
         }
         
         .edit-header-btn.done:hover { box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3); }
@@ -339,7 +339,7 @@
         
         .edit-tip {
             text-align: center;
-            color: var(--text-secondary);
+            color: var(--muted);
             font-size: 13px;
             margin-bottom: 16px;
         }
@@ -357,7 +357,7 @@
         }
         
         .edit-card {
-            background: var(--bg-card);
+            background: var(--surface-card);
             border: 1px solid rgba(0, 229, 160, 0.08);
             border-radius: 12px;
             padding: 12px 16px;
@@ -373,7 +373,7 @@
         
         .edit-card.drag-over {
             background: rgba(0, 229, 160, 0.1);
-            border: 2px dashed var(--accent);
+            border: 2px dashed var(--primary);
         }
         
         .edit-card .drag-handle {
@@ -406,12 +406,12 @@
         
         .edit-action-btn.edit {
             background: rgba(0, 229, 160, 0.1);
-            color: var(--accent);
+            color: var(--primary);
         }
         
         .edit-action-btn.edit:hover {
-            background: var(--accent);
-            color: var(--bg-abyss);
+            background: var(--primary);
+            color: var(--canvas);
         }
         
         .edit-action-btn.delete {
@@ -421,7 +421,7 @@
         
         .edit-action-btn.delete:hover {
             background: #ff3b30;
-            color: var(--bg-abyss);
+            color: var(--canvas);
         }
         
         .edit-card-info {
@@ -435,7 +435,7 @@
         .edit-card-name {
             font-size: 15px;
             font-weight: 600;
-            color: var(--text-light);
+            color: var(--ink);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -444,7 +444,7 @@
         
         .edit-card-url {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--muted);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -484,19 +484,19 @@
         
         .modal-overlay.show .modal { transform: scale(1); }
         
-        .modal h3 { font-size: 18px; font-weight: 600; color: var(--text-light); margin-bottom: 20px; text-align: center; }
+        .modal h3 { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 20px; text-align: center; }
         
         .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
-        .form-group input { width: 100%; padding: 12px 14px; border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 10px; font-size: 15px; transition: border-color 0.2s; background: rgba(8, 16, 36, 0.6); color: var(--text-light); }
+        .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+        .form-group input { width: 100%; padding: 12px 14px; border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 10px; font-size: 15px; transition: border-color 0.2s; background: rgba(8, 16, 36, 0.6); color: var(--ink); }
         .form-group input:focus { outline: none; border-color: rgba(0, 229, 160, 0.4); box-shadow: 0 0 0 3px rgba(0, 229, 160, 0.08); }
-        .form-group input::placeholder { color: var(--text-muted); }
+        .form-group input::placeholder { color: var(--muted-soft); }
         
         .modal-buttons { display: flex; gap: 12px; margin-top: 24px; }
         .modal-btn { flex: 1; padding: 12px; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
-        .modal-btn.cancel { background: rgba(8, 16, 36, 0.6); color: var(--text-light); border: 1px solid rgba(0, 229, 160, 0.1); }
+        .modal-btn.cancel { background: rgba(8, 16, 36, 0.6); color: var(--ink); border: 1px solid rgba(0, 229, 160, 0.1); }
         .modal-btn.cancel:hover { background: rgba(0, 229, 160, 0.08); }
-        .modal-btn.submit { background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); color: var(--bg-abyss); }
+        .modal-btn.submit { background: linear-gradient(135deg, var(--primary), var(--accent-teal)); color: var(--canvas); }
         .modal-btn.submit:hover { box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3); }
         .modal-btn.delete { background: #ff3b30; color: white; }
         .modal-btn.delete:hover { background: #d63030; }
@@ -504,21 +504,18 @@
         
         .delete-confirm {
             text-align: center;
-            color: var(--text-secondary);
+            color: var(--muted);
             margin-bottom: 16px;
             font-size: 14px;
         }
         
-        .delete-confirm strong { color: var(--text-light); }
+        .delete-confirm strong { color: var(--ink); }
     </style>
     <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="/theme-light.css">
     <script src="/theme.js"></script>
 </head>
 <body>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="noise-overlay"></div>
     <nav>
         <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">

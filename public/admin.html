@@ -10,11 +10,11 @@
         .admin-tabs { display: flex; gap: 4px; margin-bottom: 24px; flex-wrap: wrap; }
         .admin-tab {
             padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(200,215,240,0.08);
-            background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+            background: var(--surface-card); color: var(--muted); cursor: pointer;
             font-size: 14px; font-weight: 500; transition: all 0.2s; font-family: var(--font-body);
         }
-        .admin-tab:hover { border-color: rgba(0,229,160,0.2); color: var(--text-light); }
-        .admin-tab.active { background: rgba(0,229,160,0.1); border-color: var(--accent); color: var(--accent); }
+        .admin-tab:hover { border-color: rgba(0,229,160,0.2); color: var(--ink); }
+        .admin-tab.active { background: rgba(0,229,160,0.1); border-color: var(--primary); color: var(--primary); }
         .admin-panel { display: none; }
         .admin-panel.active { display: block; }
         .admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -22,40 +22,40 @@
             padding: 12px 16px; text-align: left;
             border-bottom: 1px solid rgba(200,215,240,0.06);
         }
-        .admin-table th { color: var(--text-secondary); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .admin-table th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         .admin-table tr:hover { background: rgba(0,229,160,0.03); }
         .admin-table .actions { display: flex; gap: 8px; }
         .btn-sm {
             padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(200,215,240,0.12);
-            background: transparent; color: var(--text-secondary); cursor: pointer;
+            background: transparent; color: var(--muted); cursor: pointer;
             font-size: 12px; transition: all 0.2s; font-family: var(--font-body);
         }
-        .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-sm:hover { border-color: var(--primary); color: var(--primary); }
         .btn-sm.danger:hover { border-color: #ff5050; color: #ff5050; }
         .btn-primary {
             padding: 10px 24px; border-radius: 10px; border: none;
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
-            color: var(--bg-abyss); cursor: pointer; font-size: 14px; font-weight: 600;
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            color: var(--canvas); cursor: pointer; font-size: 14px; font-weight: 600;
             transition: all 0.2s; font-family: var(--font-body);
         }
         .btn-primary:hover { box-shadow: 0 4px 16px rgba(0,229,160,0.3); }
         .card { padding: 20px; margin-bottom: 20px; }
-        .card h3 { font-size: 18px; margin-bottom: 16px; color: var(--text-light); }
+        .card h3 { font-size: 18px; margin-bottom: 16px; color: var(--ink); }
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        .stat-card { background: var(--bg-card); border: 1px solid rgba(0,229,160,0.08); border-radius: 16px; padding: 24px; text-align: center; }
-        .stat-card .num { font-size: 36px; font-weight: 700; color: var(--accent); }
-        .stat-card .label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+        .stat-card { background: var(--surface-card); border: 1px solid rgba(0,229,160,0.08); border-radius: 16px; padding: 24px; text-align: center; }
+        .stat-card .num { font-size: 36px; font-weight: 700; color: var(--primary); }
+        .stat-card .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
         .form-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-end; }
         .form-row input, .form-row textarea {
             flex: 1; padding: 10px 14px; border: 1px solid rgba(0,229,160,0.12);
-            border-radius: 10px; background: rgba(8,16,36,0.6); color: var(--text-light);
+            border-radius: 10px; background: rgba(8,16,36,0.6); color: var(--ink);
             font-family: var(--font-body); font-size: 14px;
         }
-        .form-row input:focus, .form-row textarea:focus { outline: none; border-color: var(--accent); }
+        .form-row input:focus, .form-row textarea:focus { outline: none; border-color: var(--primary); }
         .form-row textarea { resize: vertical; min-height: 60px; }
-        .empty { text-align: center; padding: 48px; color: var(--text-secondary); }
+        .empty { text-align: center; padding: 48px; color: var(--muted); }
         .badge { font-size: 11px; padding: 2px 8px; border-radius: 8px; }
-        .badge-green { background: rgba(0,229,160,0.15); color: var(--accent); }
+        .badge-green { background: rgba(0,229,160,0.15); color: var(--primary); }
         .badge-red { background: rgba(255,80,80,0.15); color: #ff5050; }
         @media (max-width: 768px) {
             .stat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -66,9 +66,6 @@
     </style>
 </head>
 <body>
-<div class="bg-orb bg-orb-1"></div>
-<div class="bg-orb bg-orb-2"></div>
-<div class="noise-overlay"></div>
 <nav>
     <div class="logo"><a href="/">🏫</a><a href="/">Classify</a></div>
     <div class="nav-links">
@@ -86,7 +83,7 @@
 <main>
     <div class="page-header">
         <h1>⚙️ 管理后台</h1>
-        <span style="font-size:13px;color:var(--text-secondary)" id="adminName"></span>
+        <span style="font-size:13px;color:var(--muted)" id="adminName"></span>
     </div>
 
     <div class="admin-layout">
@@ -127,7 +124,7 @@
                 </div>
             </div>
             <div class="card"><h3>人员列表（<span id="stuCount">0</span>）</h3>
-            <input type="text" id="stuSearch" placeholder="搜索姓名或学号..." style="width:100%;padding:10px;margin-bottom:16px;border:1px solid rgba(0,229,160,0.12);border-radius:10px;background:rgba(8,16,36,0.6);color:var(--text-light);font-size:14px" oninput="renderStudents()">
+            <input type="text" id="stuSearch" placeholder="搜索姓名或学号..." style="width:100%;padding:10px;margin-bottom:16px;border:1px solid rgba(0,229,160,0.12);border-radius:10px;background:rgba(8,16,36,0.6);color:var(--ink);font-size:14px" oninput="renderStudents()">
             <div style="overflow-x:auto"><table class="admin-table">
                 <thead><tr><th>姓名</th><th>学号</th><th>操作</th></tr></thead>
                 <tbody id="stuTable"></tbody>

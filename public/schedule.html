@@ -36,13 +36,13 @@
     </script>
     <style>
 
-        .page-header .subtitle { font-size: 13px; color: var(--text-secondary); }
+        .page-header .subtitle { font-size: 13px; color: var(--muted); }
         .page-header-right { display: flex; align-items: center; gap: 12px; }
 
         /* Subscription button in header */
         .header-subscribe-btn {
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
-            color: var(--bg-abyss);
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            color: var(--canvas);
             border: none;
             border-radius: 10px;
             padding: 6px 14px;
@@ -60,8 +60,8 @@
 
         /* Add Activity button */
         .header-add-btn {
-            background: var(--accent);
-            color: var(--bg-abyss);
+            background: var(--primary);
+            color: var(--canvas);
             border: none;
             border-radius: 10px;
             padding: 6px 14px;
@@ -97,8 +97,8 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            background: var(--accent);
-            color: var(--bg-abyss);
+            background: var(--primary);
+            color: var(--canvas);
             text-decoration: none;
         }
         .header-btn:hover {
@@ -128,8 +128,8 @@
             -webkit-backdrop-filter: blur(20px);
         }
         .subscribe-tooltip.show { display: block; }
-        .subscribe-tooltip h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text-light); }
-        .subscribe-tooltip p { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4; }
+        .subscribe-tooltip h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+        .subscribe-tooltip p { font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.4; }
         .subscribe-tooltip .subscribe-url-box {
             background: rgba(8, 16, 36, 0.8);
             border: 1px solid rgba(0, 229, 160, 0.1);
@@ -139,11 +139,11 @@
             font-family: monospace;
             word-break: break-all;
             margin-bottom: 10px;
-            color: var(--glow-primary);
+            color: var(--primary);
         }
         .subscribe-tooltip .copy-btn-small {
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
-            color: var(--bg-abyss);
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
+            color: var(--canvas);
             border: none;
             border-radius: 10px;
             padding: 8px 12px;
@@ -157,26 +157,26 @@
         .content { max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; gap: 32px; }
         .main-content { flex: 1; min-width: 0; }
         .sidebar { width: 320px; flex-shrink: 0; }
-        .sidebar-section { background: var(--bg-abyss); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 20px; margin-bottom: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .sidebar-section h3 { font-size: 17px; font-weight: 600; color: var(--text-light); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .sidebar-section { background: var(--canvas); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 20px; margin-bottom: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .sidebar-section h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         .long-term-item { padding: 12px 0; border-bottom: 1px solid rgba(200, 215, 240, 0.06); }
         .long-term-item:last-child { border-bottom: none; padding-bottom: 0; }
         .long-term-item:first-child { padding-top: 0; }
-        .long-term-title { font-size: 15px; font-weight: 600; color: var(--text-light); margin-bottom: 4px; }
-        .long-term-title a { color: var(--accent); text-decoration: none; }
+        .long-term-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+        .long-term-title a { color: var(--primary); text-decoration: none; }
         .long-term-title a:hover { text-decoration: underline; }
-        .long-term-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
-        .long-term-dates { font-size: 12px; color: var(--accent); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+        .long-term-desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
+        .long-term-dates { font-size: 12px; color: var(--primary); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
         .long-term-dates .expired { color: #ff3b30; }
 
 
         .day-group { margin-bottom: 32px; }
-        .day-header { font-size: 21px; font-weight: 600; color: var(--text-light); padding: 16px 0 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.08); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-        .day-header .weekday { font-size: 14px; font-weight: 400; color: var(--text-secondary); }
-        .day-header.today { color: var(--accent); }
-        .day-header.today::before { content: '●'; color: var(--accent); margin-right: 4px; }
+        .day-header { font-size: 21px; font-weight: 600; color: var(--ink); padding: 16px 0 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.08); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+        .day-header .weekday { font-size: 14px; font-weight: 400; color: var(--muted); }
+        .day-header.today { color: var(--primary); }
+        .day-header.today::before { content: '●'; color: var(--primary); margin-right: 4px; }
 
-        .schedule-item { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; border-left: 4px solid var(--accent); position: relative; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .schedule-item { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; border-left: 4px solid var(--primary); position: relative; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .schedule-item.past { opacity: 0.6; border-left-color: #999; }
         .schedule-item .time-col {
             display: flex;
@@ -198,9 +198,9 @@
             justify-content: center;
             gap: 4px;
         }
-        .schedule-time .time { font-size: 16px; font-weight: 600; color: var(--text-light); }
-        .schedule-time .end-time { font-size: 13px; color: var(--text-secondary); }
-        .schedule-time .allday { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+        .schedule-time .time { font-size: 16px; font-weight: 600; color: var(--ink); }
+        .schedule-time .end-time { font-size: 13px; color: var(--muted); }
+        .schedule-time .allday { font-size: 14px; font-weight: 500; color: var(--muted); }
 
         /* Desktop join button */
         .schedule-item .join-btn {
@@ -209,9 +209,9 @@
             padding: 6px 12px;
             font-size: 12px;
             font-weight: 600;
-            color: var(--accent);
+            color: var(--primary);
             background: transparent;
-            border: 1.5px solid var(--accent);
+            border: 1.5px solid var(--primary);
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s;
@@ -219,13 +219,13 @@
             box-sizing: border-box;
         }
         .schedule-item .join-btn:hover {
-            background: var(--accent);
-            color: var(--bg-abyss);
+            background: var(--primary);
+            color: var(--canvas);
         }
         .schedule-item .join-btn.joined {
             background: #34c759;
             border-color: #34c759;
-            color: var(--bg-abyss);
+            color: var(--canvas);
         }
         .schedule-item .join-btn.joined:hover {
             background: #ff3b30;
@@ -272,8 +272,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--accent);
-            color: var(--bg-abyss);
+            background: var(--primary);
+            color: var(--canvas);
             border: none;
             border-radius: 10px;
             font-size: 13px;
@@ -299,7 +299,7 @@
             .modal-header { padding: 16px 20px; }
             
             .page-header { flex-direction: column; align-items: flex-start; }
-            .schedule-item { display: block; border-left: 4px solid var(--accent); padding-left: 15px; padding-right: 15px; }
+            .schedule-item { display: block; border-left: 4px solid var(--primary); padding-left: 15px; padding-right: 15px; }
             .schedule-item .time-col, .time-col { display: none !important; }
 
             /* 时间、参加、日历按钮容器 */
@@ -322,7 +322,7 @@
                 flex-shrink: 0;
                 flex-direction: row;
                 gap: 4px;
-                background: var(--bg-light);
+                background: var(--surface-soft);
                 border-radius: 10px;
                 font-size: 14px;
                 box-sizing: border-box;
@@ -343,7 +343,7 @@
                 white-space: nowrap;
                 box-sizing: border-box;
                 color: white !important;
-                background: var(--accent) !important;
+                background: var(--primary) !important;
                 border: none;
                 border-radius: 10px;
             }
@@ -363,26 +363,26 @@
                 white-space: nowrap;
                 box-sizing: border-box;
                 color: white !important;
-                background: var(--accent) !important;
+                background: var(--primary) !important;
                 border: none;
                 border-radius: 10px;
             }
         }
 
-        .schedule-title { font-size: 17px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
-        .schedule-link { color: var(--text-light); text-decoration: none; }
-        .schedule-link:hover { color: var(--accent); text-decoration: underline; cursor: pointer; }
-        .schedule-link[href]:hover { color: var(--accent); text-decoration: underline; }
-        .schedule-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.4; }
-        .schedule-location { font-size: 12px; color: var(--accent); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
-        .schedule-source { font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+        .schedule-title { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+        .schedule-link { color: var(--ink); text-decoration: none; }
+        .schedule-link:hover { color: var(--primary); text-decoration: underline; cursor: pointer; }
+        .schedule-link[href]:hover { color: var(--primary); text-decoration: underline; }
+        .schedule-desc { font-size: 14px; color: var(--muted); line-height: 1.4; }
+        .schedule-location { font-size: 12px; color: var(--primary); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+        .schedule-source { font-size: 12px; color: var(--muted); margin-top: 6px; }
 
         /* Subscribe button - mobile only */
         .subscribe-btn {
             position: absolute;
             top: 16px;
             right: 16px;
-            background: var(--accent);
+            background: var(--primary);
             color: white;
             border: none;
             border-radius: 10px;
@@ -415,7 +415,7 @@
         }
         .btn-edit {
             background: rgba(8, 16, 36, 0.6);
-            color: var(--text-light);
+            color: var(--ink);
             border: 1px solid rgba(0, 229, 160, 0.1);
         }
         .btn-edit:hover { background: rgba(0, 229, 160, 0.1); }
@@ -428,10 +428,10 @@
         @media (max-width: 734px) {
             .subscribe-btn { display: block; }
         }
-        .schedule-source a { color: var(--link); }
+        .schedule-source a { color: var(--primary); }
         .schedule-details { flex: 1; }
 
-        .footer { text-align: center; padding: 40px 24px; color: var(--text-muted); font-size: 12px; position: relative; z-index: 2; }
+        .footer { text-align: center; padding: 40px 24px; color: var(--muted-soft); font-size: 12px; position: relative; z-index: 2; }
 
         /* Mobile tab switching */
         .mobile-tabs, .mobile-content { display: none; }
@@ -440,9 +440,9 @@
             .page-header { flex-direction: column; align-items: flex-start; }
             .schedule-item {
                 display: block;
-                background: var(--bg-card);
+                background: var(--surface-card);
                 border: 1px solid rgba(0, 229, 160, 0.08);
-                border-left: 4px solid var(--accent);
+                border-left: 4px solid var(--primary);
                 padding-left: 8px;
                 padding-right: 8px;
             }
@@ -469,7 +469,7 @@
                 align-items: center;
                 gap: 4px;
                 padding: 0 10px;
-                background: var(--bg-light);
+                background: var(--surface-soft);
                 border-radius: 10px;
                 font-size: 14px;
                 box-sizing: border-box;
@@ -492,7 +492,7 @@
                 white-space: nowrap;
                 box-sizing: border-box;
                 color: white !important;
-                background: var(--accent) !important;
+                background: var(--primary) !important;
                 border: none;
                 border-radius: 10px;
             }
@@ -513,7 +513,7 @@
                 font-size: 12px !important;
                 box-sizing: border-box;
                 color: white !important;
-                background: var(--accent) !important;
+                background: var(--primary) !important;
                 border: none;
                 border-radius: 10px;
             }
@@ -551,7 +551,7 @@
                 padding: 14px 16px;
                 font-size: 15px;
                 font-weight: 500;
-                color: var(--text-secondary);
+                color: var(--muted);
                 background: none;
                 border: none;
                 cursor: pointer;
@@ -560,8 +560,8 @@
             }
             .mobile-tab:active { background: rgba(0, 229, 160, 0.04); }
             .mobile-tab.active {
-                color: var(--accent);
-                border-bottom-color: var(--accent);
+                color: var(--primary);
+                border-bottom-color: var(--primary);
             }
 
             .mobile-content {
@@ -575,7 +575,7 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg-abyss);
+            background: var(--canvas);
             display: none;
             z-index: 2000;
             overflow-y: auto;
@@ -603,11 +603,11 @@
             border-bottom: none;
             margin-bottom: 20px;
         }
-        .modal-header h2 { font-size: 20px; font-weight: 600; color: var(--text-light); }
+        .modal-header h2 { font-size: 20px; font-weight: 600; color: var(--ink); }
         .modal-close {
             width: 32px; height: 32px;
             border: none; background: none;
-            font-size: 24px; color: var(--text-secondary);
+            font-size: 24px; color: var(--muted);
             cursor: pointer; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
         }
@@ -617,13 +617,13 @@
         .form-group { margin-bottom: 20px; width: 100%; box-sizing: border-box; max-width: 100%; }
         .form-group label {
             display: block; font-size: 14px; font-weight: 500;
-            color: var(--text-light); margin-bottom: 8px;
+            color: var(--ink); margin-bottom: 8px;
         }
-        .form-group label .hint { font-weight: 400; color: var(--text-secondary); font-size: 12px; }
+        .form-group label .hint { font-weight: 400; color: var(--muted); font-size: 12px; }
         .form-group input, .form-group select, .form-group textarea, .form-group input[type="datetime-local"] {
             width: 100%; max-width: 100%; padding: 14px 16px; font-size: 16px;
             border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 12px;
-            background: rgba(8, 16, 36, 0.6); color: var(--text-light);
+            background: rgba(8, 16, 36, 0.6); color: var(--ink);
             font-family: inherit;
             box-sizing: border-box;
         }
@@ -634,12 +634,12 @@
         .form-group textarea { resize: vertical; min-height: 80px; }
         .form-row { display: flex; gap: 12px; }
         .form-row .form-group { flex: 1; }
-        .char-count { text-align: right; font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+        .char-count { text-align: right; font-size: 12px; color: var(--muted); margin-top: 4px; }
         .char-count.warning { color: #FF3B30; }
         .form-error { color: #FF3B30; font-size: 13px; margin-bottom: 12px; min-height: 18px; }
         .submit-btn {
             width: 100%; padding: 14px; font-size: 16px; font-weight: 600;
-            color: var(--bg-abyss); background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); border: none;
+            color: var(--canvas); background: linear-gradient(135deg, var(--primary), var(--accent-teal)); border: none;
             border-radius: 10px; cursor: pointer; margin-top: 8px;
         }
         .submit-btn:hover { box-shadow: 0 8px 24px rgba(0, 229, 160, 0.25); }
@@ -652,17 +652,17 @@
             border-top: 1px dashed rgba(0,0,0,0.1);
         }
         .schedule-participants .label {
-            font-size: 12px; color: var(--text-secondary);
+            font-size: 12px; color: var(--muted);
             margin-bottom: 6px;
         }
         .member-tags { display: flex; flex-wrap: wrap; gap: 4px; }
         .member-tag {
             padding: 3px 8px; font-size: 11px;
             background: rgba(8, 16, 36, 0.6); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 10px;
-            color: var(--text-light);
+            color: var(--ink);
         }
         .member-tag.organizer {
-            background: rgba(0,229,160,0.15); color: var(--accent);
+            background: rgba(0,229,160,0.15); color: var(--primary);
             font-weight: 500;
         }
         .schedule-item.has-members {
@@ -678,7 +678,7 @@
         }
         .join-btn {
             padding: 8px 14px; font-size: 13px; font-weight: 600;
-            color: var(--bg-abyss); background: var(--accent); border: none;
+            color: var(--canvas); background: var(--primary); border: none;
             border-radius: 10px; cursor: pointer;
         }
         .join-btn:hover { box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3); }
@@ -691,9 +691,6 @@
     <script src="/theme.js"></script>
 </head>
 <body>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="noise-overlay"></div>
     <nav>
         <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">
@@ -1310,7 +1307,7 @@
                 const activities = data.activities || [];
 
                 if (activities.length === 0) {
-                    const emptyHtml = '<div class="long-term-item"><div class="long-term-desc" style="color: var(--text-secondary);">暂无长期活动</div></div>';
+                    const emptyHtml = '<div class="long-term-item"><div class="long-term-desc" style="color: var(--muted);">暂无长期活动</div></div>';
                     container.innerHTML = emptyHtml;
                     mobileContainer.innerHTML = emptyHtml;
                     return;
@@ -1355,7 +1352,7 @@
                 const sortedActivities = [...visiblePrecise, ...visibleFuzzy];
 
                 if (sortedActivities.length === 0) {
-                    const emptyHtml = '<div class="long-term-item"><div class="long-term-desc" style="color: var(--text-secondary);">暂无近期长期活动</div></div>';
+                    const emptyHtml = '<div class="long-term-item"><div class="long-term-desc" style="color: var(--muted);">暂无近期长期活动</div></div>';
                     container.innerHTML = emptyHtml;
                     mobileContainer.innerHTML = emptyHtml;
                     return;

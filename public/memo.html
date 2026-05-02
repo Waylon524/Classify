@@ -10,43 +10,40 @@
     <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
     <style>
         .header { background: var(--bg-white); padding: 16px 24px; border-bottom: 1px solid rgba(0, 229, 160, 0.08); display: flex; align-items: center; gap: 16px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); position: relative; z-index: 2; margin-top: 56px; }
-        .back-btn { background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); color: var(--bg-abyss); border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; font-weight: 600; transition: all 0.2s; }
+        .back-btn { background: linear-gradient(135deg, var(--primary), var(--accent-teal)); color: var(--canvas); border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; font-weight: 600; transition: all 0.2s; }
         .back-btn:hover { box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); transform: translateY(-1px); }
-        .title { font-size: 18px; font-weight: 600; color: var(--text-light); }
+        .title { font-size: 18px; font-weight: 600; color: var(--ink); }
         .container { max-width: 800px; margin: 32px auto; padding: 0 24px; position: relative; z-index: 2; }
-        .content { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 20px; padding: 32px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .markdown-body { font-size: 16px; line-height: 1.7; color: var(--text-body); }
-        .markdown-body h1 { font-size: 28px; color: var(--text-light); margin: 0 0 20px 0; padding-bottom: 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.1); }
-        .markdown-body h2 { font-size: 22px; color: var(--text-light); margin: 24px 0 12px 0; font-weight: 600; }
-        .markdown-body h3 { font-size: 18px; color: var(--text-light); margin: 20px 0 10px 0; font-weight: 600; }
+        .content { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 20px; padding: 32px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .markdown-body { font-size: 16px; line-height: 1.7; color: var(--body); }
+        .markdown-body h1 { font-size: 28px; color: var(--ink); margin: 0 0 20px 0; padding-bottom: 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.1); }
+        .markdown-body h2 { font-size: 22px; color: var(--ink); margin: 24px 0 12px 0; font-weight: 600; }
+        .markdown-body h3 { font-size: 18px; color: var(--ink); margin: 20px 0 10px 0; font-weight: 600; }
         .markdown-body p { margin: 12px 0; }
         .markdown-body ul, .markdown-body ol { margin: 12px 0; padding-left: 24px; }
         .markdown-body li { margin: 6px 0; }
-        .markdown-body a { color: var(--accent); text-decoration: none; word-break: break-all; overflow-wrap: break-word; }
+        .markdown-body a { color: var(--primary); text-decoration: none; word-break: break-all; overflow-wrap: break-word; }
         .markdown-body a:hover { text-decoration: underline; }
-        .markdown-body code { background: rgba(0, 229, 160, 0.08); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, monospace; font-size: 14px; color: var(--accent); }
+        .markdown-body code { background: rgba(0, 229, 160, 0.08); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, monospace; font-size: 14px; color: var(--primary); }
         .markdown-body pre { background: rgba(8, 16, 36, 0.8); color: #e8edf5; padding: 16px; border-radius: 10px; overflow-x: auto; margin: 16px 0; border: 1px solid rgba(0, 229, 160, 0.08); }
         .markdown-body pre code { background: none; padding: 0; color: inherit; }
         .markdown-body hr { border: none; border-top: 1px solid rgba(200, 215, 240, 0.08); margin: 16px 0; }
-        .markdown-body strong { color: var(--text-light); }
-        .loading { text-align: center; padding: 48px; color: var(--text-secondary); }
+        .markdown-body strong { color: var(--ink); }
+        .loading { text-align: center; padding: 48px; color: var(--muted); }
         .error { text-align: center; padding: 48px; color: #ff6b6b; }
         .footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(200, 215, 240, 0.08); text-align: center; }
-        .reader-count { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
-        .countdown { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
-        .read-btn { background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); color: var(--bg-abyss); border: none; padding: 12px 32px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.2s; width: 100%; max-width: 320px; }
+        .reader-count { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+        .countdown { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+        .read-btn { background: linear-gradient(135deg, var(--primary), var(--accent-teal)); color: var(--canvas); border: none; padding: 12px 32px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.2s; width: 100%; max-width: 320px; }
         .read-btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .read-btn:hover:not(:disabled) { box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); transform: translateY(-1px); }
-        .already-read { background: #34c759 !important; color: var(--bg-abyss) !important; }
+        .already-read { background: #34c759 !important; color: var(--canvas) !important; }
     </style>
     <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="/theme-light.css">
     <script src="/theme.js"></script>
 </head>
 <body>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="noise-overlay"></div>
     <nav>
         <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">

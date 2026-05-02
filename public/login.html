@@ -33,7 +33,7 @@
         .particle {
             position: absolute;
             width: 3px; height: 3px;
-            background: var(--glow-primary);
+            background: var(--primary);
             border-radius: 50%;
             opacity: 0;
             animation: particleFloat linear infinite;
@@ -70,7 +70,7 @@
             position: absolute;
             top: 0; left: 20%; right: 20%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--glow-primary), transparent);
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
             opacity: 0.4;
         }
         .logo {
@@ -92,13 +92,13 @@
             font-family: var(--font-display);
             font-size: 28px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--ink);
             margin-bottom: 8px;
             letter-spacing: 1px;
         }
         .logo p {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--muted);
             font-weight: 300;
             letter-spacing: 1px;
         }
@@ -123,7 +123,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: var(--font-body);
             background: rgba(8, 16, 36, 0.6);
-            color: var(--text-primary);
+            color: var(--ink);
         }
         .form-group input:focus {
             border-color: rgba(0, 229, 160, 0.4);
@@ -132,15 +132,15 @@
             background: rgba(8, 16, 36, 0.8);
         }
         .form-group input::placeholder {
-            color: var(--text-muted);
+            color: var(--muted-soft);
         }
         .submit-btn {
             width: 100%;
             padding: 16px;
             font-size: 16px;
             font-weight: 600;
-            color: var(--bg-abyss);
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
+            color: var(--canvas);
+            background: linear-gradient(135deg, var(--primary), var(--accent-teal));
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -200,7 +200,7 @@
             text-align: center;
             margin-top: 28px;
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--muted-soft);
             letter-spacing: 0.5px;
         }
         .loading {
@@ -208,7 +208,7 @@
             width: 18px;
             height: 18px;
             border: 2px solid rgba(4, 8, 16, 0.2);
-            border-top-color: var(--bg-abyss);
+            border-top-color: var(--canvas);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin-right: 8px;
@@ -229,10 +229,6 @@
     <script src="/theme.js"></script>
 </head>
 <body>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="bg-orb bg-orb-3"></div>
-    <div class="noise-overlay"></div>
     <div class="particles" id="particles"></div>
 
     <div class="login-container">

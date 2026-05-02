@@ -25,47 +25,47 @@
 
     <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
     <style>
-        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-secondary); flex-wrap: wrap; padding: 32px 24px 16px; max-width: 1200px; margin: 0 auto; }
-        .breadcrumb a { color: var(--link); text-decoration: none; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); flex-wrap: wrap; padding: 32px 24px 16px; max-width: 1200px; margin: 0 auto; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
         .file-list { max-width: 1200px; margin: 10px auto 0; padding: 0 24px 24px; }
-        .file-item { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 14px; padding: 20px 24px; margin-bottom: 12px; margin-top: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: space-between; border: none; width: 100%; text-align: left; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .file-item:hover { background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
+        .file-item { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 14px; padding: 20px 24px; margin-bottom: 12px; margin-top: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: space-between; border: none; width: 100%; text-align: left; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .file-item:hover { background: var(--surface-cream-strong); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
         .file-item .file-info { display: flex; align-items: center; gap: 16px; flex: 1; }
         .file-item .file-icon { font-size: 24px; }
-        .file-item .file-name { font-size: 17px; font-weight: 600; color: var(--text-light); margin-bottom: 4px; }
-        .file-item .file-meta { font-size: 12px; color: var(--text-secondary); }
+        .file-item .file-name { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+        .file-item .file-meta { font-size: 12px; color: var(--muted); }
 
-        .reader-page { background: var(--bg-abyss); min-height: 100vh; display: flex; }
+        .reader-page { background: var(--canvas); min-height: 100vh; display: flex; }
         .reader-sidebar { width: var(--sidebar-width); min-height: 100vh; background: rgba(8, 16, 36, 0.95); border-right: 1px solid rgba(0, 229, 160, 0.08); position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 101; transform: translateX(-100%); transition: transform 0.3s ease; -webkit-overflow-scrolling: touch; }
         .reader-sidebar.open { transform: translateX(0); }
         .reader-sidebar-header { padding: 16px; border-bottom: 1px solid rgba(0, 229, 160, 0.08); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 56px; background: rgba(8, 16, 36, 0.95); z-index: 1; }
-        .reader-sidebar-header h3 { font-size: 14px; font-weight: 600; color: var(--text-light); }
-        .reader-sidebar-close { background: none; border: none; font-size: 20px; cursor: pointer; padding: 4px 8px; color: var(--text-secondary); }
+        .reader-sidebar-header h3 { font-size: 14px; font-weight: 600; color: var(--ink); }
+        .reader-sidebar-close { background: none; border: none; font-size: 20px; cursor: pointer; padding: 4px 8px; color: var(--muted); }
         .reader-sidebar-list { padding: 8px 0; }
-        .reader-sidebar-item { padding: 10px 16px; font-size: 13px; color: var(--text-light); cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .reader-sidebar-item { padding: 10px 16px; font-size: 13px; color: var(--ink); cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .reader-sidebar-item:hover { background: rgba(0, 229, 160, 0.06); }
-        .reader-sidebar-item.active { background: rgba(0, 229, 160, 0.1); border-left-color: var(--accent); color: var(--accent); font-weight: 500; }
-        .reader-sidebar-back { padding: 10px 16px; font-size: 12px; color: var(--text-secondary); cursor: pointer; border-bottom: 1px solid rgba(200, 215, 240, 0.05); display: flex; align-items: center; gap: 6px; }
-        .reader-sidebar-back:hover { color: var(--text-light); }
+        .reader-sidebar-item.active { background: rgba(0, 229, 160, 0.1); border-left-color: var(--primary); color: var(--primary); font-weight: 500; }
+        .reader-sidebar-back { padding: 10px 16px; font-size: 12px; color: var(--muted); cursor: pointer; border-bottom: 1px solid rgba(200, 215, 240, 0.05); display: flex; align-items: center; gap: 6px; }
+        .reader-sidebar-back:hover { color: var(--ink); }
         .reader-main { flex: 1; margin-left: 0; transition: margin-left 0.3s ease; }
         .reader-main.sidebar-open { margin-left: var(--sidebar-width); }
         .reader-header { background: var(--bg-white); padding: 16px 24px; border-bottom: 1px solid rgba(0, 229, 160, 0.08); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 56px; z-index: 100; flex-wrap: wrap; gap: 12px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
         .reader-header .breadcrumb { padding: 0; }
         .reader-content { max-width: 1200px; margin: 0 auto; padding: 56px 24px 120px 44px; }
         .reader-nav { display: flex; justify-content: space-between; padding: 24px 0; border-top: 1px solid rgba(200, 215, 240, 0.08); margin-top: 48px; }
-        .reader-nav a { color: var(--link); text-decoration: none; font-size: 14px; padding: 12px 20px; background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 10px; transition: all 0.2s; }
-        .reader-nav a:hover { background: var(--bg-card-hover); border-color: rgba(0, 229, 160, 0.2); }
-        .reader-nav .nav-info { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+        .reader-nav a { color: var(--primary); text-decoration: none; font-size: 14px; padding: 12px 20px; background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 10px; transition: all 0.2s; }
+        .reader-nav a:hover { background: var(--surface-cream-strong); border-color: rgba(0, 229, 160, 0.2); }
+        .reader-nav .nav-info { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
         .reader-nav .nav-title { font-weight: 600; }
-        .sidebar-toggle { position: fixed; left: 0; top: 56px; width: 36px; height: 52px; background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-left: none; border-radius: 0 10px 10px 0; cursor: pointer; z-index: 102; display: none; align-items: center; justify-content: center; font-size: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .sidebar-toggle { position: fixed; left: 0; top: 56px; width: 36px; height: 52px; background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-left: none; border-radius: 0 10px 10px 0; cursor: pointer; z-index: 102; display: none; align-items: center; justify-content: center; font-size: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .sidebar-toggle.show { display: flex; }
         .sidebar-toggle.open { left: var(--sidebar-width); }
-        .reader-back-btn { position: fixed; left: 0; top: 108px; width: 36px; height: 36px; background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-left: none; border-radius: 0 10px 10px 0; cursor: pointer; z-index: 102; display: none; align-items: center; justify-content: center; font-size: 14px; color: var(--accent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .reader-back-btn { position: fixed; left: 0; top: 108px; width: 36px; height: 36px; background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-left: none; border-radius: 0 10px 10px 0; cursor: pointer; z-index: 102; display: none; align-items: center; justify-content: center; font-size: 14px; color: var(--primary); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .reader-back-btn.show { display: flex; }
         .reader-back-btn.open { left: var(--sidebar-width); }
-        .markdown-body { font-size: 17px; line-height: 1.47; color: var(--text-body); }
-        .markdown-body h1, .markdown-body h2, .markdown-body h3 { font-family: "SF Pro Display", sans-serif; color: var(--text-light); margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; }
+        .markdown-body { font-size: 17px; line-height: 1.47; color: var(--body); }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { font-family: "SF Pro Display", sans-serif; color: var(--ink); margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; }
         .markdown-body h1 { font-size: 40px; line-height: 1.1; margin-top: 0; }
         .markdown-body h2 { font-size: 28px; line-height: 1.14; }
         .markdown-body h3 { font-size: 21px; line-height: 1.19; }
@@ -230,11 +230,11 @@
             }
         }
         .markdown-body p { margin-bottom: 1em; }
-        .markdown-body a { color: var(--link); text-decoration: none; }
+        .markdown-body a { color: var(--primary); text-decoration: none; }
         .markdown-body code { font-family: "SF Mono", Menlo, Monaco, monospace; font-size: 14px; background: rgba(0, 229, 160, 0.08); padding: 2px 6px; border-radius: 4px; }
         .markdown-body pre { background: rgba(8, 16, 36, 0.8); color: #e8edf5; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 1.5em 0; border: 1px solid rgba(0, 229, 160, 0.08); }
         .markdown-body pre code { background: none; padding: 0; color: inherit; }
-        .markdown-body blockquote { border-left: 4px solid var(--accent); padding-left: 20px; margin: 1.5em 0; color: var(--text-secondary); }
+        .markdown-body blockquote { border-left: 4px solid var(--primary); padding-left: 20px; margin: 1.5em 0; color: var(--muted); }
         .markdown-body ul, .markdown-body ol { margin: 1em 0; padding-left: 1.5em; }
         .markdown-body li { margin-bottom: 0.5em; }
         .markdown-body table { width: 100%; border-collapse: collapse; margin: 1.5em 0; }
@@ -242,20 +242,20 @@
         .markdown-body th { background: rgba(0, 229, 160, 0.06); font-weight: 600; }
         .katex-display { margin: 1.5em 0; overflow-x: auto; padding: 8px 0; }
         .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 15px; border-radius: 10px; font-size: 14px; font-weight: 400; cursor: pointer; transition: all 0.2s; border: none; }
-        .btn-secondary { background: rgba(8, 16, 36, 0.6); color: var(--text-body); border: 1px solid rgba(0, 229, 160, 0.12); }
+        .btn-secondary { background: rgba(8, 16, 36, 0.6); color: var(--body); border: 1px solid rgba(0, 229, 160, 0.12); }
         .btn-secondary:hover { background: rgba(0, 229, 160, 0.08); }
-        .btn-dark { background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); color: var(--bg-abyss); }
+        .btn-dark { background: linear-gradient(135deg, var(--primary), var(--accent-teal)); color: var(--canvas); }
         .btn-dark:hover { box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); }
         .btn-danger { background: #ff3b30; color: #ffffff; }
         .btn-danger:hover { background: #d63030; }
-        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(0, 229, 160, 0.15); color: var(--accent); padding: 12px 24px; border-radius: 12px; font-size: 14px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; border: 1px solid rgba(0, 229, 160, 0.2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(0, 229, 160, 0.15); color: var(--primary); padding: 12px 24px; border-radius: 12px; font-size: 14px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; border: 1px solid rgba(0, 229, 160, 0.2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .toast.show { opacity: 1; }
         @media (max-width: 734px) { .reader-content { padding: 60px 16px 80px; } :root { --sidebar-width: 80%; } }
         .folder-back-btn {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            color: var(--accent);
+            color: var(--primary);
             text-decoration: none;
             font-size: 16px;
             padding: 8px 0 8px 30px;
@@ -268,9 +268,6 @@
     <script src="/theme.js"></script>
 </head>
 <body>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="noise-overlay"></div>
     <nav>
         <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">
@@ -644,9 +641,9 @@
                     path.forEach(f => { html += '<div class="reader-sidebar-back" onclick="navigateKB(\'' + f.id + '\')">📁 ' + escHtml(f.name) + '</div>'; });
                 }
                 folderFiles.forEach((file) => { const isActive = file.id === currentFileId ? ' active' : ''; html += '<div class="reader-sidebar-item' + isActive + '" onclick="openFile(\'' + file.id + '\')">' + escHtml(file.name) + '</div>'; });
-                if (!folderFiles.length) html += '<div class="reader-sidebar-item" style="color:var(--text-secondary);cursor:default;">文件夹为空</div>';
+                if (!folderFiles.length) html += '<div class="reader-sidebar-item" style="color:var(--muted);cursor:default;">文件夹为空</div>';
                 list.innerHTML = html;
-            } catch (e) { list.innerHTML = '<div class="reader-sidebar-item" style="color:var(--text-secondary)">加载失败</div>'; }
+            } catch (e) { list.innerHTML = '<div class="reader-sidebar-item" style="color:var(--muted)">加载失败</div>'; }
         }
         
         function toggleSidebar() { document.getElementById('readerSidebar').classList.toggle('open'); document.getElementById('readerMain').classList.toggle('sidebar-open'); document.getElementById('sidebarToggle').classList.toggle('open'); document.getElementById('readerBackBtn').classList.toggle('open'); }

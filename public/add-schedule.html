@@ -19,10 +19,10 @@
         .header h1 { font-size: 18px; font-weight: 600; }
         .back-btn {
             display: flex; align-items: center; gap: 4px;
-            color: var(--accent); text-decoration: none; font-size: 16px;
+            color: var(--primary); text-decoration: none; font-size: 16px;
             padding: 8px 0; transition: color 0.2s;
         }
-        .back-btn:hover { color: var(--glow-secondary); }
+        .back-btn:hover { color: var(--accent-teal); }
         .back-btn:active { opacity: 0.7; }
         .container {
             max-width: 600px; margin: 72px auto 0;
@@ -33,11 +33,11 @@
             display: block; font-size: 14px; font-weight: 500;
             color: rgba(200, 215, 240, 0.7); margin-bottom: 8px;
         }
-        .form-group label .hint { font-weight: 400; color: var(--text-secondary); font-size: 12px; }
+        .form-group label .hint { font-weight: 400; color: var(--muted); font-size: 12px; }
         .form-group input, .form-group textarea {
             width: 100%; padding: 14px 16px; font-size: 16px;
             border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 12px;
-            background: rgba(8, 16, 36, 0.6); color: var(--text-light);
+            background: rgba(8, 16, 36, 0.6); color: var(--ink);
             font-family: inherit; box-sizing: border-box;
             transition: all 0.3s;
         }
@@ -45,15 +45,15 @@
             outline: none; border-color: rgba(0, 229, 160, 0.4);
             box-shadow: 0 0 0 3px rgba(0, 229, 160, 0.08);
         }
-        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted-soft); }
         .form-group textarea { resize: vertical; min-height: 100px; }
         .form-group input[type="datetime-local"] {
             width: 70%; padding: 14px 16px; font-size: 16px;
             border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 12px;
-            background: rgba(8, 16, 36, 0.6); color: var(--text-light);
+            background: rgba(8, 16, 36, 0.6); color: var(--ink);
             font-family: inherit; box-sizing: border-box;
         }
-        .char-count { text-align: right; font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+        .char-count { text-align: right; font-size: 12px; color: var(--muted); margin-top: 6px; }
         .char-count.warning { color: #ff6b6b; }
         .form-error {
             background: rgba(255, 80, 80, 0.08); color: #ff6b6b;
@@ -63,7 +63,7 @@
         .form-error.show { display: block; }
         .submit-btn {
             width: 100%; padding: 16px; font-size: 16px; font-weight: 600;
-            color: var(--bg-abyss); background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
+            color: var(--canvas); background: linear-gradient(135deg, var(--primary), var(--accent-teal));
             border: none; border-radius: 10px; cursor: pointer; box-sizing: border-box;
             transition: all 0.2s;
         }
@@ -72,11 +72,11 @@
         .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
         .loading {
             display: flex; align-items: center; justify-content: center;
-            padding: 60px; color: var(--text-secondary);
+            padding: 60px; color: var(--muted);
         }
         .loading::after {
             content: ''; width: 20px; height: 20px;
-            border: 2px solid var(--accent); border-top-color: transparent;
+            border: 2px solid var(--primary); border-top-color: transparent;
             border-radius: 50%; animation: spin 1s linear infinite; margin-left: 12px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -86,19 +86,16 @@
         }
         .radio-label {
             display: flex; align-items: center; gap: 8px;
-            cursor: pointer; font-size: 16px; color: var(--text-light);
+            cursor: pointer; font-size: 16px; color: var(--ink);
         }
         .radio-label input[type="radio"] {
-            width: 20px; height: 20px; accent-color: var(--accent); vertical-align: middle;
+            width: 20px; height: 20px; accent-color: var(--primary); vertical-align: middle;
         }
     </style>
     <link rel="stylesheet" href="/theme-light.css">
     <script src="/theme.js"></script>
 </head>
 <body>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="noise-overlay"></div>
     <header class="header">
         <a href="/schedule.html" class="back-btn">← 返回</a>
         <h1>添加活动</h1>

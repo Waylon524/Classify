@@ -1,318 +1,43 @@
-/* ===== Light Mode Theme for ecolony.cn ===== */
-/* Overrides dark mode CSS variables when data-theme="light" is set on <html> */
+/* ============================================================
+   Dark mode overrides — activated via .dark class on <body>
+   ============================================================ */
 
-:root[data-theme="light"] {
-    /* Background colors */
-    --bg-abyss: #f5f7fa;
-    --bg-deep: #ffffff;
-    --bg-light: #eef1f6;
-    --bg-white: rgba(255, 255, 255, 0.96);
-    --bg-surface: rgba(240, 245, 252, 0.85);
-    --bg-card: rgba(255, 255, 255, 0.95);
-    --bg-card-hover: rgba(235, 242, 252, 0.95);
+body.dark {
+  --canvas: #181715;
+  --surface-soft: #1f1e1b;
+  --surface-card: #252320;
+  --surface-cream-strong: #2d2a26;
+  --hairline: #2d2a26;
+  --hairline-soft: #252320;
 
-    /* Accent colors (slightly darker for light bg contrast) */
-    --glow-primary: #00a876;
-    --glow-secondary: #0090a8;
-    --glow-warm: #c89820;
-    --accent: #00a876;
-    --accent-hover: #008f65;
+  --ink: #faf9f5;
+  --body-strong: #e8e5df;
+  --body: #a09d96;
+  --muted: #8e8b82;
+  --muted-soft: #6c6a64;
 
-    /* Text colors */
-    --text-primary: #1a2030;
-    --text-dark: #1a2030;
-    --text-light: #2a3548;
-    --text-body: rgba(30, 45, 70, 0.85);
-    --text-secondary: rgba(50, 70, 100, 0.6);
-    --text-muted: rgba(80, 100, 130, 0.4);
+  --on-dark: #faf9f5;
+  --on-dark-soft: #a09d96;
 
-    /* Border colors */
-    --border-glow: rgba(0, 168, 118, 0.2);
-    --border-glow-hover: rgba(0, 168, 118, 0.45);
-
-    /* Nav */
-    --nav-bg: rgba(255, 255, 255, 0.92);
-
-    /* programs.html specific */
-    --link: #00a876;
-    --search-bg: rgba(240, 245, 252, 0.95);
-    --search-border: rgba(0, 168, 118, 0.2);
-    --search-shadow: rgba(0, 0, 0, 0.06);
-    --accent-hover: #008f65;
-}
-
-/* Light mode specific overrides for inline hardcoded colors */
-:root[data-theme="light"] nav {
-    border-bottom-color: rgba(0, 168, 118, 0.12);
-}
-
-:root[data-theme="light"] .mobile-menu {
-    background: rgba(255, 255, 255, 0.98);
-    border-bottom-color: rgba(0, 168, 118, 0.12);
-}
-
-:root[data-theme="light"] nav .nav-links a {
-    color: rgba(50, 70, 100, 0.65);
-}
-
-:root[data-theme="light"] nav .nav-links a:hover,
-:root[data-theme="light"] nav .nav-links a.active {
-    color: var(--glow-primary);
-    background: rgba(0, 168, 118, 0.08);
-}
-
-:root[data-theme="light"] .mobile-menu a {
-    color: rgba(30, 45, 70, 0.75);
-    border-bottom-color: rgba(50, 70, 100, 0.08);
-}
-
-:root[data-theme="light"] .mobile-menu a:hover,
-:root[data-theme="light"] .mobile-menu a.active {
-    background: rgba(0, 168, 118, 0.08);
-    color: var(--glow-primary);
-}
-
-:root[data-theme="light"] .mobile-menu .logout-btn,
-:root[data-theme="light"] .logout-btn-nav {
-    color: rgba(50, 70, 100, 0.45) !important;
-    border-color: rgba(50, 70, 100, 0.2) !important;
-}
-
-:root[data-theme="light"] .logout-btn-nav:hover {
-    border-color: rgba(255, 80, 80, 0.5) !important;
-    color: rgba(220, 60, 60, 0.8) !important;
-    background: rgba(255, 80, 80, 0.08) !important;
-}
-
-/* Override inline-styled logout buttons on all pages (onclick="logout()") */
-:root[data-theme="light"] nav button[onclick*="logout"] {
-    color: rgba(50, 70, 100, 0.7) !important;
-    border-color: rgba(50, 70, 100, 0.25) !important;
-}
-
-:root[data-theme="light"] nav button[onclick*="logout"]:hover {
-    color: rgba(220, 60, 60, 0.8) !important;
-    border-color: rgba(255, 80, 80, 0.5) !important;
-    background: rgba(255, 80, 80, 0.08) !important;
-}
-
-/* Background orbs - make them more subtle in light mode */
-:root[data-theme="light"] .bg-orb {
-    opacity: 0.08;
-}
-
-/* Noise overlay - lighter */
-:root[data-theme="light"] .noise-overlay {
-    opacity: 0.015;
-}
-
-/* Menu toggle icon */
-:root[data-theme="light"] .menu-toggle {
-    color: #1a2030;
+  --primary-disabled: #3d302b;
+  --shadow-sm: none;
+  --shadow-card: none;
 }
 
 /* Theme toggle button */
-.theme-toggle {
-    background: none;
-    border: 1px solid rgba(200, 215, 240, 0.15);
-    color: rgba(200, 215, 240, 0.6);
-    cursor: pointer;
-    font-size: 16px;
-    padding: 6px 10px;
-    border-radius: 10px;
-    transition: all 0.3s;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--hairline);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+  line-height: 1;
+  font-family: var(--font-body);
 }
-
-.theme-toggle:hover {
-    border-color: rgba(0, 229, 160, 0.3);
-    color: var(--glow-primary);
-    background: rgba(0, 229, 160, 0.06);
-}
-
-/* Theme toggle inside nav-links — align with other nav items */
-nav .nav-links .theme-toggle {
-    padding: 8px 10px;
-    margin-left: 4px;
-}
-
-:root[data-theme="light"] .theme-toggle {
-    color: rgba(50, 70, 100, 0.5);
-    border-color: rgba(50, 70, 100, 0.15);
-}
-
-:root[data-theme="light"] .theme-toggle-mobile {
-    color: rgba(50, 70, 100, 0.5) !important;
-    border-color: rgba(50, 70, 100, 0.15) !important;
-}
-
-:root[data-theme="light"] .theme-toggle-mobile:hover {
-    color: var(--glow-primary) !important;
-    border-color: rgba(0, 168, 118, 0.3) !important;
-    background: rgba(0, 168, 118, 0.08) !important;
-}
-
-:root[data-theme="light"] .theme-toggle:hover {
-    color: var(--glow-primary);
-    border-color: rgba(0, 168, 118, 0.3);
-    background: rgba(0, 168, 118, 0.08);
-}
-
-/* Mobile menu theme toggle */
-.mobile-menu .theme-toggle {
-    width: 100%;
-    text-align: left;
-    justify-content: flex-start;
-    padding: 16px 28px;
-    border: none;
-    border-radius: 0;
-    font-size: 16px;
-    font-family: var(--font-body);
-    transform: translateX(-8px);
-    opacity: 0;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s, color 0.2s;
-    border-bottom: 1px solid rgba(200, 215, 240, 0.05);
-}
-
-:root[data-theme="light"] .mobile-menu .theme-toggle {
-    border-bottom-color: rgba(50, 70, 100, 0.08);
-}
-
-.mobile-menu.show .theme-toggle {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-/* Override hardcoded dark backgrounds in inline styles */
-:root[data-theme="light"] .mobile-menu {
-    background: rgba(255, 255, 255, 0.98) !important;
-    border-bottom-color: rgba(0, 168, 118, 0.12) !important;
-}
-
-/* Code blocks / pre elements */
-:root[data-theme="light"] .markdown-body pre,
-:root[data-theme="light"] .message .bubble pre {
-    background: rgba(240, 245, 252, 0.95) !important;
-    color: #1a2030 !important;
-    border-color: rgba(0, 168, 118, 0.12) !important;
-}
-
-:root[data-theme="light"] .markdown-body code {
-    background: rgba(0, 168, 118, 0.08);
-    color: #0a6850;
-}
-
-:root[data-theme="light"] .markdown-body pre code {
-    background: none;
-    color: inherit;
-}
-
-/* Select/option elements */
-:root[data-theme="light"] option {
-    background: #ffffff;
-    color: #1a2030;
-}
-
-/* Override any remaining hardcoded dark backgrounds */
-:root[data-theme="light"] [style*="background: rgba(4, 8, 16"] {
-    background: rgba(255, 255, 255, 0.96) !important;
-}
-
-:root[data-theme="light"] [style*="background: rgba(12, 22, 45"] {
-    background: rgba(240, 245, 252, 0.85) !important;
-}
-
-:root[data-theme="light"] [style*="background: rgba(14, 28, 54"] {
-    background: rgba(255, 255, 255, 0.95) !important;
-}
-
-/* Fix hardcoded colors in inline styles */
-:root[data-theme="light"] [style*="color: #e8edf5"] {
-    color: #1a2030 !important;
-}
-
-:root[data-theme="light"] [style*="color: rgba(200, 215, 240"] {
-    color: rgba(50, 70, 100, 0.6) !important;
-}
-
-/* Fix hardcoded border colors */
-:root[data-theme="light"] [style*="border: 1px solid rgba(0, 229, 160"] {
-    border-color: rgba(0, 168, 118, 0.15) !important;
-}
-
-/* General override for rgba(8, 16, 36, ...) dark backgrounds across all pages */
-:root[data-theme="light"] [style*="background: rgba(8, 16, 36"] {
-    background: rgba(235, 240, 248, 0.95) !important;
-}
-
-/* General override for rgba(10, 20, 42, ...) dark backgrounds across all pages */
-:root[data-theme="light"] [style*="background: rgba(10, 20, 42"] {
-    background: rgba(240, 245, 252, 0.95) !important;
-}
-
-/* schedule.html — 时间显示框、编辑按钮、表单等深色背景覆盖 */
-:root[data-theme="light"] .schedule-time,
-:root[data-theme="light"] .timebar,
-:root[data-theme="light"] .btn-edit,
-:root[data-theme="light"] .member-tag,
-:root[data-theme="light"] .subscribe-tooltip .subscribe-url-box,
-:root[data-theme="light"] .mobile-tabs {
-    background: rgba(235, 240, 248, 0.95) !important;
-    border-color: rgba(0, 168, 118, 0.12) !important;
-}
-
-/* knowledge.html — 展开目录侧边栏浅色模式覆盖 */
-:root[data-theme="light"] .reader-sidebar {
-    background: rgba(255, 255, 255, 0.98) !important;
-    border-right-color: rgba(0, 168, 118, 0.12) !important;
-}
-
-:root[data-theme="light"] .reader-sidebar-header {
-    background: rgba(255, 255, 255, 0.98) !important;
-    border-bottom-color: rgba(0, 168, 118, 0.12) !important;
-}
-
-:root[data-theme="light"] .reader-sidebar-item {
-    color: var(--text-body) !important;
-}
-
-:root[data-theme="light"] .reader-sidebar-item:hover {
-    background: rgba(0, 168, 118, 0.06) !important;
-}
-
-:root[data-theme="light"] .reader-sidebar-item.active {
-    background: rgba(0, 168, 118, 0.1) !important;
-    color: var(--accent) !important;
-}
-
-:root[data-theme="light"] .reader-sidebar-back {
-    color: var(--text-secondary) !important;
-    border-bottom-color: rgba(50, 70, 100, 0.08) !important;
-}
-
-:root[data-theme="light"] .reader-sidebar-back:hover {
-    color: var(--text-light) !important;
-}
-
-:root[data-theme="light"] .reader-sidebar-close {
-    color: var(--text-secondary) !important;
-}
-
-:root[data-theme="light"] .form-group input,
-:root[data-theme="light"] .form-group select,
-:root[data-theme="light"] .form-group textarea,
-:root[data-theme="light"] .form-group input[type="datetime-local"] {
-    background: rgba(245, 248, 252, 0.95) !important;
-    border-color: rgba(0, 168, 118, 0.15) !important;
-    color: #1a2030 !important;
-}
-
-:root[data-theme="light"] .form-group input:focus,
-:root[data-theme="light"] .form-group select:focus,
-:root[data-theme="light"] .form-group textarea:focus {
-    border-color: rgba(0, 168, 118, 0.4) !important;
-    box-shadow: 0 0 0 3px rgba(0, 168, 118, 0.08);
+.theme-toggle-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
