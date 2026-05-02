@@ -13,15 +13,15 @@
         .notice-left { flex: 1; min-width: 0; }
         .notice-right { width: 380px; flex-shrink: 0; }
         .notice-list { display: flex; flex-direction: column; gap: 16px; }
-        .notice-item { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .notice-item:hover { background: var(--surface-cream-strong); border-color: rgba(0, 229, 160, 0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
+        .notice-item { background: var(--surface-card); border: 1px solid rgba(204,120,92,0.08); border-radius: 16px; padding: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;  }
+        .notice-item:hover { background: var(--surface-cream-strong); border-color: rgba(204,120,92,0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
         .notice-item.unread { border-left: 3px solid var(--primary); }
         .notice-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         .notice-title { font-size: 17px; font-weight: 600; color: var(--ink); }
         .notice-badge { background: var(--primary); color: var(--canvas); font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
         .notice-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
         .notice-preview { color: var(--muted); margin-top: 8px; font-size: 14px; }
-        .notice-detail { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 24px; margin-bottom: 16px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .notice-detail { background: var(--surface-card); border: 1px solid rgba(204,120,92,0.08); border-radius: 16px; padding: 24px; margin-bottom: 16px;  }
         .notice-detail h2 { font-size: 20px; font-weight: 600; color: var(--ink); margin-bottom: 12px; }
         .notice-detail .meta { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
         .notice-detail .body { font-size: 15px; color: var(--body); line-height: 1.7; white-space: pre-wrap; }
@@ -29,14 +29,14 @@
         .back-btn-inline:hover { color: var(--primary-active); }
 
         /* Memo cards (right column) */
-        .memo-section { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 20px; padding: 24px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 120px; }
+        .memo-section { background: var(--surface-card); border: 1px solid rgba(204,120,92,0.08); border-radius: 20px; padding: 24px;  position: sticky; top: 120px; }
         .memo-section h3 { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.1); display: flex; align-items: center; gap: 8px; }
-        .memo-card { background: rgba(0, 229, 160, 0.04); border: 1px solid rgba(0, 229, 160, 0.1); border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .memo-card:hover { background: rgba(0, 229, 160, 0.08); border-color: rgba(0, 229, 160, 0.25); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
+        .memo-card { background: rgba(204,120,92,0.04); border: 1px solid rgba(204,120,92,0.1); border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .memo-card:hover { background: rgba(204,120,92,0.08); border-color: rgba(204,120,92,0.25); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
         .memo-card:last-child { margin-bottom: 0; }
         .memo-card-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
         .memo-card-meta { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
-        .memo-card-readers { font-size: 11px; color: var(--primary); background: rgba(0, 229, 160, 0.08); padding: 2px 8px; border-radius: 8px; }
+        .memo-card-readers { font-size: 11px; color: var(--primary); background: rgba(204,120,92,0.08); padding: 2px 8px; border-radius: 8px; }
         .memo-empty { text-align: center; padding: 32px 16px; color: var(--muted); font-size: 14px; }
 
         /* Mobile tabs */
@@ -45,16 +45,16 @@
             .notice-layout { display: none; }
             .mobile-tabs {
                 display: flex; justify-content: center;
-                background: rgba(10, 20, 42, 0.9); border-bottom: 1px solid rgba(0, 229, 160, 0.08);
+                background: rgba(10, 20, 42, 0.9); border-bottom: 1px solid rgba(204,120,92,0.08);
                 position: sticky; top: 56px; z-index: 99; width: 100%;
-                backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+                
             }
             .mobile-tab {
                 flex: 1; padding: 14px 16px; font-size: 15px; font-weight: 500;
                 color: var(--muted); background: none; border: none; cursor: pointer;
                 border-bottom: 2px solid transparent; transition: all 0.2s; font-family: var(--font-body);
             }
-            .mobile-tab:active { background: rgba(0, 229, 160, 0.04); }
+            .mobile-tab:active { background: rgba(204,120,92,0.04); }
             .mobile-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
             .mobile-content { display: none; padding: 16px; }
             .mobile-content.active { display: block; }
@@ -75,6 +75,7 @@
             <a href="/navi.html">导航</a>
             <a href="/notices.html" class="active">通知</a>
             <a href="/form.html">表单</a>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">🌙</button>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>

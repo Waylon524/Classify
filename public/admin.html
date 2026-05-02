@@ -13,8 +13,8 @@
             background: var(--surface-card); color: var(--muted); cursor: pointer;
             font-size: 14px; font-weight: 500; transition: all 0.2s; font-family: var(--font-body);
         }
-        .admin-tab:hover { border-color: rgba(0,229,160,0.2); color: var(--ink); }
-        .admin-tab.active { background: rgba(0,229,160,0.1); border-color: var(--primary); color: var(--primary); }
+        .admin-tab:hover { border-color: rgba(204,120,92,0.2); color: var(--ink); }
+        .admin-tab.active { background: rgba(204,120,92,0.1); border-color: var(--primary); color: var(--primary); }
         .admin-panel { display: none; }
         .admin-panel.active { display: block; }
         .admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -23,7 +23,7 @@
             border-bottom: 1px solid rgba(200,215,240,0.06);
         }
         .admin-table th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .admin-table tr:hover { background: rgba(0,229,160,0.03); }
+        .admin-table tr:hover { background: rgba(204,120,92,0.03); }
         .admin-table .actions { display: flex; gap: 8px; }
         .btn-sm {
             padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(200,215,240,0.12);
@@ -38,16 +38,16 @@
             color: var(--canvas); cursor: pointer; font-size: 14px; font-weight: 600;
             transition: all 0.2s; font-family: var(--font-body);
         }
-        .btn-primary:hover { box-shadow: 0 4px 16px rgba(0,229,160,0.3); }
+        .btn-primary:hover { box-shadow: 0 4px 16px rgba(204,120,92,0.3); }
         .card { padding: 20px; margin-bottom: 20px; }
         .card h3 { font-size: 18px; margin-bottom: 16px; color: var(--ink); }
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        .stat-card { background: var(--surface-card); border: 1px solid rgba(0,229,160,0.08); border-radius: 16px; padding: 24px; text-align: center; }
+        .stat-card { background: var(--surface-card); border: 1px solid rgba(204,120,92,0.08); border-radius: 16px; padding: 24px; text-align: center; }
         .stat-card .num { font-size: 36px; font-weight: 700; color: var(--primary); }
         .stat-card .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
         .form-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-end; }
         .form-row input, .form-row textarea {
-            flex: 1; padding: 10px 14px; border: 1px solid rgba(0,229,160,0.12);
+            flex: 1; padding: 10px 14px; border: 1px solid rgba(204,120,92,0.12);
             border-radius: 10px; background: rgba(8,16,36,0.6); color: var(--ink);
             font-family: var(--font-body); font-size: 14px;
         }
@@ -55,7 +55,7 @@
         .form-row textarea { resize: vertical; min-height: 60px; }
         .empty { text-align: center; padding: 48px; color: var(--muted); }
         .badge { font-size: 11px; padding: 2px 8px; border-radius: 8px; }
-        .badge-green { background: rgba(0,229,160,0.15); color: var(--primary); }
+        .badge-green { background: rgba(204,120,92,0.15); color: var(--primary); }
         .badge-red { background: rgba(255,80,80,0.15); color: #ff5050; }
         @media (max-width: 768px) {
             .stat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -76,7 +76,8 @@
         <a href="/notices.html">通知</a>
         <a href="/form.html">表单</a>
         <a href="/admin.html" class="active" id="navAdmin" style="display:none">管理</a>
-        <button onclick="logout()" class="logout-btn-nav">退出登录</button>
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">🌙</button>
+            <button onclick="logout()" class="logout-btn-nav">退出登录</button>
     </div>
 </nav>
 
@@ -124,7 +125,7 @@
                 </div>
             </div>
             <div class="card"><h3>人员列表（<span id="stuCount">0</span>）</h3>
-            <input type="text" id="stuSearch" placeholder="搜索姓名或学号..." style="width:100%;padding:10px;margin-bottom:16px;border:1px solid rgba(0,229,160,0.12);border-radius:10px;background:rgba(8,16,36,0.6);color:var(--ink);font-size:14px" oninput="renderStudents()">
+            <input type="text" id="stuSearch" placeholder="搜索姓名或学号..." style="width:100%;padding:10px;margin-bottom:16px;border:1px solid rgba(204,120,92,0.12);border-radius:10px;background:rgba(8,16,36,0.6);color:var(--ink);font-size:14px" oninput="renderStudents()">
             <div style="overflow-x:auto"><table class="admin-table">
                 <thead><tr><th>姓名</th><th>学号</th><th>操作</th></tr></thead>
                 <tbody id="stuTable"></tbody>

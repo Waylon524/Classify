@@ -9,13 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         .form-list { max-width: 800px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-        .form-card { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 20px 24px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: space-between; }
-        .form-card:hover { background: var(--surface-cream-strong); border-color: rgba(0, 229, 160, 0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
+        .form-card { background: var(--surface-card); border: 1px solid rgba(204,120,92,0.08); border-radius: 16px; padding: 20px 24px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;  display: flex; align-items: center; justify-content: space-between; }
+        .form-card:hover { background: var(--surface-cream-strong); border-color: rgba(204,120,92,0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
         .form-card-info { flex: 1; }
         .form-card-title { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
         .form-card-meta { font-size: 13px; color: var(--muted); }
         .form-card-status { font-size: 12px; padding: 4px 12px; border-radius: 12px; font-weight: 500; white-space: nowrap; margin-left: 16px; }
-        .form-card-status.active { background: rgba(0, 229, 160, 0.15); color: var(--primary); }
+        .form-card-status.active { background: rgba(204,120,92,0.15); color: var(--primary); }
         .form-card-status.ended { background: rgba(255, 80, 80, 0.15); color: #ff5050; }
         .form-card-status.voted { background: rgba(0, 184, 212, 0.15); color: var(--accent-teal); }
 
@@ -40,6 +40,7 @@
             <a href="/navi.html">导航</a>
             <a href="/notices.html">通知</a>
             <a href="/form.html" class="active">表单</a>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">🌙</button>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>

@@ -55,7 +55,7 @@
             transition: transform 0.2s, box-shadow 0.2s;
             white-space: nowrap;
         }
-        .header-subscribe-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); }
+        .header-subscribe-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(204,120,92,0.3); }
         .header-subscribe-btn:active { transform: translateY(0); }
 
         /* Add Activity button */
@@ -74,7 +74,7 @@
             transition: transform 0.2s, box-shadow 0.2s;
             white-space: nowrap;
         }
-        .header-add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); }
+        .header-add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(204,120,92,0.3); }
         .header-add-btn:active { transform: translateY(0); }
         .header-add-btn span { font-size: 16px; font-weight: 300; }
 
@@ -103,7 +103,7 @@
         }
         .header-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3);
+            box-shadow: 0 4px 16px rgba(204,120,92,0.3);
         }
         .header-btn:active {
             transform: translateY(0);
@@ -116,7 +116,7 @@
             right: 0;
             margin-top: 8px;
             background: rgba(10, 20, 42, 0.95);
-            border: 1px solid rgba(0, 229, 160, 0.15);
+            border: 1px solid rgba(204,120,92,0.15);
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
@@ -124,15 +124,15 @@
             z-index: 1000;
             min-width: 280px;
             text-align: left;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            
+            -webkit-
         }
         .subscribe-tooltip.show { display: block; }
         .subscribe-tooltip h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
         .subscribe-tooltip p { font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.4; }
         .subscribe-tooltip .subscribe-url-box {
             background: rgba(8, 16, 36, 0.8);
-            border: 1px solid rgba(0, 229, 160, 0.1);
+            border: 1px solid rgba(204,120,92,0.1);
             border-radius: 10px;
             padding: 10px;
             font-size: 11px;
@@ -157,7 +157,7 @@
         .content { max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; gap: 32px; }
         .main-content { flex: 1; min-width: 0; }
         .sidebar { width: 320px; flex-shrink: 0; }
-        .sidebar-section { background: var(--canvas); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 20px; margin-bottom: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .sidebar-section { background: var(--canvas); border: 1px solid rgba(204,120,92,0.08); border-radius: 16px; padding: 20px; margin-bottom: 16px;  }
         .sidebar-section h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         .long-term-item { padding: 12px 0; border-bottom: 1px solid rgba(200, 215, 240, 0.06); }
         .long-term-item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -176,7 +176,7 @@
         .day-header.today { color: var(--primary); }
         .day-header.today::before { content: '●'; color: var(--primary); margin-right: 4px; }
 
-        .schedule-item { background: var(--surface-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; border-left: 4px solid var(--primary); position: relative; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .schedule-item { background: var(--surface-card); border: 1px solid rgba(204,120,92,0.08); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; border-left: 4px solid var(--primary); position: relative;  }
         .schedule-item.past { opacity: 0.6; border-left-color: #999; }
         .schedule-item .time-col {
             display: flex;
@@ -190,7 +190,7 @@
             text-align: center;
             padding: 8px 12px;
             background: rgba(8, 16, 36, 0.6);
-            border: 1px solid rgba(0, 229, 160, 0.08);
+            border: 1px solid rgba(204,120,92,0.08);
             border-radius: 10px;
             display: flex;
             flex-direction: row;
@@ -261,7 +261,7 @@
             align-items: center;
             justify-content: center;
             background: rgba(8, 16, 36, 0.6);
-            border: 1px solid rgba(0, 229, 160, 0.08);
+            border: 1px solid rgba(204,120,92,0.08);
             border-radius: 10px;
             font-size: 14px;
             gap: 4px;
@@ -416,9 +416,9 @@
         .btn-edit {
             background: rgba(8, 16, 36, 0.6);
             color: var(--ink);
-            border: 1px solid rgba(0, 229, 160, 0.1);
+            border: 1px solid rgba(204,120,92,0.1);
         }
-        .btn-edit:hover { background: rgba(0, 229, 160, 0.1); }
+        .btn-edit:hover { background: rgba(204,120,92,0.1); }
         .btn-delete {
             background: rgba(255, 59, 48, 0.1);
             color: #ff6b6b;
@@ -441,7 +441,7 @@
             .schedule-item {
                 display: block;
                 background: var(--surface-card);
-                border: 1px solid rgba(0, 229, 160, 0.08);
+                border: 1px solid rgba(204,120,92,0.08);
                 border-left: 4px solid var(--primary);
                 padding-left: 8px;
                 padding-right: 8px;
@@ -536,15 +536,15 @@
                 display: flex;
                 justify-content: center;
                 background: rgba(10, 20, 42, 0.9);
-                border-bottom: 1px solid rgba(0, 229, 160, 0.08);
+                border-bottom: 1px solid rgba(204,120,92,0.08);
                 position: sticky;
                 top: 56px;
                 z-index: 99;
                 width: 100%;
                 max-width: 100%;
                 margin: 0 auto;
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
+                
+                -webkit-
             }
             .mobile-tab {
                 flex: 1;
@@ -558,7 +558,7 @@
                 border-bottom: 2px solid transparent;
                 transition: all 0.2s;
             }
-            .mobile-tab:active { background: rgba(0, 229, 160, 0.04); }
+            .mobile-tab:active { background: rgba(204,120,92,0.04); }
             .mobile-tab.active {
                 color: var(--primary);
                 border-bottom-color: var(--primary);
@@ -583,7 +583,7 @@
         .modal-overlay.show { display: block; }
         .modal-content {
             background: rgba(10, 20, 42, 0.95);
-            border: 1px solid rgba(0, 229, 160, 0.1);
+            border: 1px solid rgba(204,120,92,0.1);
             border-radius: 20px;
             width: 100%;
             max-width: 600px;
@@ -592,8 +592,8 @@
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
             margin: 80px auto 0;
             padding: 28px 24px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            
+            -webkit-
         }
         .modal-header {
             display: flex;
@@ -622,14 +622,14 @@
         .form-group label .hint { font-weight: 400; color: var(--muted); font-size: 12px; }
         .form-group input, .form-group select, .form-group textarea, .form-group input[type="datetime-local"] {
             width: 100%; max-width: 100%; padding: 14px 16px; font-size: 16px;
-            border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 12px;
+            border: 1px solid rgba(204,120,92,0.12); border-radius: 12px;
             background: rgba(8, 16, 36, 0.6); color: var(--ink);
             font-family: inherit;
             box-sizing: border-box;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none; border-color: rgba(0, 229, 160, 0.4);
-            box-shadow: 0 0 0 3px rgba(0, 229, 160, 0.08);
+            outline: none; border-color: rgba(204,120,92,0.4);
+            box-shadow: 0 0 0 3px rgba(204,120,92,0.08);
         }
         .form-group textarea { resize: vertical; min-height: 80px; }
         .form-row { display: flex; gap: 12px; }
@@ -642,7 +642,7 @@
             color: var(--canvas); background: linear-gradient(135deg, var(--primary), var(--accent-teal)); border: none;
             border-radius: 10px; cursor: pointer; margin-top: 8px;
         }
-        .submit-btn:hover { box-shadow: 0 8px 24px rgba(0, 229, 160, 0.25); }
+        .submit-btn:hover { box-shadow: 0 8px 24px rgba(204,120,92,0.25); }
         .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
         /* Schedule item participants */
@@ -658,11 +658,11 @@
         .member-tags { display: flex; flex-wrap: wrap; gap: 4px; }
         .member-tag {
             padding: 3px 8px; font-size: 11px;
-            background: rgba(8, 16, 36, 0.6); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 10px;
+            background: rgba(8, 16, 36, 0.6); border: 1px solid rgba(204,120,92,0.08); border-radius: 10px;
             color: var(--ink);
         }
         .member-tag.organizer {
-            background: rgba(0,229,160,0.15); color: var(--primary);
+            background: rgba(204,120,92,0.15); color: var(--primary);
             font-weight: 500;
         }
         .schedule-item.has-members {
@@ -681,7 +681,7 @@
             color: var(--canvas); background: var(--primary); border: none;
             border-radius: 10px; cursor: pointer;
         }
-        .join-btn:hover { box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3); }
+        .join-btn:hover { box-shadow: 0 4px 12px rgba(204,120,92,0.3); }
         .join-btn.joined { background: #34c759; }
         .join-btn.joined:hover { background: #ff3b30; }
         .join-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -700,6 +700,7 @@
             <a href="/navi.html">导航</a>
             <a href="/notices.html">通知</a>
             <a href="/form.html">表单</a>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">🌙</button>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
