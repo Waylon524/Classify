@@ -36,9 +36,7 @@
     </script>
     <style>
 
-        .content-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md); flex-wrap: wrap; gap: var(--space-sm); }
-        .toolbar-subtitle { font-size: 13px; color: var(--muted); }
-        .toolbar-actions { display: flex; align-items: center; gap: var(--space-sm); }
+        .page-header .subtitle { font-size: 13px; color: var(--muted); }
 
         /* Subscription tooltip */
         .subscribe-tooltip {
@@ -549,23 +547,10 @@
     <main>
         <div class="page-header">
             <h1>📅 日程</h1>
+            <span class="subtitle" id="dateRange">加载中...</span>
         </div>
 
         <div class="content">
-            <div class="content-toolbar">
-                <span class="toolbar-subtitle" id="dateRange">加载中...</span>
-                <div class="toolbar-actions">
-                    <a href="/add-schedule.html" class="btn-primary">+ 发起活动</a>
-                    <div style="position: relative;">
-                        <button class="btn-secondary" onclick="toggleSubscribeTooltip()">📅 订阅日历</button>
-                        <div class="subscribe-tooltip" id="subscribeTooltip">
-                        <h4>📱 订阅到系统日历</h4>
-                        <p>订阅后,所有班级日程将自动同步到您的手机日历,每日0点自动更新。</p>
-                        <div class="subscribe-url-box" id="subscribeUrlDisplay">https://localhost:3000/api/subscribe.ics</div>
-                        <button class="copy-btn-small" onclick="copyAndSubscribe()">复制链接并订阅</button>
-                    </div>
-                </div>
-            </div>
             <div class="main-content" id="scheduleList">
                 <div class="loading">加载中</div>
             </div>
@@ -628,6 +613,12 @@
             </div>
         </div>
 
+        <div class="subscribe-tooltip" id="subscribeTooltip" style="display:none">
+            <h4>📱 订阅到系统日历</h4>
+            <p>订阅后,所有班级日程将自动同步到您的手机日历,每日0点自动更新。</p>
+            <div class="subscribe-url-box" id="subscribeUrlDisplay"></div>
+            <button class="copy-btn-small" onclick="copyAndSubscribe()">复制链接并订阅</button>
+        </div>
         <div class="footer">
         </div>
     </main>
