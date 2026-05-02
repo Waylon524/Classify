@@ -46,6 +46,13 @@
     "defaultEngine": "bing"
   },
 
+  "aiConfig": {
+    "provider": "deepseek",
+    "baseUrl": "https://api.deepseek.com",
+    "apiKey": "",
+    "model": "deepseek-chat"
+  },
+
   "memo": {
     "countdownSeconds": 30,
     "confirmText": "已阅读并确认知晓"

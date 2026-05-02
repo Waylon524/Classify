@@ -182,12 +182,13 @@
         </div>
     </main>
 
+    <script src="/config.js"></script>
     <script>
-        // 自定义API配置
-        const API_CONFIG = {
+        // AI 配置从 config.json 读取
+        const API_CONFIG = (window.__SITE_CONFIG__ && window.__SITE_CONFIG__.aiConfig) || {
             baseUrl: 'https://api.deepseek.com',
-            apiKey: 'sk-8ab5d7a2b8824e229fa2cd4f11c467dd',
-            model: 'deepseek-v4-flash'
+            apiKey: '',
+            model: 'deepseek-chat'
         };
         let conversationHistory = [];
         
@@ -539,7 +540,6 @@ ${Object.entries(dataFiles).map(([name, content]) => { if (name === 'fudan_files
         });
     </script>
 <script src="/auth-check.js"></script>
-<script src="/config.js"></script>
 <script src="/config-init.js"></script>
 </body>
 </html>
