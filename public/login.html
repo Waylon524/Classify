@@ -18,7 +18,7 @@
         }
         .bg-orb { filter: blur(100px); opacity: 0.15; }
         .bg-orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(204,120,92,0.15), transparent 70%); top: -20%; left: -15%; }
-        .bg-orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,184,212,0.12), transparent 70%); bottom: -20%; right: -10%; }
+        .bg-orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, var(--hairline), transparent 70%); bottom: -20%; right: -10%; }
         .bg-orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(240,192,64,0.08), transparent 70%); top: 50%; left: 60%; }
         @keyframes orbFloat1 { 0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(60px,40px)scale(1.08)}66%{transform:translate(-30px,80px)scale(.95)} }
         @keyframes orbFloat2 { 0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(-50px,-60px)scale(1.05)}66%{transform:translate(40px,-30px)scale(.92)} }
@@ -45,7 +45,7 @@
             100% { opacity: 0; transform: translateY(-10vh) scale(1); }
         }
         .login-container {
-            background: rgba(10, 20, 42, 0.6);
+            background: var(--canvas);
             border: 1px solid rgba(204,120,92,0.12);
             border-radius: 28px;
             padding: 52px 44px;
@@ -122,14 +122,14 @@
             outline: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: var(--font-body);
-            background: rgba(8, 16, 36, 0.6);
+            background: var(--surface-card);
             color: var(--ink);
         }
         .form-group input:focus {
             border-color: rgba(204,120,92,0.4);
             box-shadow: 0 0 0 3px rgba(204,120,92,0.08),
                         0 0 20px rgba(204,120,92,0.06);
-            background: rgba(8, 16, 36, 0.8);
+            background: var(--surface-cream-strong);
         }
         .form-group input::placeholder {
             color: var(--muted-soft);
@@ -207,7 +207,7 @@
             display: inline-block;
             width: 18px;
             height: 18px;
-            border: 2px solid rgba(4, 8, 16, 0.2);
+            border: 2px solid var(--hairline);
             border-top-color: var(--canvas);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;

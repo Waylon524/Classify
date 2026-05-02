@@ -109,7 +109,7 @@
 </head>
 <body>
     <nav>
-        <div class="logo"><span>🏫</span><span>Classify</span></div>
+        <div class="logo"><a href="/">🏫</a><a href="/">Classify</a></div>
         <div class="nav-links">
             <a href="/">首页</a>
             <a href="/schedule.html">日程</a>
@@ -279,7 +279,7 @@
             loading.id = 'loadingMsg';
             loading.innerHTML = `
                 <div class="avatar">🤖</div>
-                <div class="bubble"><div class="loading">Classify正在思考...</div></div>
+                <div class="bubble"><div class="loading">正在思考...</div></div>
             `;
             container.appendChild(loading);
             container.scrollTop = container.scrollHeight;
@@ -325,7 +325,7 @@
                 }
             } catch (e) {}
             
-            // 复旦文件 - 加载所有文件内容供 AI 参考
+            // 加载文件内容供 AI 参考
             try {
                 const res = await fetch('/api/files/fudan/all');
                 if (res.ok) {
@@ -406,12 +406,13 @@ function newConversation() {
                 const dataFiles = await loadDataFiles();
                 
                 const today = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-                const systemPrompt = `你是Classify，一个基于复旦校园数据平台的智能助手。请根据用户提供的问题，在以下文件中查找相关信息并回答。
+                const siteName = window.__SITE_CONFIG__?.site?.name || 'Classify';
+                const systemPrompt = `你是${siteName}智能助手。请根据以下数据回答用户的问题。
 
 【当前日期】${today}
 
 文件内容：
-${Object.entries(dataFiles).map(([name, content]) => { if (name === 'fudan_files') { return Object.entries(content).map(([filename, fileContent]) => `【复旦文件 - ${filename}】\n${fileContent}`).join('\n\n'); } return `【${name}】\n${content}`; }).join('\n\n')}
+${Object.entries(dataFiles).map(([name, content]) => { if (name === 'fudan_files') { return Object.entries(content).map(([filename, fileContent]) => `【文件 - ${filename}】\n${fileContent}`).join('\n\n'); } return `【${name}】\n${content}`; }).join('\n\n')}
 
 请按照用户的要求查找相关内容信息并回复。
 

@@ -45,8 +45,8 @@
             .notice-layout { display: none; }
             .mobile-tabs {
                 display: flex; justify-content: center;
-                background: rgba(10, 20, 42, 0.9); border-bottom: 1px solid rgba(204,120,92,0.08);
-                position: sticky; top: 56px; z-index: 99; width: 100%;
+                background: var(--canvas); border-bottom: 1px solid rgba(204,120,92,0.08);
+                position: sticky; top: var(--nav-height); z-index: 99; width: 100%;
                 
             }
             .mobile-tab {
@@ -179,7 +179,7 @@
             }
             let html = '';
             for (let n of filtered) {
-                if (n.url && (n.source === '复旦大学教务处' || n.source === '罗毅')) {
+                if (n.url) {
                     html += '<div class="notice-item' + (n.unread ? ' unread' : '') + '" onclick="window.open(\'' + n.url + '\', \'_blank\')">';
                     html += '<div class="notice-header"><span class="notice-title">' + escHtml(n.title) + '</span>';
                     if (n.unread) html += '<span class="notice-badge">新</span>';

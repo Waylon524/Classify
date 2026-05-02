@@ -23,18 +23,18 @@
         .markdown-body a { color: var(--primary); text-decoration: none; word-break: break-all; overflow-wrap: break-word; }
         .markdown-body a:hover { text-decoration: underline; }
         .markdown-body code { background: rgba(204,120,92,0.08); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, monospace; font-size: 14px; color: var(--primary); }
-        .markdown-body pre { background: rgba(8, 16, 36, 0.8); color: #e8edf5; padding: 16px; border-radius: 10px; overflow-x: auto; margin: 16px 0; border: 1px solid rgba(204,120,92,0.08); }
+        .markdown-body pre { background: var(--surface-cream-strong); color: #e8edf5; padding: 16px; border-radius: 10px; overflow-x: auto; margin: 16px 0; border: 1px solid rgba(204,120,92,0.08); }
         .markdown-body pre code { background: none; padding: 0; color: inherit; }
-        .markdown-body hr { border: none; border-top: 1px solid rgba(200, 215, 240, 0.08); margin: 16px 0; }
+        .markdown-body hr { border: none; border-top: 1px solid var(--hairline); margin: 16px 0; }
         .markdown-body strong { color: var(--ink); }
         .loading { text-align: center; padding: 48px; color: var(--muted); }
         .error { text-align: center; padding: 48px; color: #ff6b6b; }
-        .footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(200, 215, 240, 0.08); text-align: center; }
+        .footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--hairline); text-align: center; }
         .reader-count { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
         .countdown { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
-        .read-btn { background: linear-gradient(135deg, var(--primary), var(--accent-teal)); color: var(--canvas); border: none; padding: 12px 32px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.2s; width: 100%; max-width: 320px; }
+        .read-btn { background: var(--primary); color: var(--on-primary); border: none; padding: 12px 32px; border-radius: var(--radius-md); cursor: pointer; font-size: 14px; font-weight: 500; font-family: var(--font-body); transition: background 0.2s; width: 100%; max-width: 320px; }
         .read-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .read-btn:hover:not(:disabled) { box-shadow: 0 4px 16px rgba(204,120,92,0.3); transform: translateY(-1px); }
+        .read-btn:hover:not(:disabled) { background: var(--primary-active); }
         .already-read { background: #34c759 !important; color: var(--canvas) !important; }
     </style>
     <link rel="stylesheet" href="/common.css">
@@ -51,6 +51,7 @@
             <a href="/navi.html">导航</a>
             <a href="/notices.html" class="active">通知</a>
             <a href="/form.html">表单</a>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">🌙</button>
             <button class="logout-btn-nav" onclick="logout()">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
