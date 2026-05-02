@@ -1,6 +1,5 @@
 /**
  * Theme toggle — light (cream canvas) / dark mode
- * Uses event delegation, works regardless of script load order
  */
 (function() {
   'use strict';
@@ -10,11 +9,6 @@
   var ICONS = {};
   ICONS[DARK] = '☀️';
   ICONS[LIGHT] = '🌙';
-
-  // Apply saved theme
-  if (localStorage.getItem(KEY) === DARK) {
-    document.body.classList.add(DARK);
-  }
 
   function getMode() {
     return document.body.classList.contains(DARK) ? DARK : LIGHT;
@@ -43,23 +37,26 @@
     }
   }
 
-  // Event delegation — no inline onclick needed
+  // All body-dependent init must wait for DOM
+  function init() {
+    if (localStorage.getItem(KEY) === DARK) {
+      document.body.classList.add(DARK);
+    }
+    updateButtons();
+  }
+
+  // Event delegation works immediately on document
   document.addEventListener('click', function(e) {
     if (e.target.closest('.theme-toggle-btn')) {
       toggle();
     }
   });
 
-  // Export for programmatic use
   window.toggleTheme = toggle;
 
-  // Update button icons once DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateButtons);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    updateButtons();
+    init();
   }
-
-  // Re-update after config-init.js modifies DOM
-  document.addEventListener('DOMContentLoaded', updateButtons);
 })();
