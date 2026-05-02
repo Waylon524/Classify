@@ -240,9 +240,45 @@ function renderSchedules() {
             <td>${s.date}</td><td>${s.time || '-'}</td><td>${esc(s.title)}</td>
             <td>${esc(s.organizer || s.source || '-')}</td>
             <td>${(s.members||[]).length}人</td>
-            <td class="actions"><button class="btn-sm danger" onclick="deleteSchedule('${s.id}')">删除</button></td>
+            <td class="actions">
+                <button class="btn-sm" onclick="editSchedule('${s.id}')">编辑</button>
+                <button class="btn-sm danger" onclick="deleteSchedule('${s.id}')">删除</button>
+            </td>
         </tr>`
     ).join('') || '<tr><td colspan="6" class="empty">无数据</td></tr>';
+}
+
+function editSchedule(id) {
+    const s = allData.schedules.find(x => x.id === id);
+    if (!s) return;
+    const title = prompt('活动名称（≤20字）', s.title || '');
+    if (title === null) return;
+    const date = prompt('日期（YYYY-MM-DD）', s.date || '');
+    if (date === null) return;
+    const time = prompt('时间（如 14:00-15:00）', s.time || '');
+    if (time === null) return;
+    const location = prompt('地点', s.location || '');
+    if (location === null) return;
+    const desc = prompt('简介（≤200字）', s.description || '');
+
+    const token = localStorage.getItem('classify_token');
+    const name = localStorage.getItem('classify_name');
+    const body = {
+        name,
+        title: title.trim(),
+        date: date.trim(),
+        time: time.trim() || null,
+        location: location.trim(),
+        description: desc ? desc.trim() : null,
+        startTime: new Date(date + 'T' + (time ? time.split('-')[0] : '00:00') + ':00').toISOString(),
+        endTime: time && time.includes('-') ? new Date(date + 'T' + time.split('-')[1] + ':00').toISOString() : null
+    };
+
+    fetch('/api/schedules/' + id, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify(body)
+    }).then(r => r.ok ? loadData() : r.json().then(d => alert(d.error || '编辑失败')));
 }
 
 async function deleteSchedule(id) {

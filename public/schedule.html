@@ -359,27 +359,6 @@
             padding-top: 12px;
             border-top: 1px dashed rgba(0,0,0,0.1);
         }
-        .btn-edit, .btn-delete {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-        }
-        .btn-edit {
-            background: var(--surface-card);
-            color: var(--ink);
-            border: 1px solid rgba(204,120,92,0.1);
-        }
-        .btn-edit:hover { background: rgba(204,120,92,0.1); }
-        .btn-delete {
-            background: rgba(255, 59, 48, 0.1);
-            color: #ff6b6b;
-        }
-        .btn-delete:hover { background: rgba(255, 59, 48, 0.2); }
-
         @media (max-width: 734px) {
             .subscribe-btn { display: block; }
         }
@@ -756,45 +735,6 @@
             </div>
         </div>
 
-        <!-- Edit Activity Modal -->
-        <div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeEditModal()">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>编辑活动</h2>
-                    <button class="modal-close" onclick="closeEditModal()">×</button>
-                </div>
-                <form id="editForm" onsubmit="handleEditSubmit(event)">
-                    <input type="hidden" id="editScheduleId">
-                    <input type="hidden" id="editOrganizer">
-                    <div class="form-group">
-                        <label>活动名称 <span class="hint">(最多20字)</span></label>
-                        <input type="text" id="editTitle" maxlength="20" placeholder="例如:周末图书馆自习" required oninput="updateEditCharCount('editTitle', 'editTitleCount', 20)">
-                        <div class="char-count" id="editTitleCount">0/20</div>
-                    </div>
-                    <div class="form-group">
-                        <label>活动简介 <span class="hint">(最多200字)</span></label>
-                        <textarea id="editDesc" maxlength="200" placeholder="介绍一下活动的具体内容和要求..." oninput="updateEditCharCount('editDesc', 'editDescCount', 200)"></textarea>
-                        <div class="char-count" id="editDescCount">0/200</div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>开始时间</label>
-                            <input type="datetime-local" id="editStartTime" required>
-                        </div>
-                        <div class="form-group">
-                            <label>结束时间 <span class="hint">(可选)</span></label>
-                            <input type="datetime-local" id="editEndTime">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>活动地点</label>
-                        <input type="text" id="editLocation" placeholder="例如:邯郸校区图书馆5楼" required>
-                    </div>
-                    <button type="submit" class="submit-btn" id="editSubmitBtn">保存修改</button>
-                </form>
-            </div>
-        </div>
-
         <div class="footer">
             日程 · 数据有效期 1 年 · 每年自动清理过期日程
         </div>
@@ -832,17 +772,7 @@
                 }
             } catch (e) {}
         }
-
-        // Admin list loaded from config
-        const ADMIN_USERS = (window.__SITE_CONFIG__ && window.__SITE_CONFIG__.admins) || [];
-        
-        // Check if current user is admin
-        function isAdmin() {
-            const name = getCurrentUserName();
-            return name && ADMIN_USERS.includes(name);
-        }
-        
-        // Get current logged-in user name
+// Get current logged-in user name
         function getCurrentUserName() {
             return localStorage.getItem('classify_name') || '';
         }
@@ -971,18 +901,7 @@
             }
         }
 
-        // Confirm and delete schedule (organizer or admin)
-        function confirmDeleteSchedule(id, organizer, isAdminMode = false) {
-            const activityName = organizer ? `"${organizer}发起"` : '系统';
-            if (!confirm(`确定要删除活动(${activityName})吗?\n删除后无法恢复。`)) return;
-
-            // Admin can delete directly, organizer needs to verify
-            if (isAdminMode) {
-                deleteSchedule(id, getCurrentUserName());
-                return;
-            }
-
-            // Prompt for organizer name to verify
+        // Confirm and delete schedule (organizer or admin)// Prompt for organizer name to verify
             const name = prompt('请输入你的姓名以确认删除:');
             if (!name) return;
             if (name.trim() !== organizer) {
@@ -991,13 +910,7 @@
             }
 
             deleteSchedule(id, name.trim());
-        }
-
-        async function deleteSchedule(id, name) {
-            try {
-                const res = await fetch(`/api/schedules/${id}?name=${encodeURIComponent(name)}`, {
-                    method: 'DELETE'
-                });
+        });
                 if (!res.ok) {
                     const err = await res.json();
                     throw new Error(err.error || '删除失败');
@@ -1008,18 +921,7 @@
             }
         }
 
-        // Open edit modal
-        let editIsAdminMode = false;
-        function openEditModal(id, organizer, isAdminMode = false) {
-            editIsAdminMode = isAdminMode;
-            // Find the schedule data
-            const schedule = currentSchedules.find(s => s.id === id);
-            if (!schedule) {
-                alert('未找到活动数据');
-                return;
-            }
-
-            // Show edit modal with schedule data
+        // Open edit modal// Show edit modal with schedule data
             document.getElementById('editModal').style.display = 'block';
             document.getElementById('editScheduleId').value = id;
             // Admin mode uses admin name, otherwise use organizer
@@ -1038,32 +940,7 @@
 
             updateEditCharCount('editTitle', 'editTitleCount', 20);
             updateEditCharCount('editDesc', 'editDescCount', 200);
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-        }
-
-        function updateEditCharCount(inputId, countId, max) {
-            const input = document.getElementById(inputId);
-            const count = document.getElementById(countId);
-            if (input && count) {
-                count.textContent = input.value.length + '/' + max;
-            }
-        }
-
-        async function handleEditSubmit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('editSubmitBtn');
-            const isAdminMode = editIsAdminMode;
-            const data = {
-                name: document.getElementById('editOrganizer').value,
-                title: document.getElementById('editTitle').value,
-                description: document.getElementById('editDesc').value,
-                startTime: document.getElementById('editStartTime').value,
-                endTime: document.getElementById('editEndTime').value || null,
-                location: document.getElementById('editLocation').value
-            };
+        }};
 
             if (data.title.length > 20) { alert('活动名称不能超过20字'); return; }
             if (data.description.length > 200) { alert('简介不能超过200字'); return; }
@@ -1177,15 +1054,6 @@
                             timeHtml = `<div class="allday">全天</div>`;
                         }
 
-                        // Check if user is organizer (current user is the organizer)
-                        const isOrganizer = s.organizer && s.organizer === getCurrentUserName();
-                        const canManage = isAdmin() || isOrganizer;
-                        const organizerActionsHtml = canManage ? `
-                            <div class="organizer-actions">
-                                <button class="btn-edit" onclick="openEditModal('${s.id}', '${s.organizer || ''}', ${isAdmin()})">✏️ ${isAdmin() && s.organizer ? '代编辑' : '编辑'}</button>
-                                <button class="btn-delete" onclick="confirmDeleteSchedule('${s.id}', '${escHtml(s.organizer || '').replace(/'/g, "\\'")}', ${isAdmin()})">🗑️ 删除</button>
-                            </div>
-                        ` : '';
 
                         const itemHtml = `
                             <div class="schedule-item ${isPast ? 'past' : ''} ${(s.members || []).length > 0 ? 'has-members' : ''}">
@@ -1203,7 +1071,6 @@
                                             <div class="member-tags">${(s.members || []).map((m, i) => `<span class="member-tag ${i === 0 && s.organizer === m ? 'organizer' : ''}">${escHtml(m)}${i === 0 && s.organizer === m ? ' (发起人)' : ''}${s.organizer !== m ? `` : ''}</span>`).join('')}</div>
                                         </div>
                                     ` : ''}
-                                    ${organizerActionsHtml}
                                 </div>
                             </div>
                         `;
@@ -1226,7 +1093,6 @@
                                             <div class="member-tags">${(s.members || []).map((m, i) => `<span class="member-tag ${i === 0 && s.organizer === m ? 'organizer' : ''}">${escHtml(m)}${i === 0 && s.organizer === m ? ' (发起人)' : ''}${s.organizer !== m ? `` : ''}</span>`).join('')}</div>
                                         </div>
                                     ` : ''}
-                                    ${organizerActionsHtml}
                                 </div>
                             </div>
                         `;
