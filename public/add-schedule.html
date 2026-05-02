@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加活动 · Ecolony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/common.css">
+    <style>
+        .header {
+            background: var(--bg-white); padding: 16px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid rgba(0, 229, 160, 0.08);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+        }
+        .header h1 { font-size: 18px; font-weight: 600; }
+        .back-btn {
+            display: flex; align-items: center; gap: 4px;
+            color: var(--accent); text-decoration: none; font-size: 16px;
+            padding: 8px 0; transition: color 0.2s;
+        }
+        .back-btn:hover { color: var(--glow-secondary); }
+        .back-btn:active { opacity: 0.7; }
+        .container {
+            max-width: 600px; margin: 72px auto 0;
+            padding: 24px 20px; position: relative; z-index: 2;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block; font-size: 14px; font-weight: 500;
+            color: rgba(200, 215, 240, 0.7); margin-bottom: 8px;
+        }
+        .form-group label .hint { font-weight: 400; color: var(--text-secondary); font-size: 12px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 14px 16px; font-size: 16px;
+            border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 12px;
+            background: rgba(8, 16, 36, 0.6); color: var(--text-light);
+            font-family: inherit; box-sizing: border-box;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: rgba(0, 229, 160, 0.4);
+            box-shadow: 0 0 0 3px rgba(0, 229, 160, 0.08);
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .form-group input[type="datetime-local"] {
+            width: 70%; padding: 14px 16px; font-size: 16px;
+            border: 1px solid rgba(0, 229, 160, 0.12); border-radius: 12px;
+            background: rgba(8, 16, 36, 0.6); color: var(--text-light);
+            font-family: inherit; box-sizing: border-box;
+        }
+        .char-count { text-align: right; font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+        .char-count.warning { color: #ff6b6b; }
+        .form-error {
+            background: rgba(255, 80, 80, 0.08); color: #ff6b6b;
+            padding: 12px 16px; border-radius: 10px; margin-bottom: 16px;
+            font-size: 14px; display: none; border: 1px solid rgba(255, 80, 80, 0.15);
+        }
+        .form-error.show { display: block; }
+        .submit-btn {
+            width: 100%; padding: 16px; font-size: 16px; font-weight: 600;
+            color: var(--bg-abyss); background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
+            border: none; border-radius: 10px; cursor: pointer; box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        .submit-btn:hover { box-shadow: 0 8px 24px rgba(0, 229, 160, 0.25); transform: translateY(-1px); }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+        .loading {
+            display: flex; align-items: center; justify-content: center;
+            padding: 60px; color: var(--text-secondary);
+        }
+        .loading::after {
+            content: ''; width: 20px; height: 20px;
+            border: 2px solid var(--accent); border-top-color: transparent;
+            border-radius: 50%; animation: spin 1s linear infinite; margin-left: 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hidden { display: none !important; }
+        .radio-group {
+            display: flex; gap: 20px; justify-content: center !important; width: 100%;
+        }
+        .radio-label {
+            display: flex; align-items: center; gap: 8px;
+            cursor: pointer; font-size: 16px; color: var(--text-light);
+        }
+        .radio-label input[type="radio"] {
+            width: 20px; height: 20px; accent-color: var(--accent); vertical-align: middle;
+        }
+    </style>
+    <link rel="stylesheet" href="/theme-light.css">
+    <script src="/theme.js"></script>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="noise-overlay"></div>
+    <header class="header">
+        <a href="/schedule.html" class="back-btn">← 返回</a>
+        <h1>添加活动</h1>
+        <div style="width: 60px;"></div>
+    </header>
+    
+    <div class="container" id="mainContent">
+        <form id="addForm" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+                <label>活动名称 <span class="hint">(最多15字)</span></label>
+                <input type="text" id="formTitle" maxlength="15" placeholder="例如:周末图书馆自习" required>
+                <div class="char-count" id="titleCount">0/15</div>
+            </div>
+            
+            <div class="form-group">
+                <label>活动简介 <span class="hint">(最多100字)</span></label>
+                <textarea id="formDesc" maxlength="100" placeholder="介绍一下活动的具体内容和要求..."></textarea>
+                <div class="char-count" id="descCount">0/100</div>
+            </div>
+            
+            <div class="form-group">
+                <label>开始时间</label>
+                <input type="datetime-local" id="formStartTime" required>
+            </div>
+            
+            <div class="form-group">
+                <label>结束时间 <span class="hint">(可选)</span></label>
+                <input type="datetime-local" id="formEndTime">
+            </div>
+            
+            <div class="form-group">
+                <label>活动地点</label>
+                <input type="text" id="formLocation" placeholder="例如:邯郸校区理科图书馆1楼" required>
+            </div>
+            
+            <div class="form-group">
+                <label>是否有人数限制</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="hasLimit" value="no" checked onchange="toggleLimitInput()">
+                        <span>无限制</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="hasLimit" value="yes" onchange="toggleLimitInput()">
+                        <span>有人数限制</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group hidden" id="limitGroup">
+                <label>人数上限</label>
+                <input type="number" id="formLimit" min="1" max="999" placeholder="例如:30">
+            </div>
+            
+            <input type="hidden" id="formOrganizer">
+            
+            <div class="form-error" id="formError"></div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">发起活动</button>
+        </form>
+    </div>
+    
+    <div class="loading hidden" id="loading">提交中</div>
+
+    <script>
+        const API_BASE = '/api';
+        
+        function checkAuth() {
+            const token = localStorage.getItem('ecolony_token');
+            if (!token) {
+                window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
+                return null;
+            }
+            return token;
+        }
+        
+        function getCurrentUserName() {
+            return localStorage.getItem('ecolony_name') || '';
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = checkAuth();
+            if (!token) return;
+            
+            document.getElementById('formOrganizer').value = getCurrentUserName();
+            
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('formStartTime').min = now.toISOString().slice(0, 16);
+            document.getElementById('formEndTime').min = now.toISOString().slice(0, 16);
+            
+            document.getElementById('formTitle').addEventListener('input', (e) => {
+                document.getElementById('titleCount').textContent = e.target.value.length + '/15';
+            });
+            document.getElementById('formDesc').addEventListener('input', (e) => {
+                const count = document.getElementById('descCount');
+                count.textContent = e.target.value.length + '/100';
+                count.classList.toggle('warning', e.target.value.length >= 90);
+            });
+        });
+        
+        function toggleLimitInput() {
+            const hasLimit = document.querySelector('input[name="hasLimit"]:checked').value;
+            const limitGroup = document.getElementById('limitGroup');
+            const limitInput = document.getElementById('formLimit');
+            if (hasLimit === 'yes') {
+                limitGroup.classList.remove('hidden');
+                limitInput.required = true;
+            } else {
+                limitGroup.classList.add('hidden');
+                limitInput.required = false;
+                limitInput.value = '';
+            }
+        }
+        
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const error = document.getElementById('formError');
+            const mainContent = document.getElementById('mainContent');
+            const loading = document.getElementById('loading');
+            
+            const token = localStorage.getItem('ecolony_token');
+            
+            const hasLimit = document.querySelector('input[name="hasLimit"]:checked').value;
+            const data = {
+                title: document.getElementById('formTitle').value.trim(),
+                description: document.getElementById('formDesc').value.trim(),
+                startTime: document.getElementById('formStartTime').value,
+                endTime: document.getElementById('formEndTime').value || null,
+                location: document.getElementById('formLocation').value.trim(),
+                organizer: document.getElementById('formOrganizer').value,
+                maxParticipants: hasLimit === 'yes' ? parseInt(document.getElementById('formLimit').value) || null : null
+            };
+            
+            if (!data.title || !data.startTime || !data.location) {
+                error.textContent = '请填写必填项';
+                error.classList.add('show');
+                return;
+            }
+            
+            if (data.endTime) {
+                const startDate = data.startTime.slice(0, 10);
+                const endDate = data.endTime.slice(0, 10);
+                if (startDate !== endDate) {
+                    error.textContent = '结束时间必须和开始时间在同一天';
+                    error.classList.add('show');
+                    return;
+                }
+                if (data.endTime <= data.startTime) {
+                    error.textContent = '结束时间必须在开始时间之后';
+                    error.classList.add('show');
+                    return;
+                }
+            }
+            
+            btn.disabled = true;
+            btn.textContent = '提交中...';
+            error.classList.remove('show');
+            mainContent.classList.add('hidden');
+            loading.classList.remove('hidden');
+            
+            try {
+                const res = await fetch(API_BASE + '/schedules', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (res.ok) {
+                    window.location.href = '/schedule.html';
+                } else {
+                    const err = await res.json();
+                    throw new Error(err.error || '提交失败');
+                }
+            } catch (e) {
+                error.textContent = e.message;
+                error.classList.add('show');
+                btn.disabled = false;
+                btn.textContent = '发起活动';
+                mainContent.classList.remove('hidden');
+                loading.classList.add('hidden');
+            }
+        }
+    </script>
+<script src="/auth-check.js"></script>
+<script src="/config.js"></script>
+<script src="/config-init.js"></script>
+</body>
+</html>

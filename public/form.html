@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>e 表单 - Ecolony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .form-list { max-width: 800px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+        .form-card { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 20px 24px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: space-between; }
+        .form-card:hover { background: var(--bg-card-hover); border-color: rgba(0, 229, 160, 0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
+        .form-card-info { flex: 1; }
+        .form-card-title { font-size: 17px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
+        .form-card-meta { font-size: 13px; color: var(--text-secondary); }
+        .form-card-status { font-size: 12px; padding: 4px 12px; border-radius: 12px; font-weight: 500; white-space: nowrap; margin-left: 16px; }
+        .form-card-status.active { background: rgba(0, 229, 160, 0.15); color: var(--accent); }
+        .form-card-status.ended { background: rgba(255, 80, 80, 0.15); color: #ff5050; }
+        .form-card-status.voted { background: rgba(0, 184, 212, 0.15); color: var(--glow-secondary); }
+
+        @media (max-width: 768px) {
+            .form-list { padding: 16px; }
+            .form-card { padding: 16px; flex-wrap: wrap; gap: 8px; }
+            .form-card-status { margin-left: 0; }
+        }
+    </style>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/theme-light.css">
+    <script src="/theme.js"></script>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="noise-overlay"></div>
+
+    <nav>
+        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/schedule.html">e 日程</a>
+            <a href="/files.html">e 文件</a>
+            <a href="/navi.html">e 导航</a>
+            <a href="/notices.html">e 通知</a>
+            <a href="/form.html" class="active">e 表单</a>
+            <button onclick="logout()" class="logout-btn-nav">退出登录</button>
+        </div>
+        <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/">首页</a>
+        <a href="/schedule.html">e 日程</a>
+        <a href="/files.html">e 文件</a>
+        <a href="/navi.html">e 导航</a>
+        <a href="/notices.html">e 通知</a>
+        <a href="/form.html" class="active">e 表单</a>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </div>
+
+    <main>
+        <div class="page-header">
+            <h1>📋 e 表单</h1>
+        </div>
+        <div id="formList" class="form-list">
+            <div class="loading">加载中</div>
+        </div>
+    </main>
+
+    <script>
+        // Identity check
+        let currentUser = null;
+        async function checkIdentity() {
+            const token = localStorage.getItem('ecolony_token');
+            if (!token) { window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); return false; }
+            try {
+                const res = await fetch('/api/check-login', { headers: { 'Authorization': 'Bearer ' + token } });
+                if (res.ok) {
+                    const data = await res.json();
+                    currentUser = { studentId: data.studentId, name: data.name };
+                    return true;
+                }
+            } catch(e) {}
+            localStorage.removeItem('ecolony_token');
+            window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
+            return false;
+        }
+
+        async function loadForms() {
+            const listEl = document.getElementById('formList');
+            try {
+                const res = await fetch('/api/votes');
+                if (!res.ok) throw new Error('Failed to load');
+                const votes = await res.json();
+
+                if (votes.length === 0) {
+                    listEl.innerHTML = '<div class="empty-state"><div class="icon">📋</div><h3>暂无表单</h3><p>目前没有进行中的投票或信息收集</p></div>';
+                    return;
+                }
+
+                // Check which votes user has already voted
+                let votedIds = [];
+                if (currentUser) {
+                    try {
+                        const vr = await fetch('/api/votes/voted/' + currentUser.studentId);
+                        if (vr.ok) votedIds = await vr.json();
+                    } catch(e) {}
+                }
+
+                const now = new Date();
+                listEl.innerHTML = votes.map(vote => {
+                    const deadline = new Date(vote.deadline);
+                    const isEnded = now > deadline;
+                    const isVoted = votedIds.includes(vote.id);
+                    let statusClass = isEnded ? 'ended' : (isVoted ? 'voted' : 'active');
+                    let statusText = isEnded ? '已截止' : (isVoted ? '已提交' : '进行中');
+                    return '<div class="form-card" onclick="location.href=\'/vote.html?id=' + vote.id + '\'">' +
+                        '<div class="form-card-info">' +
+                        '<div class="form-card-title">' + escHtml(vote.title) + '</div>' +
+                        '<div class="form-card-meta">' + escHtml(vote.description) + '</div>' +
+                        '<div class="form-card-meta">截止时间：' + deadline.toLocaleDateString('zh-CN', {year:'numeric',month:'long',day:'numeric'}) + '</div>' +
+                        '</div>' +
+                        '<span class="form-card-status ' + statusClass + '">' + statusText + '</span>' +
+                        '</div>';
+                }).join('');
+            } catch(e) {
+                listEl.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>加载失败</h3><p>请刷新重试</p></div>';
+            }
+        }
+
+        function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+        function logout() { localStorage.removeItem('ecolony_token'); window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); }
+        function toggleMobileMenu() { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); m.classList.toggle('show'); t.textContent = m.classList.contains('show') ? '✕' : '☰'; }
+        document.addEventListener('click', function(e) { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); if (m && m.classList.contains('show') && !m.contains(e.target) && e.target !== t) { m.classList.remove('show'); t.textContent = '☰'; } });
+
+        (async () => {
+            await checkIdentity();
+            await loadForms();
+        })();
+    </script>
+<script src="/auth-check.js"></script>
+<script src="/config.js"></script>
+<script src="/config-init.js"></script>
+</body>
+</html>

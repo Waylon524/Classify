@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学工备忘 · Ecolony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+    <style>
+        .header { background: var(--bg-white); padding: 16px 24px; border-bottom: 1px solid rgba(0, 229, 160, 0.08); display: flex; align-items: center; gap: 16px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); position: relative; z-index: 2; margin-top: 56px; }
+        .back-btn { background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); color: var(--bg-abyss); border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 14px; text-decoration: none; font-weight: 600; transition: all 0.2s; }
+        .back-btn:hover { box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); transform: translateY(-1px); }
+        .title { font-size: 18px; font-weight: 600; color: var(--text-light); }
+        .container { max-width: 800px; margin: 32px auto; padding: 0 24px; position: relative; z-index: 2; }
+        .content { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 20px; padding: 32px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .markdown-body { font-size: 16px; line-height: 1.7; color: var(--text-body); }
+        .markdown-body h1 { font-size: 28px; color: var(--text-light); margin: 0 0 20px 0; padding-bottom: 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.1); }
+        .markdown-body h2 { font-size: 22px; color: var(--text-light); margin: 24px 0 12px 0; font-weight: 600; }
+        .markdown-body h3 { font-size: 18px; color: var(--text-light); margin: 20px 0 10px 0; font-weight: 600; }
+        .markdown-body p { margin: 12px 0; }
+        .markdown-body ul, .markdown-body ol { margin: 12px 0; padding-left: 24px; }
+        .markdown-body li { margin: 6px 0; }
+        .markdown-body a { color: var(--accent); text-decoration: none; word-break: break-all; overflow-wrap: break-word; }
+        .markdown-body a:hover { text-decoration: underline; }
+        .markdown-body code { background: rgba(0, 229, 160, 0.08); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, monospace; font-size: 14px; color: var(--accent); }
+        .markdown-body pre { background: rgba(8, 16, 36, 0.8); color: #e8edf5; padding: 16px; border-radius: 10px; overflow-x: auto; margin: 16px 0; border: 1px solid rgba(0, 229, 160, 0.08); }
+        .markdown-body pre code { background: none; padding: 0; color: inherit; }
+        .markdown-body hr { border: none; border-top: 1px solid rgba(200, 215, 240, 0.08); margin: 16px 0; }
+        .markdown-body strong { color: var(--text-light); }
+        .loading { text-align: center; padding: 48px; color: var(--text-secondary); }
+        .error { text-align: center; padding: 48px; color: #ff6b6b; }
+        .footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(200, 215, 240, 0.08); text-align: center; }
+        .reader-count { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+        .countdown { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+        .read-btn { background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); color: var(--bg-abyss); border: none; padding: 12px 32px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.2s; width: 100%; max-width: 320px; }
+        .read-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .read-btn:hover:not(:disabled) { box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); transform: translateY(-1px); }
+        .already-read { background: #34c759 !important; color: var(--bg-abyss) !important; }
+    </style>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/theme-light.css">
+    <script src="/theme.js"></script>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="noise-overlay"></div>
+    <nav>
+        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/schedule.html">e 日程</a>
+            <a href="/files.html">e 文件</a>
+            <a href="/navi.html">e 导航</a>
+            <a href="/notices.html" class="active">e 通知</a>
+            <a href="/form.html">e 表单</a>
+            <button class="logout-btn-nav" onclick="logout()">退出登录</button>
+        </div>
+        <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/">首页</a>
+        <a href="/schedule.html">e 日程</a>
+        <a href="/files.html">e 文件</a>
+        <a href="/navi.html">e 导航</a>
+        <a href="/notices.html" class="active">e 通知</a>
+        <a href="/form.html">e 表单</a>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </div>
+
+    <div class="header">
+        <a href="/notices.html" class="back-btn">← 返回通知</a>
+        <span class="title" id="pageTitle">学工备忘</span>
+    </div>
+    <div class="container">
+        <div class="content">
+            <div id="markdownContent" class="markdown-body">
+                <div class="loading">加载中...</div>
+            </div>
+            <div class="footer">
+                <div id="readerCount" class="reader-count"></div>
+                <div id="countdown" class="countdown"></div>
+                <button id="readBtn" class="read-btn" onclick="markAsRead()" disabled>已阅读并确认知晓</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const COUNTDOWN_SECONDS = 30;
+        let remaining = COUNTDOWN_SECONDS;
+        let timer = null;
+        let currentMemoId = null;
+
+        const token = localStorage.getItem('ecolony_token');
+        if (!token) window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
+
+        function logout() { localStorage.removeItem('ecolony_token'); window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); }
+        function toggleMobileMenu() { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); m.classList.toggle('show'); t.textContent = m.classList.contains('show') ? '✕' : '☰'; }
+        document.addEventListener('click', function(e) { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); if (m && m.classList.contains('show') && !m.contains(e.target) && e.target !== t) { m.classList.remove('show'); t.textContent = '☰'; } });
+
+        function getToken() { return localStorage.getItem('ecolony_token'); }
+
+        async function getUserInfo() {
+            const t = getToken();
+            if (!t) return null;
+            try {
+                const res = await fetch('/api/user', { headers: { 'Authorization': 'Bearer ' + t } });
+                if (res.ok) { const d = await res.json(); return { name: d.name, student_id: d.studentId }; }
+            } catch (e) {}
+            return null;
+        }
+
+        function updateCountdown() {
+            const el = document.getElementById('countdown');
+            const btn = document.getElementById('readBtn');
+            if (remaining > 0) {
+                el.textContent = '请阅读全文，' + remaining + '秒后可确认已读';
+                btn.disabled = true;
+                remaining--;
+                timer = setTimeout(updateCountdown, 1000);
+            } else {
+                el.textContent = '您可以确认已读了';
+                btn.disabled = false;
+            }
+        }
+
+        async function loadMemo() {
+            try {
+                // Get memo id from URL
+                const params = new URLSearchParams(window.location.search);
+                currentMemoId = params.get('id');
+                if (!currentMemoId) throw new Error('未指定备忘ID');
+
+                // Load memo list to get metadata
+                const listRes = await fetch('/api-data/memos.json');
+                const memos = await listRes.json();
+                const memo = memos.find(m => m.id === currentMemoId);
+                if (!memo) throw new Error('备忘不存在');
+
+                document.getElementById('pageTitle').textContent = memo.title;
+                document.title = memo.title + ' · Ecolony';
+
+                // Load reader count
+                await loadReaderCount();
+
+                // Check if already read
+                const isRead = await checkIfRead();
+
+                // Load content
+                const res = await fetch('/notices/' + memo.file);
+                if (!res.ok) throw new Error('文件未找到');
+                const text = await res.text();
+                document.getElementById('markdownContent').innerHTML = marked.parse(text);
+
+                if (isRead) {
+                    showAlreadyRead();
+                } else {
+                    updateCountdown();
+                }
+            } catch (e) {
+                document.getElementById('markdownContent').innerHTML = '<div class="error">' + e.message + '</div>';
+            }
+        }
+
+        async function loadReaderCount() {
+            try {
+                const res = await fetch('/api/read/' + encodeURIComponent(currentMemoId), {
+                    headers: { 'Authorization': 'Bearer ' + getToken() }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const count = data.readers ? data.readers.length : 0;
+                    document.getElementById('readerCount').textContent = '已有 ' + count + ' 人确认阅读';
+                }
+            } catch (e) {}
+        }
+
+        async function checkIfRead() {
+            const t = getToken();
+            if (!t) return false;
+            try {
+                const res = await fetch('/api/read/' + encodeURIComponent(currentMemoId), {
+                    headers: { 'Authorization': 'Bearer ' + t }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const user = await getUserInfo();
+                    if (user) return data.readers.some(r => r.student_id === user.student_id);
+                }
+            } catch (e) {}
+            return false;
+        }
+
+        function showAlreadyRead() {
+            if (timer) clearTimeout(timer);
+            document.getElementById('countdown').textContent = '✓ 已确认阅读';
+            const btn = document.getElementById('readBtn');
+            btn.disabled = true;
+            btn.textContent = '✓ 已确认';
+            btn.classList.add('already-read');
+        }
+
+        async function markAsRead() {
+            const user = await getUserInfo();
+            const t = getToken();
+            if (!user || !t) { alert('无法获取用户信息，请重新登录'); return; }
+
+            const btn = document.getElementById('readBtn');
+            btn.disabled = true;
+            btn.textContent = '提交中...';
+
+            try {
+                const response = await fetch('/api/read/' + encodeURIComponent(currentMemoId), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + t },
+                    body: JSON.stringify({ name: user.name, student_id: user.student_id, timestamp: new Date().toISOString() })
+                });
+                if (response.ok) {
+                    showAlreadyRead();
+                    await loadReaderCount();
+                    localStorage.setItem('read_' + currentMemoId, 'true');
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = '已阅读并确认知晓';
+                    alert('提交失败，请重试');
+                }
+            } catch (e) {
+                btn.disabled = false;
+                btn.textContent = '已阅读并确认知晓';
+                alert('提交失败: ' + e.message);
+            }
+        }
+
+        loadMemo();
+    </script>
+<script src="/auth-check.js"></script>
+<script src="/config.js"></script>
+<script src="/config-init.js"></script>
+</body>
+</html>

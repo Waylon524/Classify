@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e 生菌落 · 登录</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bg-orb { filter: blur(100px); opacity: 0.15; }
+        .bg-orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,229,160,0.15), transparent 70%); top: -20%; left: -15%; }
+        .bg-orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,184,212,0.12), transparent 70%); bottom: -20%; right: -10%; }
+        .bg-orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(240,192,64,0.08), transparent 70%); top: 50%; left: 60%; }
+        @keyframes orbFloat1 { 0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(60px,40px)scale(1.08)}66%{transform:translate(-30px,80px)scale(.95)} }
+        @keyframes orbFloat2 { 0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(-50px,-60px)scale(1.05)}66%{transform:translate(40px,-30px)scale(.92)} }
+        @keyframes orbFloat3 { 0%,100%{transform:translate(0,0)scale(1)}50%{transform:translate(-60px,40px)scale(1.12)} }
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: var(--glow-primary);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat linear infinite;
+        }
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+        }
+        .login-container {
+            background: rgba(10, 20, 42, 0.6);
+            border: 1px solid rgba(0, 229, 160, 0.12);
+            border-radius: 28px;
+            padding: 52px 44px;
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(0, 229, 160, 0.05),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            animation: containerReveal 1s 0.3s forwards;
+        }
+        @keyframes containerReveal {
+            from { opacity: 0; transform: translateY(24px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 20%; right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glow-primary), transparent);
+            opacity: 0.4;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .logo .emoji {
+            font-size: 56px;
+            margin-bottom: 16px;
+            display: block;
+            filter: drop-shadow(0 0 20px rgba(0, 229, 160, 0.4));
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 229, 160, 0.4)); }
+            50% { filter: drop-shadow(0 0 30px rgba(0, 229, 160, 0.6)); }
+        }
+        .logo h1 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .logo p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        .form-group {
+            margin-bottom: 22px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(200, 215, 240, 0.7);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            border: 1px solid rgba(0, 229, 160, 0.12);
+            border-radius: 14px;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: var(--font-body);
+            background: rgba(8, 16, 36, 0.6);
+            color: var(--text-primary);
+        }
+        .form-group input:focus {
+            border-color: rgba(0, 229, 160, 0.4);
+            box-shadow: 0 0 0 3px rgba(0, 229, 160, 0.08),
+                        0 0 20px rgba(0, 229, 160, 0.06);
+            background: rgba(8, 16, 36, 0.8);
+        }
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--bg-abyss);
+            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 8px;
+            font-family: var(--font-body);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 229, 160, 0.25),
+                        0 0 0 1px rgba(0, 229, 160, 0.2);
+        }
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .error-message {
+            color: #ff6b6b;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 16px;
+            display: none;
+            padding: 10px 16px;
+            background: rgba(255, 80, 80, 0.08);
+            border: 1px solid rgba(255, 80, 80, 0.15);
+            border-radius: 10px;
+        }
+        .error-message.show {
+            display: block;
+            animation: shakeError 0.4s;
+        }
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(4, 8, 16, 0.2);
+            border-top-color: var(--bg-abyss);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 40px 28px;
+                border-radius: 20px;
+            }
+            .logo .emoji { font-size: 48px; }
+            .logo h1 { font-size: 24px; }
+        }
+    </style>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/theme-light.css">
+    <script src="/theme.js"></script>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="noise-overlay"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="login-container">
+        <div class="logo">
+            <span class="emoji">🧬</span>
+            <h1>e 生菌落</h1>
+            <p>请输入身份信息登录</p>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>姓名</label>
+                <input type="text" id="nameInput" placeholder="请输入你的姓名" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>学号</label>
+                <input type="text" id="studentIdInput" placeholder="请输入你的学号" required autocomplete="off">
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">
+                登录
+            </button>
+        </form>
+
+        <div class="error-message" id="errorMsg"></div>
+
+        <div class="footer-note">
+            仅限班级成员访问
+        </div>
+    </div>
+
+    <script>
+        const API = '';
+
+        (function() {
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                p.style.width = (2 + Math.random() * 3) + 'px';
+                p.style.height = p.style.width;
+                p.style.opacity = 0;
+                document.getElementById('particles').appendChild(p);
+            }
+        })();
+
+        async function apiFetch(path, options = {}) {
+            const r = await fetch(API + path, options);
+            if (!r.ok) throw new Error(r.statusText);
+            return r.json();
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('nameInput').value.trim();
+            const studentId = document.getElementById('studentIdInput').value.trim();
+            const btn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!name || !studentId) {
+                errorMsg.textContent = '请输入姓名和学号';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>验证中...';
+            errorMsg.classList.remove('show');
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, studentId })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || '验证失败');
+                }
+
+                localStorage.setItem('ecolony_token', data.token);
+                localStorage.setItem('ecolony_name', data.name);
+                localStorage.setItem('ecolony_student_id', data.studentId);
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect');
+                if (redirect) {
+                    window.location.href = redirect;
+                } else {
+                    window.location.href = '/index.html';
+                }
+
+            } catch (err) {
+                errorMsg.textContent = err.message;
+                errorMsg.classList.add('show');
+                btn.disabled = false;
+                btn.textContent = '登录';
+            }
+        }
+
+        async function checkLogin() {
+            const token = localStorage.getItem('ecolony_token');
+            if (token) {
+                try {
+                    const res = await fetch('/api/check-login', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (res.ok) {
+                        window.location.href = '/index.html';
+                    }
+                } catch (e) {
+                    localStorage.removeItem('ecolony_token');
+                    localStorage.removeItem('ecolony_name');
+                    localStorage.removeItem('ecolony_student_id');
+                }
+            }
+        }
+
+        checkLogin();
+    </script>
+<script src="/config.js"></script>
+<script src="/config-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>e 表单 - 投票 - Ecolony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Vote Header */
+        .vote-header { background: var(--bg-abyss); padding: 20px 24px; border-bottom: 1px solid rgba(0, 229, 160, 0.08); position: sticky; top: 56px; z-index: 100; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .vote-header .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--link); text-decoration: none; font-size: 13px; margin-bottom: 8px; cursor: pointer; transition: color 0.2s; }
+        .vote-header .back-link:hover { color: var(--accent-hover); }
+        .vote-header h1 { font-size: 22px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
+        .vote-header .desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+        .vote-header .meta-row { display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); }
+        .vote-header .meta-row span { display: flex; align-items: center; gap: 4px; }
+        .deadline-warning { color: #ff8c42 !important; }
+        .deadline-passed { color: #ff5050 !important; }
+
+        /* Timer */
+        .timer-bar { max-width: 800px; margin: 16px auto 0; padding: 0 24px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-secondary); }
+        .timer-bar .timer-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); transition: background 0.5s; }
+        .timer-bar .timer-dot.ready { background: var(--accent); box-shadow: 0 0 8px rgba(0, 229, 160, 0.5); }
+        .timer-bar .timer-count { font-variant-numeric: tabular-nums; }
+
+        /* Candidate List */
+        .candidate-list { max-width: 800px; margin: 0 auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+        .candidate-card { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 16px 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .candidate-card:hover { background: var(--bg-card-hover); border-color: rgba(0, 229, 160, 0.2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+        .candidate-card.selected { border-color: var(--accent); box-shadow: 0 0 20px rgba(0, 229, 160, 0.1); }
+        .candidate-card .card-left { flex: 1; min-width: 0; }
+        .candidate-card .card-name { font-size: 16px; font-weight: 600; color: var(--text-light); margin-bottom: 2px; }
+        .candidate-card .card-hint { font-size: 12px; color: var(--text-muted); }
+        .candidate-card .card-hint.viewed { color: var(--accent); }
+        .candidate-card .card-right { flex-shrink: 0; }
+
+        /* Select button */
+        .select-btn { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; border: 1px solid rgba(200, 215, 240, 0.2); background: transparent; color: var(--text-muted); cursor: not-allowed; transition: all 0.3s; font-family: var(--font-body); white-space: nowrap; }
+        .select-btn.enabled { cursor: pointer; border-color: var(--accent); color: var(--accent); }
+        .select-btn.enabled:hover { background: rgba(0, 229, 160, 0.1); }
+        .select-btn.selected { background: var(--accent); color: var(--bg-abyss); border-color: var(--accent); cursor: pointer; font-weight: 600; }
+
+        /* Detail Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 24px; animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-overlay.closing { animation: fadeOut 0.2s ease-in forwards; }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .modal { background: var(--bg-light); border: 1px solid rgba(0, 229, 160, 0.15); border-radius: 20px; width: 100%; max-width: 560px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid rgba(200, 215, 240, 0.08); }
+        .modal-header h2 { font-size: 20px; font-weight: 600; color: var(--text-light); }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(200, 215, 240, 0.15); background: transparent; color: var(--text-secondary); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; line-height: 1; }
+        .modal-close:hover { background: rgba(255, 80, 80, 0.15); border-color: rgba(255, 80, 80, 0.3); color: #ff5050; }
+        .modal-body { padding: 20px 24px 24px; overflow-y: auto; flex: 1; }
+        .detail-field { margin-bottom: 16px; }
+        .detail-field:last-child { margin-bottom: 0; }
+        .detail-label { font-size: 12px; color: var(--accent); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .detail-value { font-size: 15px; color: var(--text-body); line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+        .detail-value a { color: var(--link); text-decoration: underline; word-break: break-all; }
+        .detail-value a:hover { color: var(--accent-hover); }
+
+        /* Bottom bar */
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--nav-bg); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-top: 1px solid rgba(0, 229, 160, 0.1); padding: 16px 24px; z-index: 500; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .bottom-bar .selected-info { font-size: 14px; color: var(--text-secondary); }
+        .bottom-bar .selected-info strong { color: var(--accent); }
+        .submit-btn { padding: 12px 32px; border-radius: 24px; font-size: 15px; font-weight: 600; border: none; background: rgba(200, 215, 240, 0.1); color: var(--text-muted); cursor: not-allowed; transition: all 0.3s; font-family: var(--font-body); }
+        .submit-btn.enabled { background: var(--accent); color: var(--bg-abyss); cursor: pointer; }
+        .submit-btn.enabled:hover { background: var(--accent-hover); box-shadow: 0 4px 20px rgba(0, 229, 160, 0.3); transform: translateY(-1px); }
+
+        /* Already voted */
+        .voted-notice { max-width: 800px; margin: 40px auto; padding: 40px 24px; text-align: center; }
+        .voted-notice .icon { font-size: 64px; margin-bottom: 20px; }
+        .voted-notice h3 { font-size: 21px; font-weight: 600; margin-bottom: 12px; color: var(--text-light); }
+        .voted-notice p { color: var(--text-secondary); margin-bottom: 8px; font-size: 14px; }
+        .voted-notice .voted-list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+        .voted-notice .voted-tag { background: rgba(0, 229, 160, 0.1); border: 1px solid rgba(0, 229, 160, 0.2); border-radius: 20px; padding: 6px 16px; font-size: 14px; color: var(--accent); }
+
+        /* Loading & Error */
+        .loading { display: flex; align-items: center; justify-content: center; padding: 80px; color: var(--text-secondary); font-size: 15px; }
+        .loading::after { content: ''; width: 20px; height: 20px; border: 2px solid var(--accent); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 12px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .error-state { text-align: center; padding: 80px 24px; }
+        .error-state .icon { font-size: 64px; margin-bottom: 24px; opacity: 0.5; }
+        .error-state h3 { font-size: 21px; font-weight: 600; margin-bottom: 8px; color: var(--text-light); }
+        .error-state p { color: var(--text-secondary); }
+
+        @media (max-width: 768px) {
+            .vote-header h1 { font-size: 18px; }
+            .candidate-list { padding: 12px 16px; gap: 8px; }
+            .candidate-card { padding: 14px 16px; }
+            .select-btn { padding: 6px 16px; font-size: 12px; }
+            .bottom-bar { padding: 12px 16px; }
+            .submit-btn { padding: 10px 24px; font-size: 14px; }
+            .modal { max-height: 90vh; border-radius: 16px; }
+            .modal-header { padding: 16px 18px 12px; }
+            .modal-header h2 { font-size: 18px; }
+            .modal-body { padding: 16px 18px 20px; }
+        }
+    </style>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/theme-light.css">
+    <script src="/theme.js"></script>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="noise-overlay"></div>
+
+    <nav>
+        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/schedule.html">e 日程</a>
+            <a href="/files.html">e 文件</a>
+            <a href="/navi.html">e 导航</a>
+            <a href="/notices.html">e 通知</a>
+            <a href="/form.html" class="active">e 表单</a>
+            <button onclick="logout()" class="logout-btn-nav">退出登录</button>
+        </div>
+        <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/">首页</a>
+        <a href="/schedule.html">e 日程</a>
+        <a href="/files.html">e 文件</a>
+        <a href="/navi.html">e 导航</a>
+        <a href="/notices.html">e 通知</a>
+        <a href="/form.html" class="active">e 表单</a>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </div>
+
+    <main id="mainContent">
+        <div class="loading">加载中</div>
+    </main>
+
+    <div class="bottom-bar" id="bottomBar" style="display:none;">
+        <div class="selected-info" id="selectedInfo">已选 <strong>0</strong>/5 人</div>
+        <button class="submit-btn" id="submitBtn" disabled onclick="submitVote()">提交投票</button>
+    </div>
+
+    <script>
+        const API = '';
+        let currentUser = null;
+        let voteData = null;
+        let selectedIds = [];
+        let viewedIds = new Set();
+        let pageOpenTime = Date.now();
+        let deadlineTimer = null;
+        let countdownTimer = null;
+
+        // Parse URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const voteId = urlParams.get('id');
+
+        if (!voteId) {
+            document.getElementById('mainContent').innerHTML = '<div class="error-state"><div class="icon">❓</div><h3>缺少参数</h3><p>未指定投票 ID</p></div>';
+            document.getElementById('bottomBar').style.display = 'none';
+        }
+
+        function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+        function logout() { localStorage.removeItem('ecolony_token'); window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); }
+        function toggleMobileMenu() { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); m.classList.toggle('show'); t.textContent = m.classList.contains('show') ? '✕' : '☰'; }
+        document.addEventListener('click', function(e) { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); if (m && m.classList.contains('show') && !m.contains(e.target) && e.target !== t) { m.classList.remove('show'); t.textContent = '☰'; } });
+
+        // Auth
+        async function checkIdentity() {
+            const token = localStorage.getItem('ecolony_token');
+            if (!token) { window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); return false; }
+            try {
+                const res = await fetch('/api/check-login', { headers: { 'Authorization': 'Bearer ' + token } });
+                if (res.ok) {
+                    const data = await res.json();
+                    currentUser = { studentId: data.studentId, name: data.name };
+                    return true;
+                }
+            } catch(e) {}
+            localStorage.removeItem('ecolony_token');
+            window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
+            return false;
+        }
+
+        // Load viewed IDs from localStorage
+        function loadViewed() {
+            try {
+                const key = 'viewed_' + voteId;
+                const saved = localStorage.getItem(key);
+                if (saved) { viewedIds = new Set(JSON.parse(saved)); }
+            } catch(e) { viewedIds = new Set(); }
+        }
+
+        function saveViewed() {
+            try {
+                const key = 'viewed_' + voteId;
+                localStorage.setItem(key, JSON.stringify([...viewedIds]));
+            } catch(e) {}
+        }
+
+        async function loadVote() {
+            try {
+                const res = await fetch(API + '/api/votes/' + voteId);
+                if (!res.ok) throw new Error('Failed to load');
+                voteData = await res.json();
+
+                // Check if already voted
+                const checkRes = await fetch(API + '/api/votes/' + voteId + '/check/' + currentUser.studentId);
+                if (checkRes.ok) {
+                    const checkData = await checkRes.json();
+                    if (checkData.hasVoted) {
+                        renderAlreadyVoted(checkData.submission);
+                        return;
+                    }
+                }
+
+                renderVote();
+            } catch(e) {
+                document.getElementById('mainContent').innerHTML = '<div class="error-state"><div class="icon">⚠️</div><h3>加载失败</h3><p>投票不存在或已删除</p></div>';
+            }
+        }
+
+        function renderAlreadyVoted(submission) {
+            const names = submission.selectedCandidates.map(cid => {
+                const c = voteData.candidates.find(x => x.id === cid);
+                return c ? c.name : cid;
+            });
+            document.getElementById('mainContent').innerHTML =
+                '<div class="voted-notice">' +
+                '<div class="icon">✅</div>' +
+                '<h3>你已提交投票</h3>' +
+                '<p>提交时间：' + new Date(submission.submitTime).toLocaleString('zh-CN') + '</p>' +
+                '<p>你投票给了以下同学：</p>' +
+                '<div class="voted-list">' + names.map(n => '<span class="voted-tag">' + escHtml(n) + '</span>').join('') + '</div>' +
+                '<p style="margin-top:24px;"><a href="/form.html" style="color:var(--link);">← 返回表单列表</a></p>' +
+                '</div>';
+            document.getElementById('bottomBar').style.display = 'none';
+        }
+
+        function renderVote() {
+            const deadline = new Date(voteData.deadline);
+            const now = new Date();
+            const isEnded = now > deadline;
+
+            // Sort candidates by name (pinyin)
+            const candidates = [...voteData.candidates].sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+
+            // Build header
+            let metaHtml = '';
+            if (isEnded) {
+                metaHtml = '<div class="meta-row"><span class="deadline-passed">🔒 投票已截止</span><span>截止时间：' + deadline.toLocaleString('zh-CN') + '</span></div>';
+            } else {
+                const timeLeft = deadline - now;
+                metaHtml = '<div class="meta-row"><span id="deadlineCountdown"></span><span>截止时间：' + deadline.toLocaleString('zh-CN') + '</span><span>每人限投 <strong>' + voteData.maxVotes + '</strong> 票</span></div>';
+            }
+
+            // Build timer bar
+            const minOpenTime = voteData.minOpenTime || 60;
+            let timerHtml = '<div class="timer-bar"><span class="timer-dot" id="timerDot"></span><span class="timer-count" id="timerCount">页面打开不足' + minOpenTime + '秒，提交按钮暂不可用</span></div>';
+
+            // Build candidate cards
+            let cardsHtml = candidates.map(c => {
+                const isSelected = selectedIds.includes(c.id);
+                const isViewed = viewedIds.has(c.id);
+                let btnClass, btnText;
+                if (isSelected) {
+                    btnClass = 'select-btn selected';
+                    btnText = '已选择 ✓';
+                } else if (isViewed) {
+                    btnClass = 'select-btn enabled';
+                    btnText = '选择';
+                } else {
+                    btnClass = 'select-btn';
+                    btnText = '选择';
+                }
+                const hintClass = isViewed ? 'card-hint viewed' : 'card-hint';
+                const hintText = isViewed ? '已查看详细资料' : '点击卡片查看详细资料后可选';
+
+                return '<div class="candidate-card' + (isSelected ? ' selected' : '') + '" id="card-' + c.id + '" onclick="openDetail(\'' + c.id + '\')">' +
+                    '<div class="card-left">' +
+                    '<div class="card-name">' + escHtml(c.name) + '</div>' +
+                    '<div class="' + hintClass + '" id="hint-' + c.id + '">' + hintText + '</div>' +
+                    '</div>' +
+                    '<div class="card-right">' +
+                    '<button class="' + btnClass + '" id="btn-' + c.id + '" onclick="event.stopPropagation(); toggleSelect(\'' + c.id + '\')">' + btnText + '</button>' +
+                    '</div>' +
+                    '</div>';
+            }).join('');
+
+            document.getElementById('mainContent').innerHTML =
+                '<div class="vote-header">' +
+                '<a class="back-link" href="/form.html">← 返回表单列表</a>' +
+                '<h1>📋 ' + escHtml(voteData.title) + '</h1>' +
+                '<div class="desc">' + escHtml(voteData.description || '') + '</div>' +
+                metaHtml +
+                '</div>' +
+                (isEnded ? '' : timerHtml) +
+                '<div class="candidate-list" id="candidateList">' +
+                (candidates.length === 0 ? '<div class="error-state"><div class="icon">📭</div><h3>暂无候选人</h3></div>' : cardsHtml) +
+                '</div>';
+
+            // Show/hide bottom bar
+            if (!isEnded) {
+                document.getElementById('bottomBar').style.display = 'flex';
+                updateBottomBar();
+                startTimers(deadline);
+            } else {
+                document.getElementById('bottomBar').style.display = 'none';
+            }
+
+            // Store candidates for later use
+            voteData._sortedCandidates = candidates;
+        }
+
+        function startTimers(deadline) {
+            const minOpenTime = voteData.minOpenTime || 60;
+
+            // 1-minute countdown for submit button
+            countdownTimer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - pageOpenTime) / 1000);
+                const remaining = Math.max(0, minOpenTime - elapsed);
+                const dot = document.getElementById('timerDot');
+                const count = document.getElementById('timerCount');
+                if (dot && count) {
+                    if (remaining === 0) {
+                        dot.classList.add('ready');
+                        count.textContent = '已就绪，请选择 ' + voteData.maxVotes + ' 位候选人后提交';
+                    } else {
+                        count.textContent = '提交按钮将在 ' + remaining + ' 秒后可用';
+                    }
+                }
+                updateSubmitBtn();
+            }, 500);
+
+            // Deadline countdown
+            if (deadline) {
+                deadlineTimer = setInterval(() => {
+                    const now = new Date();
+                    const diff = deadline - now;
+                    const el = document.getElementById('deadlineCountdown');
+                    if (!el) return;
+                    if (diff <= 0) {
+                        el.textContent = '🔒 投票已截止';
+                        el.className = 'deadline-passed';
+                        document.getElementById('bottomBar').style.display = 'none';
+                        clearInterval(deadlineTimer);
+                        clearInterval(countdownTimer);
+                        return;
+                    }
+                    const days = Math.floor(diff / 86400000);
+                    const hours = Math.floor((diff % 86400000) / 3600000);
+                    const mins = Math.floor((diff % 3600000) / 60000);
+                    const secs = Math.floor((diff % 60000) / 1000);
+                    let text = '⏳ 剩余 ';
+                    if (days > 0) text += days + '天 ';
+                    text += hours + '时 ' + mins + '分 ' + secs + '秒';
+                    el.textContent = text;
+                    if (days < 1) el.className = 'deadline-warning';
+                }, 1000);
+            }
+        }
+
+        function formatDetailValue(text) {
+            if (!text) return '';
+            // Escape HTML first
+            let out = escHtml(text);
+            // Convert newlines to <br>
+            out = out.replace(/\n/g, '<br>');
+            // Convert URLs to clickable links (before <br> conversion of URLs containing newlines)
+            const urlRegex = /(https?:\/\/[^\s<>\[\]{}|\\^`"']+)/gi;
+            out = out.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+            return out;
+        }
+
+        async function openDetail(candidateId) {
+            try {
+                const res = await fetch(API + '/api/votes/' + voteId + '/candidate/' + candidateId);
+                if (!res.ok) throw new Error('Failed');
+                const candidate = await res.json();
+
+                // Mark as viewed
+                viewedIds.add(candidateId);
+                saveViewed();
+                updateCardState(candidateId);
+
+                // Build detail HTML
+                let fieldsHtml = '';
+                if (candidate.details && Object.keys(candidate.details).length > 0) {
+                    for (const [key, value] of Object.entries(candidate.details)) {
+                        fieldsHtml += '<div class="detail-field"><div class="detail-label">' + escHtml(key) + '</div><div class="detail-value">' + formatDetailValue(value) + '</div></div>';
+                    }
+                } else {
+                    fieldsHtml = '<p style="color:var(--text-secondary);">暂无详细资料</p>';
+                }
+
+                // Create modal
+                const overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+                overlay.id = 'detailModal';
+                overlay.innerHTML =
+                    '<div class="modal">' +
+                    '<div class="modal-header">' +
+                    '<h2>' + escHtml(candidate.name) + ' · ' + escHtml(candidate.studentId) + '</h2>' +
+                    '<button class="modal-close" onclick="closeModal()">✕</button>' +
+                    '</div>' +
+                    '<div class="modal-body">' + fieldsHtml + '</div>' +
+                    '</div>';
+
+                document.body.appendChild(overlay);
+
+                // Click overlay to close
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === overlay) closeModal();
+                });
+
+                // ESC to close
+                document.addEventListener('keydown', escHandler);
+            } catch(e) {
+                alert('加载详情失败');
+            }
+        }
+
+        function escHandler(e) {
+            if (e.key === 'Escape') closeModal();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            if (modal) {
+                modal.classList.add('closing');
+                setTimeout(() => {
+                    if (modal.parentNode) modal.parentNode.removeChild(modal);
+                }, 180);
+            }
+            document.removeEventListener('keydown', escHandler);
+        }
+
+        function toggleSelect(candidateId) {
+            if (!viewedIds.has(candidateId)) return; // Not viewed yet, can't select
+
+            const idx = selectedIds.indexOf(candidateId);
+            if (idx >= 0) {
+                selectedIds.splice(idx, 1);
+            } else {
+                if (selectedIds.length >= voteData.maxVotes) {
+                    alert('最多只能选择 ' + voteData.maxVotes + ' 位候选人');
+                    return;
+                }
+                selectedIds.push(candidateId);
+            }
+            updateCardState(candidateId);
+            updateBottomBar();
+            updateSubmitBtn();
+        }
+
+        function updateCardState(candidateId) {
+            const card = document.getElementById('card-' + candidateId);
+            const btn = document.getElementById('btn-' + candidateId);
+            const hint = document.getElementById('hint-' + candidateId);
+            const isSelected = selectedIds.includes(candidateId);
+            const isViewed = viewedIds.has(candidateId);
+
+            if (card) {
+                if (isSelected) card.classList.add('selected'); else card.classList.remove('selected');
+            }
+            if (hint) {
+                hint.className = isViewed ? 'card-hint viewed' : 'card-hint';
+                hint.textContent = isViewed ? '已查看详细资料' : '点击卡片查看详细资料后可选';
+            }
+            if (btn) {
+                if (isSelected) {
+                    btn.className = 'select-btn selected';
+                    btn.textContent = '已选择 ✓';
+                } else if (isViewed) {
+                    btn.className = 'select-btn enabled';
+                    btn.textContent = '选择';
+                } else {
+                    btn.className = 'select-btn';
+                    btn.textContent = '选择';
+                }
+            }
+        }
+
+        function updateBottomBar() {
+            const info = document.getElementById('selectedInfo');
+            if (info) {
+                info.innerHTML = '已选 <strong>' + selectedIds.length + '</strong>/' + voteData.maxVotes + ' 人';
+            }
+        }
+
+        function updateSubmitBtn() {
+            const btn = document.getElementById('submitBtn');
+            if (!btn) return;
+            const elapsed = Math.floor((Date.now() - pageOpenTime) / 1000);
+            const minOpenTime = voteData.minOpenTime || 60;
+            const timeReady = elapsed >= minOpenTime;
+            const countReady = selectedIds.length === voteData.maxVotes;
+
+            if (timeReady && countReady) {
+                btn.className = 'submit-btn enabled';
+                btn.disabled = false;
+                btn.textContent = '提交投票';
+            } else {
+                btn.className = 'submit-btn';
+                btn.disabled = true;
+                if (!timeReady) {
+                    btn.textContent = '请等待 ' + (minOpenTime - elapsed) + ' 秒';
+                } else if (selectedIds.length === 0) {
+                    btn.textContent = '请选择候选人';
+                } else {
+                    btn.textContent = '还需选择 ' + (voteData.maxVotes - selectedIds.length) + ' 人';
+                }
+            }
+        }
+
+        async function submitVote() {
+            // Final validation
+            const elapsed = Math.floor((Date.now() - pageOpenTime) / 1000);
+            if (elapsed < (voteData.minOpenTime || 60)) { alert('页面打开不足' + (voteData.minOpenTime || 60) + '秒，请稍后再试'); return; }
+            if (selectedIds.length !== voteData.maxVotes) { alert('请选择' + voteData.maxVotes + '位候选人'); return; }
+
+            const now = new Date();
+            if (now > new Date(voteData.deadline)) { alert('投票已截止'); return; }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = '提交中...';
+
+            try {
+                const res = await fetch(API + '/api/votes/' + voteId + '/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        voterName: currentUser.name,
+                        voterStudentId: currentUser.studentId,
+                        selectedCandidates: selectedIds
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    // Reload to show voted state
+                    const checkRes = await fetch(API + '/api/votes/' + voteId + '/check/' + currentUser.studentId);
+                    if (checkRes.ok) {
+                        const checkData = await checkRes.json();
+                        if (checkData.hasVoted) {
+                            if (deadlineTimer) clearInterval(deadlineTimer);
+                            if (countdownTimer) clearInterval(countdownTimer);
+                            renderAlreadyVoted(checkData.submission);
+                            return;
+                        }
+                    }
+                    alert('投票成功！');
+                    window.location.href = '/form.html';
+                } else {
+                    alert(data.error || '提交失败');
+                    btn.disabled = false;
+                    updateSubmitBtn();
+                }
+            } catch(e) {
+                alert('网络错误，请重试');
+                btn.disabled = false;
+                updateSubmitBtn();
+            }
+        }
+
+        (async () => {
+            if (!voteId) return;
+            const ok = await checkIdentity();
+            if (!ok) return;
+            loadViewed();
+            await loadVote();
+        })();
+    </script>
+<script src="/auth-check.js"></script>
+<script src="/config.js"></script>
+<script src="/config-init.js"></script>
+</body>
+</html>

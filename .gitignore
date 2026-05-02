@@ -1,0 +1,34 @@
+# ===== 依赖 =====
+node_modules/
+
+# ===== 用户数据 & 内容数据 =====
+# 所有运行时产生的数据，部署时根据实际环境重新生成
+data/**
+
+# ===== 日志 & 临时文件 =====
+*.log
+*.bak
+*.tmp
+
+# ===== 系统 & 工具文件 =====
+.claude/
+.playwright-mcp/
+.settings.local.json
+settings.local.json
+
+# ===== 自动生成的文件 =====
+public/ecolony_schedules.ics
+public/MP_verify_*.txt
+
+# ===== 上传的附件 =====
+*.pdf
+*.xlsx
+*.docx
+*.doc
+
+# ===== IDE & OS =====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e 文件 · Ecolony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script>
+        function logout() {
+            localStorage.removeItem('ecolony_token');
+            window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+    <style>
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-secondary); flex-wrap: wrap; padding: 32px 24px 16px; max-width: 1200px; margin: 0 auto; }
+        .breadcrumb a { color: var(--link); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .file-list { max-width: 1200px; margin: 10px auto 0; padding: 0 24px 24px; }
+        .file-item { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 14px; padding: 20px 24px; margin-bottom: 12px; margin-top: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: space-between; border: none; width: 100%; text-align: left; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .file-item:hover { background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
+        .file-item .file-info { display: flex; align-items: center; gap: 16px; flex: 1; }
+        .file-item .file-icon { font-size: 24px; }
+        .file-item .file-name { font-size: 17px; font-weight: 600; color: var(--text-light); margin-bottom: 4px; }
+        .file-item .file-meta { font-size: 12px; color: var(--text-secondary); }
+
+        .reader-page { background: var(--bg-abyss); min-height: 100vh; display: flex; }
+        .reader-sidebar { width: var(--sidebar-width); min-height: 100vh; background: rgba(8, 16, 36, 0.95); border-right: 1px solid rgba(0, 229, 160, 0.08); position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 101; transform: translateX(-100%); transition: transform 0.3s ease; -webkit-overflow-scrolling: touch; }
+        .reader-sidebar.open { transform: translateX(0); }
+        .reader-sidebar-header { padding: 16px; border-bottom: 1px solid rgba(0, 229, 160, 0.08); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 56px; background: rgba(8, 16, 36, 0.95); z-index: 1; }
+        .reader-sidebar-header h3 { font-size: 14px; font-weight: 600; color: var(--text-light); }
+        .reader-sidebar-close { background: none; border: none; font-size: 20px; cursor: pointer; padding: 4px 8px; color: var(--text-secondary); }
+        .reader-sidebar-list { padding: 8px 0; }
+        .reader-sidebar-item { padding: 10px 16px; font-size: 13px; color: var(--text-light); cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .reader-sidebar-item:hover { background: rgba(0, 229, 160, 0.06); }
+        .reader-sidebar-item.active { background: rgba(0, 229, 160, 0.1); border-left-color: var(--accent); color: var(--accent); font-weight: 500; }
+        .reader-sidebar-back { padding: 10px 16px; font-size: 12px; color: var(--text-secondary); cursor: pointer; border-bottom: 1px solid rgba(200, 215, 240, 0.05); display: flex; align-items: center; gap: 6px; }
+        .reader-sidebar-back:hover { color: var(--text-light); }
+        .reader-main { flex: 1; margin-left: 0; transition: margin-left 0.3s ease; }
+        .reader-main.sidebar-open { margin-left: var(--sidebar-width); }
+        .reader-header { background: var(--bg-white); padding: 16px 24px; border-bottom: 1px solid rgba(0, 229, 160, 0.08); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 56px; z-index: 100; flex-wrap: wrap; gap: 12px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .reader-header .breadcrumb { padding: 0; }
+        .reader-content { max-width: 1200px; margin: 0 auto; padding: 56px 24px 120px 44px; }
+        .reader-nav { display: flex; justify-content: space-between; padding: 24px 0; border-top: 1px solid rgba(200, 215, 240, 0.08); margin-top: 48px; }
+        .reader-nav a { color: var(--link); text-decoration: none; font-size: 14px; padding: 12px 20px; background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 10px; transition: all 0.2s; }
+        .reader-nav a:hover { background: var(--bg-card-hover); border-color: rgba(0, 229, 160, 0.2); }
+        .reader-nav .nav-info { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+        .reader-nav .nav-title { font-weight: 600; }
+        .sidebar-toggle { position: fixed; left: 0; top: 56px; width: 36px; height: 52px; background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-left: none; border-radius: 0 10px 10px 0; cursor: pointer; z-index: 102; display: none; align-items: center; justify-content: center; font-size: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .sidebar-toggle.show { display: flex; }
+        .sidebar-toggle.open { left: var(--sidebar-width); }
+        .reader-back-btn { position: fixed; left: 0; top: 108px; width: 36px; height: 36px; background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-left: none; border-radius: 0 10px 10px 0; cursor: pointer; z-index: 102; display: none; align-items: center; justify-content: center; font-size: 14px; color: var(--accent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .reader-back-btn.show { display: flex; }
+        .reader-back-btn.open { left: var(--sidebar-width); }
+        .markdown-body { font-size: 17px; line-height: 1.47; color: var(--text-body); }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { font-family: "SF Pro Display", sans-serif; color: var(--text-light); margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 600; }
+        .markdown-body h1 { font-size: 40px; line-height: 1.1; margin-top: 0; }
+        .markdown-body h2 { font-size: 28px; line-height: 1.14; }
+        .markdown-body h3 { font-size: 21px; line-height: 1.19; }
+        
+        /* PDF Viewer */
+        .pdf-container {
+            background: #525659;
+            border-radius: 8px;
+            overflow: hidden;
+            min-height: 600px;
+        }
+        .pdf-controls {
+            background: #323639;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 13px;
+        }
+        .pdf-controls button {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .pdf-controls button:hover { background: rgba(255,255,255,0.2); }
+        .pdf-controls button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .pdf-controls span { flex: 1; text-align: center; }
+        .pdf-page canvas { display: block; margin: 0 auto; background: white; }
+        
+        /* DOCX Viewer - Web Layout (web版式) */
+        .docx-container {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 56px 64px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            font-family: "Georgia", "Times New Roman", "PingFang SC", "Microsoft YaHei", serif;
+            line-height: 1.75;
+            color: #2c3e50;
+            font-size: inherit;
+        }
+        .docx-container h1, 
+        .docx-container h2, 
+        .docx-container h3, 
+        .docx-container h4,
+        .docx-container h5,
+        .docx-container h6 { 
+            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            color: #1a1a1a; 
+            margin: 0 0 24px 0; 
+            padding-bottom: 16px;
+            border-bottom: 2px solid #eaeaea;
+            line-height: 1.3;
+        }
+        .docx-container h2 { 
+            font-size: 1.5em;
+            font-weight: 600; 
+            margin: 32px 0 16px 0; 
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eaeaea;
+            line-height: 1.35;
+        }
+        .docx-container h3 { 
+            font-size: 1.2em;
+            font-weight: 600; 
+            color: #333; 
+            margin: 24px 0 12px 0;
+            line-height: 1.4;
+        }
+        .docx-container h4,
+        .docx-container h5,
+        .docx-container h6 {
+            font-size: 1em;
+            font-weight: 600;
+        }
+        .docx-container p { 
+            margin: 0 0 16px 0; 
+            text-align: justify;
+            text-indent: 2em;
+        }
+        .docx-container ul, .docx-container ol { 
+            margin: 0 0 16px 0; 
+            padding-left: 32px;
+        }
+        .docx-container li { 
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+        .docx-container table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin: 20px 0;
+        }
+        .docx-container th, .docx-container td { 
+            border: 1px solid #d0d0d0; 
+            padding: 10px 14px; 
+            text-align: left;
+            line-height: 1.5;
+        }
+        .docx-container th { 
+            background: #f8f9fa; 
+            font-weight: 600;
+            color: #333;
+        }
+        .docx-container tr:nth-child(even) td { background: #fafbfc; }
+        .docx-container img { 
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 6px;
+            margin: 16px 0;
+        }
+        .docx-container code { 
+            background: #f5f5f7; 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-family: "SF Mono", Menlo, Monaco, monospace; 
+            color: #d63384;
+        }
+        .docx-container pre { 
+            background: #1e1e1e; 
+            color: #d4d4d4; 
+            padding: 20px; 
+            border-radius: 8px; 
+            overflow-x: auto;
+            margin: 16px 0;
+            line-height: 1.5;
+        }
+        .docx-container pre code { 
+            background: none; 
+            padding: 0; 
+            color: inherit;
+        }
+        .docx-container blockquote {
+            border-left: 4px solid #0071e3;
+            padding: 12px 20px;
+            margin: 20px 0;
+            background: #f8f9fa;
+            color: #555;
+            font-style: italic;
+        }
+        .docx-container strong { font-weight: 700; color: #1a1a1a; }
+        .docx-container em { font-style: italic; }
+        .docx-container a { color: #0071e3; text-decoration: none; }
+        .docx-container a:hover { text-decoration: underline; }
+        .docx-container hr {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 24px 0;
+        }
+        .docx-container * { font-size: inherit; }
+        @media (max-width: 768px) {
+            .docx-container {
+                padding: 24px 20px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+        .markdown-body p { margin-bottom: 1em; }
+        .markdown-body a { color: var(--link); text-decoration: none; }
+        .markdown-body code { font-family: "SF Mono", Menlo, Monaco, monospace; font-size: 14px; background: rgba(0, 229, 160, 0.08); padding: 2px 6px; border-radius: 4px; }
+        .markdown-body pre { background: rgba(8, 16, 36, 0.8); color: #e8edf5; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 1.5em 0; border: 1px solid rgba(0, 229, 160, 0.08); }
+        .markdown-body pre code { background: none; padding: 0; color: inherit; }
+        .markdown-body blockquote { border-left: 4px solid var(--accent); padding-left: 20px; margin: 1.5em 0; color: var(--text-secondary); }
+        .markdown-body ul, .markdown-body ol { margin: 1em 0; padding-left: 1.5em; }
+        .markdown-body li { margin-bottom: 0.5em; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin: 1.5em 0; }
+        .markdown-body th, .markdown-body td { border: 1px solid rgba(200, 215, 240, 0.12); padding: 12px 16px; text-align: left; }
+        .markdown-body th { background: rgba(0, 229, 160, 0.06); font-weight: 600; }
+        .katex-display { margin: 1.5em 0; overflow-x: auto; padding: 8px 0; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 15px; border-radius: 10px; font-size: 14px; font-weight: 400; cursor: pointer; transition: all 0.2s; border: none; }
+        .btn-secondary { background: rgba(8, 16, 36, 0.6); color: var(--text-body); border: 1px solid rgba(0, 229, 160, 0.12); }
+        .btn-secondary:hover { background: rgba(0, 229, 160, 0.08); }
+        .btn-dark { background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary)); color: var(--bg-abyss); }
+        .btn-dark:hover { box-shadow: 0 4px 16px rgba(0, 229, 160, 0.3); }
+        .btn-danger { background: #ff3b30; color: #ffffff; }
+        .btn-danger:hover { background: #d63030; }
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(0, 229, 160, 0.15); color: var(--accent); padding: 12px 24px; border-radius: 12px; font-size: 14px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; border: 1px solid rgba(0, 229, 160, 0.2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .toast.show { opacity: 1; }
+        @media (max-width: 734px) { .reader-content { padding: 60px 16px 80px; } :root { --sidebar-width: 80%; } }
+        .folder-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 0 8px 30px;
+            margin-bottom: 8px;
+        }
+        .folder-back-btn:active { opacity: 0.7; }
+    </style>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/theme-light.css">
+    <script src="/theme.js"></script>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="noise-overlay"></div>
+    <nav>
+        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/schedule.html">e 日程</a>
+            <a href="/files.html" class="active">e 文件</a>
+            <a href="/navi.html">e 导航</a>
+            <a href="/notices.html">e 通知</a>
+            <a href="/form.html">e 表单</a>
+            <button onclick="logout()" class="logout-btn-nav">退出登录</button>
+        </div>
+        <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/">首页</a>
+        <a href="/schedule.html">e 日程</a>
+        <a href="/files.html" class="active">e 文件</a>
+        <a href="/navi.html">e 导航</a>
+        <a href="/notices.html">e 通知</a>
+        <a href="/form.html">e 表单</a>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
+    <button class="reader-back-btn" id="readerBackBtn" onclick="backToKnowledge()">←</button>
+    <div class="reader-sidebar" id="readerSidebar">
+        <div class="reader-sidebar-header"><h3>📑 目录</h3><button class="reader-sidebar-close" onclick="toggleSidebar()">×</button></div>
+        <div class="reader-sidebar-list" id="sidebarList"></div>
+    </div>
+    <div class="reader-main" id="readerMain">
+        <div id="knowledgeView">
+            <div class="page-header"><h1>📚 e 文件</h1></div>
+            <div class="breadcrumb" id="kbBreadcrumb"><a href="#" onclick="navigateKB(null); return false;">e 文件</a></div>
+            <div id="knowledgeContainer"><div class="loading">加载中</div></div>
+        </div>
+        <div id="readerView" style="display:none">
+            <div class="reader-content">
+                <div class="loading" id="readerLoading">加载中</div>
+                <div class="pdf-container" id="pdfContainer" style="display:none">
+                    <div class="pdf-controls">
+                        <button onclick="pdfPrevPage()">◀ 上一页</button>
+                        <span id="pdfPageInfo">1 / 1</span>
+                        <button onclick="pdfNextPage()">下一页 ▶</button>
+                    </div>
+                    <div class="pdf-page" id="pdfPage"></div>
+                </div>
+                <div class="docx-container" id="docxContainer" style="display:none"></div>
+                <div class="markdown-body" id="markdownContent" style="display:none"></div>
+                <div class="reader-nav" id="readerNav" style="display:none">
+                    <a href="#" id="prevFile" onclick="gotoPrevFile(); return false;"><div class="nav-info">← 上一篇</div><div class="nav-title" id="prevFileTitle">-</div></a>
+                    <a href="#" id="nextFile" onclick="gotoNextFile(); return false;"><div class="nav-info">下一篇 →</div><div class="nav-title" id="nextFileTitle">-</div></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script>
+        // Check login status on page load - redirect to login if not authenticated
+        const token = localStorage.getItem('ecolony_token');
+        if (!token) {
+            window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
+        }
+        
+        const API = '';
+        let currentParentId = null; // 默认进入根目录 (efile 文件夹)
+        let currentContent = '';
+        let currentFileName = '';
+        let currentFileParentId = null;
+        let currentFileId = null;
+        let allFilesCache = [];
+        let currentFileIndex = -1;
+        let renderId = 0;
+        marked.setOptions({ breaks: true, gfm: true });
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.getElementById('menuToggle');
+            menu.classList.toggle('show');
+            toggle.textContent = menu.classList.contains('show') ? '✕' : '☰';
+        }
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.getElementById('menuToggle');
+            if (menu && menu.classList.contains('show') && !menu.contains(e.target) && e.target !== toggle) {
+                menu.classList.remove('show');
+                toggle.textContent = '☰';
+            }
+        });
+        
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+        
+        function navigateKB(parentId) {
+            currentParentId = parentId;
+            document.getElementById('knowledgeView').style.display = 'block';
+            document.getElementById('readerView').style.display = 'none';
+            document.getElementById('sidebarToggle').classList.remove('show');
+            document.getElementById('readerBackBtn').classList.remove('show');
+            closeSidebar();
+            renderKnowledge();
+        }
+        
+        async function apiFetch(path, options = {}) {
+            const r = await fetch(API + path, options);
+            if (!r.ok) {
+                const err = await r.json().catch(() => ({ error: r.statusText }));
+                throw new Error(err.error || r.statusText);
+            }
+            return r.json();
+        }
+        
+        async function renderKnowledge() {
+            const thisRenderId = ++renderId;
+            const container = document.getElementById('knowledgeContainer');
+            container.innerHTML = '<div class="loading">加载中</div>';
+            try {
+                const [allFolders, files] = await Promise.all([apiFetch('/api/folders'), apiFetch('/api/files')]);
+                if (thisRenderId !== renderId) return;
+                const folders = allFolders.filter(f => f.parentId === currentParentId);
+                let bcHtml = '<a href="#" onclick="navigateKB(null); return false;">e 文件</a>';
+                let backBtn = '';
+                if (currentParentId) {
+                    const folderMap = {}; allFolders.forEach(f => folderMap[f.id] = f);
+                    const path = []; let cur = currentParentId;
+                    while (cur) { const f = folderMap[cur]; if (f) { path.unshift(f); cur = f.parentId; } else break; }
+                    path.forEach(f => { bcHtml += '<span>/</span><a href="#" onclick="navigateKB(\'' + f.id + '\'); return false;">' + escHtml(f.name) + '</a>'; });
+                    // Show back button for all non-root folders, returns to actual parent folder
+                    const currentFolder = folderMap[currentParentId];
+                    if (currentFolder) {
+                        const parentId = currentFolder.parentId === null ? null : currentFolder.parentId;
+                        if (parentId === null) {
+                            backBtn = '<a href="#" onclick="navigateKB(null); return false;" class="folder-back-btn">← 返回上一级</a>';
+                        } else {
+                            backBtn = '<a href="#" onclick="navigateKB(\'' + parentId + '\'); return false;" class="folder-back-btn">← 返回上一级</a>';
+                        }
+                    }
+                }
+                document.getElementById('kbBreadcrumb').innerHTML = bcHtml;
+                let html = backBtn + '<div class="file-list">';
+                folders.sort((a, b) => a.name.localeCompare(b.name)).forEach(folder => {
+                    html += '<div class="file-item" onclick="navigateKB(\'' + folder.id + '\')"><div class="file-info"><span class="file-icon">📁</span><div><div class="file-name">' + escHtml(folder.name) + '</div><div class="file-meta">文件夹</div></div></div></div>';
+                });
+                const rootFiles = files.filter(f => f.parentId === currentParentId);
+                rootFiles.sort((a, b) => a.name.localeCompare(b.name)).forEach(file => {
+                    const isPdf = file.name && file.name.toLowerCase().endsWith('.pdf');
+                    const isDocx = file.name && file.name.toLowerCase().endsWith('.docx');
+                    const icon = isPdf ? '📕' : (isDocx ? '📘' : '📄');
+                    html += '<div class="file-item" onclick="openFile(\'' + file.id + '\')"><div class="file-info"><span class="file-icon">' + icon + '</span><div><div class="file-name">' + escHtml(file.name) + '</div><div class="file-meta">' + formatSize(file.size) + '</div></div></div></div>';
+                });
+                if (!folders.length && !rootFiles.length) html += '<div class="empty-state"><div class="icon">📂</div><h3>空文件夹</h3></div>';
+                html += '</div>';
+                container.innerHTML = html;
+                window.scrollTo(0, 0);
+            } catch (e) { if (thisRenderId === renderId) container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>加载失败</h3><p>' + e.message + '</p></div>'; }
+        }
+        
+
+        
+        function getFolderPath(folderId, allFolders) {
+            if (!folderId) return '';
+            const parts = [];
+            let cur = folderId;
+            while (cur) {
+                const f = allFolders.find(f => f.id === cur);
+                if (f) {
+                    parts.unshift(encodeURIComponent(f.name));
+                    cur = f.parentId;
+                } else break;
+            }
+            return parts.join('/');
+        }
+
+        async function openFile(id) {
+            const [loadEl, contentEl] = [document.getElementById('readerLoading'), document.getElementById('markdownContent')];
+            const pdfContainer = document.getElementById('pdfContainer');
+            loadEl.style.display = 'flex'; contentEl.style.display = 'none'; pdfContainer.style.display = 'none';
+            document.getElementById('readerNav').style.display = 'none';
+            try {
+                const [file, allFiles, allFolders] = await Promise.all([apiFetch('/api/files/' + id), apiFetch('/api/files'), apiFetch('/api/folders')]);
+                // 直接从静态文件获取内容（支持嵌套文件夹）
+                const folderPath = getFolderPath(file.parentId, allFolders);
+                const filePath = folderPath
+                    ? `/files/${folderPath}/${encodeURIComponent(file.name)}`
+                    : `/files/${encodeURIComponent(file.name)}`;
+                const contentRes = await fetch(filePath);
+                if (!contentRes.ok) throw new Error('File not found');
+                currentContent = await contentRes.text(); currentFileName = file.name; currentFileParentId = file.parentId; currentFileId = file.id;
+                const folderFiles = allFiles.filter(f => f.parentId === currentFileParentId).sort((a, b) => a.name.localeCompare(b.name));
+                currentFileIndex = folderFiles.findIndex(f => f.id === currentFileId);
+                allFilesCache = allFiles;
+                document.getElementById('knowledgeView').style.display = 'none';
+                document.getElementById('readerView').style.display = 'block';
+                document.getElementById('sidebarToggle').classList.add('show');
+                document.getElementById('readerBackBtn').classList.add('show');
+                
+                // Check file type
+                const fileName = file.name || '';
+                const isPdf = fileName.toLowerCase().endsWith('.pdf');
+                const isDocx = fileName.toLowerCase().endsWith('.docx');
+                
+                if (isPdf) {
+                    loadEl.style.display = 'none';
+                    pdfContainer.style.display = 'block';
+                    document.getElementById('docxContainer').style.display = 'none';
+                    contentEl.style.display = 'none';
+                    document.getElementById('readerNav').style.display = 'flex';
+                    await renderPDF(currentContent);
+                } else if (isDocx) {
+                    loadEl.style.display = 'none';
+                    pdfContainer.style.display = 'none';
+                    contentEl.style.display = 'none';
+                    document.getElementById('docxContainer').style.display = 'block';
+                    document.getElementById('readerNav').style.display = 'flex';
+                    await renderDOCX(currentContent, file.id);
+                } else {
+                    pdfContainer.style.display = 'none';
+                    document.getElementById('docxContainer').style.display = 'none';
+                    renderMarkdown(currentContent);
+                    loadEl.style.display = 'none'; contentEl.style.display = 'block';
+                    document.getElementById('readerNav').style.display = 'flex';
+                }
+                updatePrevNextNav(folderFiles);
+                updateSidebarForCurrentFolder();
+                window.scrollTo(0, 0);
+            } catch (e) { alert('加载失败: ' + e.message); }
+        }
+        
+        // PDF Viewer
+        let pdfDoc = null, pdfPageNum = 1, pdfRenderTask = null;
+        
+        async function renderPDF(content, folderFiles) {
+            try {
+                pdfDoc = await pdfjsLib.getDocument({data: atob(content)}).promise;
+                pdfPageNum = 1;
+                await renderPdfPage();
+            } catch (e) {
+                document.getElementById('pdfPage').innerHTML = '<div style="padding:40px;text-align:center;color:white;">PDF加载失败</div>';
+            }
+        }
+        
+        async function renderPdfPage() {
+            if (pdfRenderTask) pdfRenderTask.cancel();
+            const page = await pdfDoc.getPage(pdfPageNum);
+            const scale = window.innerWidth > 734 ? 1.5 : 1.0;
+            const viewport = page.getViewport({scale});
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = viewport.width; canvas.height = viewport.height;
+            document.getElementById('pdfPage').innerHTML = '';
+            document.getElementById('pdfPage').appendChild(canvas);
+            document.getElementById('pdfPageInfo').textContent = `${pdfPageNum} / ${pdfDoc.numPages}`;
+            pdfRenderTask = page.render({canvasContext: ctx, viewport});
+        }
+        
+        function pdfPrevPage() { if (pdfPageNum > 1) { pdfPageNum--; renderPdfPage(); } }
+        function pdfNextPage() { if (pdfPageNum < pdfDoc.numPages) { pdfPageNum++; renderPdfPage(); } }
+        
+        // DOCX Viewer - Enhanced Web Layout (web版式)
+        async function renderDOCX(base64Content, fileId) {
+            try {
+                // Fetch font sizes from document
+                let styleSizes = {};
+                try {
+                    const styleRes = await fetch(`/api/files/${fileId}/styles`);
+                    if (styleRes.ok) {
+                        const styleData = await styleRes.json();
+                        if (styleData.success && styleData.styleSizes) {
+                            styleSizes = styleData.styleSizes;
+                        }
+                    }
+                } catch (e) {
+                    console.log('Could not fetch style sizes');
+                }
+                
+                const binaryString = atob(base64Content);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                const result = await mammoth.convertToHtml({arrayBuffer: bytes.buffer}, {
+                    styleMap: [
+                        // Headings - Web typography style
+                        "p[style-name='Title'] => h1:fresh",
+                        "p[style-name='标题 1'] => h1:fresh",
+                        "p[style-name='Heading 1'] => h1:fresh",
+                        "p[style-name='一级标题'] => h1:fresh",
+                        "p[style-name='标题 2'] => h2:fresh",
+                        "p[style-name='Heading 2'] => h2:fresh",
+                        "p[style-name='二级标题'] => h2:fresh",
+                        "p[style-name='标题 3'] => h3:fresh",
+                        "p[style-name='Heading 3'] => h3:fresh",
+                        "p[style-name='三级标题'] => h3:fresh",
+                        "p[style-name:'^Heading [4-6]'] => h4:fresh",
+                        // Text styles
+                        "b => strong",
+                        "i => em",
+                        "u => u",
+                        "strike => del",
+                        // Lists
+                        "ul => ul",
+                        "ol => ol",
+                        "li => li",
+                        // Tables
+                        "table => table",
+                        "tr => tr",
+                        "th => th",
+                        "td => td",
+                        // Code
+                        "r => span",
+                        "hyperlink => a"
+                    ]
+                });
+                document.getElementById('docxContainer').innerHTML = result.value;
+                
+                // Apply document font sizes
+                const container = document.getElementById('docxContainer');
+                const defaultSize = styleSizes['Normal'] || styleSizes['Normal (Web)'] || 14;
+                container.style.fontSize = defaultSize + 'px';
+                
+                // Apply font size to all text elements
+                const textElements = container.querySelectorAll('p, span, td, th, li');
+                textElements.forEach(el => {
+                    el.style.fontSize = 'inherit';
+                });
+                
+                // Post-processing: wrap bare paragraphs to apply indent
+                const paragraphs = container.querySelectorAll('p');
+                paragraphs.forEach(p => {
+                    if (!p.querySelector('img, table, pre, blockquote') && !p.style.textAlign) {
+                        p.style.textIndent = '2em';
+                        p.style.marginBottom = '12px';
+                    }
+                });
+                
+                // Apply syntax highlighting style to code blocks
+                container.querySelectorAll('pre').forEach(pre => {
+                    pre.innerHTML = '<code>' + pre.innerHTML + '</code>';
+                });
+            } catch (e) {
+                document.getElementById('docxContainer').innerHTML = '<div style="padding:40px;text-align:center;color:#666;">文档加载失败: ' + e.message + '</div>';
+            }
+        }
+        
+        function updatePrevNextNav(folderFiles) {
+            const prevTitle = document.getElementById('prevFileTitle');
+            const nextTitle = document.getElementById('nextFileTitle');
+            const prevLink = document.getElementById('prevFile');
+            const nextLink = document.getElementById('nextFile');
+            if (currentFileIndex > 0) { prevTitle.textContent = folderFiles[currentFileIndex - 1].name; prevLink.style.visibility = 'visible'; }
+            else { prevTitle.textContent = '没有了'; prevLink.style.visibility = 'hidden'; }
+            if (currentFileIndex < folderFiles.length - 1) { nextTitle.textContent = folderFiles[currentFileIndex + 1].name; nextLink.style.visibility = 'visible'; }
+            else { nextTitle.textContent = '没有了'; nextLink.style.visibility = 'hidden'; }
+        }
+        
+        function gotoPrevFile() { const folderFiles = allFilesCache.filter(f => f.parentId === currentFileParentId).sort((a, b) => a.name.localeCompare(b.name)); if (currentFileIndex > 0) openFile(folderFiles[currentFileIndex - 1].id); }
+        function gotoNextFile() { const folderFiles = allFilesCache.filter(f => f.parentId === currentFileParentId).sort((a, b) => a.name.localeCompare(b.name)); if (currentFileIndex < folderFiles.length - 1) openFile(folderFiles[currentFileIndex + 1].id); }
+        
+        async function updateSidebarForCurrentFolder() {
+            const list = document.getElementById('sidebarList');
+            try {
+                const [allFiles, allFolders] = await Promise.all([apiFetch('/api/files'), apiFetch('/api/folders')]);
+                const folderFiles = allFiles.filter(f => f.parentId === currentFileParentId).sort((a, b) => a.name.localeCompare(b.name));
+                let html = '<div class="reader-sidebar-back" onclick="backToKnowledge()">←</div>';
+                if (currentFileParentId) {
+                    const folderMap = {}; allFolders.forEach(f => folderMap[f.id] = f);
+                    const path = []; let cur = currentFileParentId;
+                    while (cur) { const f = folderMap[cur]; if (f) { path.unshift(f); cur = f.parentId; } else break; }
+                    path.forEach(f => { html += '<div class="reader-sidebar-back" onclick="navigateKB(\'' + f.id + '\')">📁 ' + escHtml(f.name) + '</div>'; });
+                }
+                folderFiles.forEach((file) => { const isActive = file.id === currentFileId ? ' active' : ''; html += '<div class="reader-sidebar-item' + isActive + '" onclick="openFile(\'' + file.id + '\')">' + escHtml(file.name) + '</div>'; });
+                if (!folderFiles.length) html += '<div class="reader-sidebar-item" style="color:var(--text-secondary);cursor:default;">文件夹为空</div>';
+                list.innerHTML = html;
+            } catch (e) { list.innerHTML = '<div class="reader-sidebar-item" style="color:var(--text-secondary)">加载失败</div>'; }
+        }
+        
+        function toggleSidebar() { document.getElementById('readerSidebar').classList.toggle('open'); document.getElementById('readerMain').classList.toggle('sidebar-open'); document.getElementById('sidebarToggle').classList.toggle('open'); document.getElementById('readerBackBtn').classList.toggle('open'); }
+        function closeSidebar() { document.getElementById('readerSidebar').classList.remove('open'); document.getElementById('readerMain').classList.remove('sidebar-open'); document.getElementById('sidebarToggle').classList.remove('open'); document.getElementById('readerBackBtn').classList.remove('open'); }
+        
+        function backToKnowledge() { navigateKB(currentFileParentId); }
+        
+        const mathRenderer = new marked.Renderer();
+        mathRenderer.code = function(code, lang) {
+            if (lang === 'math' || lang === 'katex') { try { return '<div class="katex-display">' + katex.renderToString(code, {displayMode: true, throwOnError: false, trust: true}) + '</div>'; } catch { return '<pre>' + escHtml(code) + '</pre>'; } }
+            return '<pre><code>' + escHtml(code) + '</code></pre>';
+        };
+        
+        function preprocessMath(c) { return c.replace(/\$\$([\s\S]*?)\$\$/g, function(m, math) { return '\n```math\n' + math.trim() + '\n```\n'; }); }
+        
+        function renderMarkdown(content) {
+            const processed = preprocessMath(content);
+            marked.setOptions({ breaks: true, gfm: true, renderer: mathRenderer });
+            document.getElementById('markdownContent').innerHTML = marked.parse(processed);
+            renderMathInElement(document.getElementById('markdownContent'), { delimiters: [{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}], throwOnError: false, trust: true });
+        }
+        
+        function downloadCurrentFile() { if (!currentContent) return; const b = new Blob([currentContent], {type:'text/markdown'}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = currentFileName; a.click(); URL.revokeObjectURL(a.href); }
+        function escHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        function formatSize(b) { if (b < 1024) return b + ' B'; if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB'; return (b / (1024 * 1024)).toFixed(1) + ' MB'; }
+        
+        renderKnowledge();
+
+    </script>
+<script src="/auth-check.js"></script>
+<script src="/config.js"></script>
+<script src="/config-init.js"></script>
+</body>
+</html>

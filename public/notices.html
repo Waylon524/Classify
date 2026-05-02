@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>e 通知 - Ecolony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Two-column layout */
+        .notice-layout { display: flex; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .notice-left { flex: 1; min-width: 0; }
+        .notice-right { width: 380px; flex-shrink: 0; }
+        .notice-list { display: flex; flex-direction: column; gap: 16px; }
+        .notice-item { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .notice-item:hover { background: var(--bg-card-hover); border-color: rgba(0, 229, 160, 0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); }
+        .notice-item.unread { border-left: 3px solid var(--accent); }
+        .notice-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .notice-title { font-size: 17px; font-weight: 600; color: var(--text-light); }
+        .notice-badge { background: var(--accent); color: var(--bg-abyss); font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+        .notice-meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+        .notice-preview { color: var(--text-secondary); margin-top: 8px; font-size: 14px; }
+        .notice-detail { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 16px; padding: 24px; margin-bottom: 16px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .notice-detail h2 { font-size: 20px; font-weight: 600; color: var(--text-light); margin-bottom: 12px; }
+        .notice-detail .meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
+        .notice-detail .body { font-size: 15px; color: var(--text-body); line-height: 1.7; white-space: pre-wrap; }
+        .back-btn-inline { display: inline-flex; align-items: center; gap: 6px; color: var(--link); text-decoration: none; font-size: 14px; padding: 8px 0; margin-bottom: 16px; cursor: pointer; transition: color 0.2s; }
+        .back-btn-inline:hover { color: var(--accent-hover); }
+
+        /* Memo cards (right column) */
+        .memo-section { background: var(--bg-card); border: 1px solid rgba(0, 229, 160, 0.08); border-radius: 20px; padding: 24px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 120px; }
+        .memo-section h3 { font-size: 18px; font-weight: 600; color: var(--text-light); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(200, 215, 240, 0.1); display: flex; align-items: center; gap: 8px; }
+        .memo-card { background: rgba(0, 229, 160, 0.04); border: 1px solid rgba(0, 229, 160, 0.1); border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .memo-card:hover { background: rgba(0, 229, 160, 0.08); border-color: rgba(0, 229, 160, 0.25); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
+        .memo-card:last-child { margin-bottom: 0; }
+        .memo-card-title { font-size: 15px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
+        .memo-card-meta { font-size: 12px; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; }
+        .memo-card-readers { font-size: 11px; color: var(--accent); background: rgba(0, 229, 160, 0.08); padding: 2px 8px; border-radius: 8px; }
+        .memo-empty { text-align: center; padding: 32px 16px; color: var(--text-secondary); font-size: 14px; }
+
+        /* Mobile tabs */
+        .mobile-tabs, .mobile-content { display: none; }
+        @media (max-width: 768px) {
+            .notice-layout { display: none; }
+            .mobile-tabs {
+                display: flex; justify-content: center;
+                background: rgba(10, 20, 42, 0.9); border-bottom: 1px solid rgba(0, 229, 160, 0.08);
+                position: sticky; top: 56px; z-index: 99; width: 100%;
+                backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            }
+            .mobile-tab {
+                flex: 1; padding: 14px 16px; font-size: 15px; font-weight: 500;
+                color: var(--text-secondary); background: none; border: none; cursor: pointer;
+                border-bottom: 2px solid transparent; transition: all 0.2s; font-family: var(--font-body);
+            }
+            .mobile-tab:active { background: rgba(0, 229, 160, 0.04); }
+            .mobile-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+            .mobile-content { display: none; padding: 16px; }
+            .mobile-content.active { display: block; }
+            .mobile-content .memo-section { position: static; }
+        }
+    </style>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/theme-light.css">
+    <script src="/theme.js"></script>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="noise-overlay"></div>
+    <nav>
+        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/schedule.html">e 日程</a>
+            <a href="/files.html">e 文件</a>
+            <a href="/navi.html">e 导航</a>
+            <a href="/notices.html" class="active">e 通知</a>
+            <a href="/form.html">e 表单</a>
+            <button onclick="logout()" class="logout-btn-nav">退出登录</button>
+        </div>
+        <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/">首页</a>
+        <a href="/schedule.html">e 日程</a>
+        <a href="/files.html">e 文件</a>
+        <a href="/navi.html">e 导航</a>
+        <a href="/notices.html" class="active">e 通知</a>
+        <a href="/form.html">e 表单</a>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </div>
+
+    <main>
+        <div class="page-header">
+            <h1>📢 e 通知</h1>
+        </div>
+
+        <!-- Desktop: two-column layout -->
+        <div class="notice-layout">
+            <div class="notice-left">
+                <div id="noticeList" class="notice-list">
+                    <div class="loading">加载中...</div>
+                </div>
+                <div id="noticeDetail" style="display:none;"></div>
+            </div>
+            <div class="notice-right">
+                <div class="memo-section">
+                    <h3>📋 学工备忘</h3>
+                    <div id="memoCards">
+                        <div class="loading" style="padding:24px;">加载中</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Tabs -->
+        <div class="mobile-tabs">
+            <button class="mobile-tab active" onclick="switchTab('notices')" id="tabNotices">📢 通知</button>
+            <button class="mobile-tab" onclick="switchTab('memo')" id="tabMemo">📋 学工备忘</button>
+        </div>
+
+        <!-- Mobile Content -->
+        <div class="mobile-content active" id="mobileNotices">
+            <div id="mobileNoticeList" class="notice-list">
+                <div class="loading">加载中...</div>
+            </div>
+            <div id="mobileNoticeDetail" style="display:none;"></div>
+        </div>
+        <div class="mobile-content" id="mobileMemo">
+            <div class="memo-section">
+                <h3>📋 学工备忘</h3>
+                <div id="mobileMemoCards">
+                    <div class="loading" style="padding:24px;">加载中</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API = '';
+        let notices = [];
+        let memos = [];
+
+        const token = localStorage.getItem('ecolony_token');
+        if (!token) window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
+
+        function logout() { localStorage.removeItem('ecolony_token'); window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); }
+        function toggleMobileMenu() { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); m.classList.toggle('show'); t.textContent = m.classList.contains('show') ? '✕' : '☰'; }
+        document.addEventListener('click', function(e) { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); if (m && m.classList.contains('show') && !m.contains(e.target) && e.target !== t) { m.classList.remove('show'); t.textContent = '☰'; } });
+        function escHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+        function switchTab(tab) {
+            document.getElementById('tabNotices').classList.toggle('active', tab === 'notices');
+            document.getElementById('tabMemo').classList.toggle('active', tab === 'memo');
+            document.getElementById('mobileNotices').classList.toggle('active', tab === 'notices');
+            document.getElementById('mobileMemo').classList.toggle('active', tab === 'memo');
+        }
+
+        // ── Notices list ──
+        async function loadNotices() {
+            try {
+                const res = await fetch(API + '/api/notices');
+                notices = await res.json();
+                renderNotices('noticeList');
+                renderNotices('mobileNoticeList');
+            } catch (err) {
+                const errHtml = '<div class="empty-state"><div class="icon">📭</div><h3>加载失败</h3><p>请稍后重试</p></div>';
+                document.getElementById('noticeList').innerHTML = errHtml;
+                document.getElementById('mobileNoticeList').innerHTML = errHtml;
+            }
+        }
+
+        function renderNotices(containerId) {
+            const container = document.getElementById(containerId);
+            const filtered = notices.filter(n => !(n.title && n.title.includes('学工备忘')));
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><h3>暂无通知</h3><p>这里空空如也</p></div>';
+                return;
+            }
+            let html = '';
+            for (let n of filtered) {
+                if (n.url && (n.source === '复旦大学教务处' || n.source === '罗毅')) {
+                    html += '<div class="notice-item' + (n.unread ? ' unread' : '') + '" onclick="window.open(\'' + n.url + '\', \'_blank\')">';
+                    html += '<div class="notice-header"><span class="notice-title">' + escHtml(n.title) + '</span>';
+                    if (n.unread) html += '<span class="notice-badge">新</span>';
+                    html += '</div><div class="notice-meta">' + n.date + ' · ' + n.source + '</div>';
+                    html += '<div class="notice-preview">点击查看详情 →</div></div>';
+                } else {
+                    html += '<div class="notice-item' + (n.unread ? ' unread' : '') + '" onclick="showDetail(' + n.id + ', \'' + containerId + '\')">';
+                    html += '<div class="notice-header"><span class="notice-title">' + escHtml(n.title) + '</span>';
+                    if (n.unread) html += '<span class="notice-badge">新</span>';
+                    html += '</div><div class="notice-meta">' + n.date + ' · ' + n.source + '</div>';
+                    if (n.content) html += '<div class="notice-preview">' + escHtml(n.content.substring(0, 80)) + (n.content.length > 80 ? '...' : '') + '</div>';
+                    html += '</div>';
+                }
+            }
+            container.innerHTML = html;
+        }
+
+        function showDetail(id, containerId) {
+            const n = notices.find(x => x.id === id);
+            if (!n) return;
+            const listEl = document.getElementById(containerId);
+            const detailId = containerId === 'noticeList' ? 'noticeDetail' : 'mobileNoticeDetail';
+            const detailEl = document.getElementById(detailId);
+            listEl.style.display = 'none';
+            detailEl.style.display = 'block';
+            detailEl.innerHTML = '<a class="back-btn-inline" onclick="hideDetail(\'' + containerId + '\')">← 返回列表</a>' +
+                '<div class="notice-detail"><h2>' + escHtml(n.title) + '</h2>' +
+                '<div class="meta">' + n.date + ' · ' + n.source + '</div>' +
+                '<div class="body">' + escHtml(n.content || '暂无详细内容') + '</div></div>';
+            window.scrollTo(0, 0);
+        }
+
+        function hideDetail(containerId) {
+            const listEl = document.getElementById(containerId);
+            const detailId = containerId === 'noticeList' ? 'noticeDetail' : 'mobileNoticeDetail';
+            document.getElementById(detailId).style.display = 'none';
+            listEl.style.display = 'flex';
+        }
+
+        // ── Memo cards ──
+        async function loadMemos() {
+            try {
+                const res = await fetch('/api-data/memos.json');
+                memos = await res.json();
+                await renderMemoCards('memoCards');
+                await renderMemoCards('mobileMemoCards');
+            } catch (e) {
+                const errHtml = '<div class="memo-empty">加载失败</div>';
+                document.getElementById('memoCards').innerHTML = errHtml;
+                document.getElementById('mobileMemoCards').innerHTML = errHtml;
+            }
+        }
+
+        async function renderMemoCards(containerId) {
+            const container = document.getElementById(containerId);
+            if (memos.length === 0) {
+                container.innerHTML = '<div class="memo-empty">暂无学工备忘</div>';
+                return;
+            }
+
+            // Fetch reader counts for each memo
+            const t = localStorage.getItem('ecolony_token');
+            const counts = {};
+            for (const m of memos) {
+                try {
+                    const res = await fetch('/api/read/' + encodeURIComponent(m.id), {
+                        headers: { 'Authorization': 'Bearer ' + t }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        counts[m.id] = data.readers ? data.readers.length : 0;
+                    }
+                } catch (e) {
+                    counts[m.id] = 0;
+                }
+            }
+
+            let html = '';
+            for (const m of memos) {
+                html += '<div class="memo-card" onclick="window.location.href=\'/memo.html?id=' + encodeURIComponent(m.id) + '\'">';
+                html += '<div class="memo-card-title">' + escHtml(m.title) + '</div>';
+                html += '<div class="memo-card-meta"><span>' + escHtml(m.period) + '</span>';
+                html += '<span class="memo-card-readers">' + (counts[m.id] || 0) + ' 人已读</span></div>';
+                html += '</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        // Init
+        loadNotices();
+        loadMemos();
+    </script>
+<script src="/auth-check.js"></script>
+<script src="/config.js"></script>
+<script src="/config-init.js"></script>
+</body>
+</html>
