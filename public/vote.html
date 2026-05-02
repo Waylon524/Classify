@@ -230,7 +230,7 @@
                 '<p>提交时间：' + new Date(submission.submitTime).toLocaleString('zh-CN') + '</p>' +
                 '<p>你投票给了以下同学：</p>' +
                 '<div class="voted-list">' + names.map(n => '<span class="voted-tag">' + escHtml(n) + '</span>').join('') + '</div>' +
-                '<p style="margin-top:24px;"><a href="/form.html" style="color:var(--primary);">← 返回表单列表</a></p>' +
+                '<p style="margin-top:24px;"><a href="/form.html" class="back-link">← 返回表单列表</a></p>' +
                 '</div>';
             document.getElementById('bottomBar').style.display = 'none';
         }
@@ -287,7 +287,7 @@
 
             document.getElementById('mainContent').innerHTML =
                 '<div class="vote-header">' +
-                '<a class="back-link" href="/form.html">← 返回表单列表</a>' +
+                '<a href="/form.html" class="back-link">← 返回表单列表</a>' +
                 '<h1>📋 ' + escHtml(voteData.title) + '</h1>' +
                 '<div class="desc">' + escHtml(voteData.description || '') + '</div>' +
                 metaHtml +
