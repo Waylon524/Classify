@@ -161,35 +161,24 @@
         .schedule-time .end-time { font-size: 13px; color: var(--muted); }
         .schedule-time .allday { font-size: 14px; font-weight: 500; color: var(--muted); }
 
-        /* Desktop join button */
-        .schedule-item .join-btn {
-            display: inline-block;
-            width: 100%;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 600;
+        /* Join button common */
+        .join-btn {
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
             color: var(--primary);
             background: transparent;
             border: 1.5px solid var(--primary);
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             transition: all 0.2s;
-            text-align: center;
-            box-sizing: border-box;
+            font-family: var(--font-body);
+            white-space: nowrap;
         }
-        .schedule-item .join-btn:hover {
-            background: var(--primary);
-            color: var(--canvas);
-        }
-        .schedule-item .join-btn.joined {
-            background: #34c759;
-            border-color: #34c759;
-            color: var(--canvas);
-        }
-        .schedule-item .join-btn.joined:hover {
-            background: #ff3b30;
-            border-color: #ff3b30;
-        }
+        .join-btn:hover { background: var(--primary); color: var(--canvas); }
+        .join-btn.joined { background: var(--success); border-color: var(--success); color: white; }
+        .join-btn.joined:hover { background: var(--error); border-color: var(--error); }
+        .join-btn.full { opacity: 0.4; cursor: not-allowed; }
 
         /* Time column for desktop */
         .time-col {
