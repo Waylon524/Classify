@@ -214,26 +214,6 @@
             font-size: 14px;
             gap: 4px;
         }
-        .timebar .join-btn {
-            padding: 6px 14px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--primary);
-            color: var(--canvas);
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: var(--font-body);
-            transition: background 0.2s;
-        }
-        .timebar .join-btn:hover { background: var(--primary-active); }
-        .timebar .join-btn.joined {
-            background: #34c759;
-        }
 
         /* 桌面端:隐藏time-col */
         .time-col { display: none; }
@@ -279,26 +259,7 @@
             }
             .schedule-time .end-time { margin-left: 4px; }
 
-            /* 参加按钮 - 宽度自适应,左右间距8px */
-            .join-btn {
-                display: inline-flex !important;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
-                flex: 1;
-                flex-shrink: 0;
-                order: 2;
-                margin: 0 6px;
-                font-size: 13px !important;
-                white-space: nowrap;
-                box-sizing: border-box;
-                color: white !important;
-                background: var(--primary) !important;
-                border: none;
-                border-radius: 10px;
-            }
-            .join-btn.joined { background: #34c759 !important; }
-            .join-btn.full { background: #999 !important; cursor: not-allowed; }
+            .join-btn { flex: 1; margin: 0 6px; }
 
             /* 添加到日历按钮 - 固定宽度100px */
             .subscribe-btn { 
@@ -404,28 +365,7 @@
                 box-sizing: border-box;
             }
             .schedule-time .end-time { margin-left: 4px; }
-            .join-btn {
-                display: inline-flex !important;
-                align-items: center;
-                justify-content: center;
-                position: relative !important;
-                top: auto !important;
-                right: auto !important;
-                height: 100%;
-                flex: 1;
-                flex-shrink: 0;
-                order: 2;
-                margin: 0 6px;
-                padding: 0 !important;
-                font-size: 13px !important;
-                white-space: nowrap;
-                box-sizing: border-box;
-                color: white !important;
-                background: var(--primary) !important;
-                border: none;
-                border-radius: 10px;
-            }
-            .join-btn.joined { background: #34c759 !important; }
+            .join-btn { flex: 1; margin: 0 6px; }
             .subscribe-btn {
                 display: inline-flex !important;
                 align-items: center;
@@ -602,15 +542,6 @@
             margin-top: 0;
             display: flex; gap: 4px; align-items: center;
         }
-        .join-btn {
-            padding: 8px 14px; font-size: 13px; font-weight: 600;
-            color: var(--canvas); background: var(--primary); border: none;
-            border-radius: 10px; cursor: pointer;
-        }
-        .join-btn:hover { box-shadow: 0 4px 12px rgba(204,120,92,0.3); }
-        .join-btn.joined { background: #34c759; }
-        .join-btn.joined:hover { background: #ff3b30; }
-        .join-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     </style>
     <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="/theme-light.css">
