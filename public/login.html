@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e 生菌落 · 登录</title>
+    <title>Classify · 登录</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -238,7 +238,7 @@
     <div class="login-container">
         <div class="logo">
             <span class="emoji">🧬</span>
-            <h1>e 生菌落</h1>
+            <h1>Classify</h1>
             <p>请输入身份信息登录</p>
         </div>
 
@@ -317,9 +317,9 @@
                     throw new Error(data.error || '验证失败');
                 }
 
-                localStorage.setItem('ecolony_token', data.token);
-                localStorage.setItem('ecolony_name', data.name);
-                localStorage.setItem('ecolony_student_id', data.studentId);
+                localStorage.setItem('classify_token', data.token);
+                localStorage.setItem('classify_name', data.name);
+                localStorage.setItem('classify_student_id', data.studentId);
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirect = urlParams.get('redirect');
@@ -338,7 +338,7 @@
         }
 
         async function checkLogin() {
-            const token = localStorage.getItem('ecolony_token');
+            const token = localStorage.getItem('classify_token');
             if (token) {
                 try {
                     const res = await fetch('/api/check-login', {
@@ -348,9 +348,9 @@
                         window.location.href = '/index.html';
                     }
                 } catch (e) {
-                    localStorage.removeItem('ecolony_token');
-                    localStorage.removeItem('ecolony_name');
-                    localStorage.removeItem('ecolony_student_id');
+                    localStorage.removeItem('classify_token');
+                    localStorage.removeItem('classify_name');
+                    localStorage.removeItem('classify_student_id');
                 }
             }
         }

@@ -3,7 +3,7 @@
  * 检查 localStorage 中的 token 是否有效，无效则自动跳转登录页
  */
 (function () {
-  var TOKEN_KEY = 'ecolony_token';
+  var TOKEN_KEY = 'classify_token';
   var LOGIN_PAGE = '/login.html';
 
   var token = localStorage.getItem(TOKEN_KEY);
@@ -18,8 +18,8 @@
   }).then(function (res) {
     if (!res.ok) {
       localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem('ecolony_name');
-      localStorage.removeItem('ecolony_student_id');
+      localStorage.removeItem('classify_name');
+      localStorage.removeItem('classify_student_id');
       window.location.href = LOGIN_PAGE + '?redirect=' + encodeURIComponent(window.location.href);
     }
   }).catch(function () {

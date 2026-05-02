@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学工备忘 · Ecolony</title>
+    <title>学工备忘 · Classify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -48,25 +48,25 @@
     <div class="bg-orb bg-orb-2"></div>
     <div class="noise-overlay"></div>
     <nav>
-        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">
             <a href="/">首页</a>
-            <a href="/schedule.html">e 日程</a>
-            <a href="/files.html">e 文件</a>
-            <a href="/navi.html">e 导航</a>
-            <a href="/notices.html" class="active">e 通知</a>
-            <a href="/form.html">e 表单</a>
+            <a href="/schedule.html">日程</a>
+            <a href="/files.html">文件</a>
+            <a href="/navi.html">导航</a>
+            <a href="/notices.html" class="active">通知</a>
+            <a href="/form.html">表单</a>
             <button class="logout-btn-nav" onclick="logout()">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
         <a href="/">首页</a>
-        <a href="/schedule.html">e 日程</a>
-        <a href="/files.html">e 文件</a>
-        <a href="/navi.html">e 导航</a>
-        <a href="/notices.html" class="active">e 通知</a>
-        <a href="/form.html">e 表单</a>
+        <a href="/schedule.html">日程</a>
+        <a href="/files.html">文件</a>
+        <a href="/navi.html">导航</a>
+        <a href="/notices.html" class="active">通知</a>
+        <a href="/form.html">表单</a>
         <button class="logout-btn" onclick="logout()">退出登录</button>
     </div>
 
@@ -93,14 +93,14 @@
         let timer = null;
         let currentMemoId = null;
 
-        const token = localStorage.getItem('ecolony_token');
+        const token = localStorage.getItem('classify_token');
         if (!token) window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
 
-        function logout() { localStorage.removeItem('ecolony_token'); window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); }
+        function logout() { localStorage.removeItem('classify_token'); window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href); }
         function toggleMobileMenu() { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); m.classList.toggle('show'); t.textContent = m.classList.contains('show') ? '✕' : '☰'; }
         document.addEventListener('click', function(e) { const m = document.getElementById('mobileMenu'); const t = document.getElementById('menuToggle'); if (m && m.classList.contains('show') && !m.contains(e.target) && e.target !== t) { m.classList.remove('show'); t.textContent = '☰'; } });
 
-        function getToken() { return localStorage.getItem('ecolony_token'); }
+        function getToken() { return localStorage.getItem('classify_token'); }
 
         async function getUserInfo() {
             const t = getToken();
@@ -140,7 +140,7 @@
                 if (!memo) throw new Error('备忘不存在');
 
                 document.getElementById('pageTitle').textContent = memo.title;
-                document.title = memo.title + ' · Ecolony';
+                document.title = memo.title + ' · Classify';
 
                 // Load reader count
                 await loadReaderCount();

@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e 日程 · Ecolony</title>
+    <title>日程 · Classify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
         // Check login status on page load
         (function() {
-            const token = localStorage.getItem('ecolony_token');
+            const token = localStorage.getItem('classify_token');
             if (!token) {
                 window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
             }
         })();
         function logout() {
-            localStorage.removeItem('ecolony_token');
+            localStorage.removeItem('classify_token');
             window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
         }
         function toggleMobileMenu() {
@@ -695,31 +695,31 @@
     <div class="bg-orb bg-orb-2"></div>
     <div class="noise-overlay"></div>
     <nav>
-        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">
             <a href="/">首页</a>
-            <a href="/schedule.html" class="active">e 日程</a>
-            <a href="/files.html">e 文件</a>
-            <a href="/navi.html">e 导航</a>
-            <a href="/notices.html">e 通知</a>
-            <a href="/form.html">e 表单</a>
+            <a href="/schedule.html" class="active">日程</a>
+            <a href="/files.html">文件</a>
+            <a href="/navi.html">导航</a>
+            <a href="/notices.html">通知</a>
+            <a href="/form.html">表单</a>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
         <a href="/">首页</a>
-        <a href="/schedule.html" class="active">e 日程</a>
-        <a href="/files.html">e 文件</a>
-        <a href="/navi.html">e 导航</a>
-        <a href="/notices.html">e 通知</a>
-        <a href="/form.html">e 表单</a>
+        <a href="/schedule.html" class="active">日程</a>
+        <a href="/files.html">文件</a>
+        <a href="/navi.html">导航</a>
+        <a href="/notices.html">通知</a>
+        <a href="/form.html">表单</a>
         <button class="logout-btn" onclick="logout()">退出登录</button>
     </div>
 
     <main>
         <div class="page-header">
-            <h1>📅 e 日程</h1>
+            <h1>📅 日程</h1>
             <div class="page-header-right">
                 <span class="subtitle" id="dateRange">加载中...</span>
                 <div class="header-btn-group">
@@ -732,8 +732,8 @@
                         </button>
                         <div class="subscribe-tooltip" id="subscribeTooltip">
                         <h4>📱 订阅到系统日历</h4>
-                        <p>订阅后,所有e日程将自动同步到您的手机日历,每日0点自动更新。</p>
-                        <div class="subscribe-url-box">https://ecolony.cn/api/subscribe.ics</div>
+                        <p>订阅后,所有班级日程将自动同步到您的手机日历,每日0点自动更新。</p>
+                        <div class="subscribe-url-box" id="subscribeUrlDisplay">https://localhost:3000/api/subscribe.ics</div>
                         <button class="copy-btn-small" onclick="copyAndSubscribe()">复制链接并订阅</button>
                     </div>
                 </div>
@@ -843,7 +843,7 @@
         </div>
 
         <div class="footer">
-            e 日程 · 数据有效期 1 年 · 每年自动清理过期日程
+            日程 · 数据有效期 1 年 · 每年自动清理过期日程
         </div>
     </main>
 
@@ -891,7 +891,7 @@
         
         // Get current logged-in user name
         function getCurrentUserName() {
-            return localStorage.getItem('ecolony_name') || '';
+            return localStorage.getItem('classify_name') || '';
         }
 
         // Modal functions
@@ -1439,7 +1439,7 @@
             };
 
             const { start, end } = formatDate(schedule.date, schedule.time);
-            const uid = schedule.id + '@ecolony.cn';
+            const uid = schedule.id + '@' + (window.__SITE_CONFIG__?.site?.domain || 'localhost:3000');
             const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
             const summary = schedule.title.replace(/[<>]/g, '');
             const description = (schedule.description || '').replace(/[<>]/g, '').replace(/\n/g, '\\n');
@@ -1485,7 +1485,7 @@
                 };
 
                 const { start, end } = formatDate(schedule.date, schedule.time);
-                const uid = schedule.id + '@ecolony.cn';
+                const uid = schedule.id + '@' + (window.__SITE_CONFIG__?.site?.domain || 'localhost:3000');
                 const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
                 const summary = (schedule.title || '').replace(/[<>\n]/g, '');
                 const description = (schedule.description || '').replace(/[<>\n]/g, '');
@@ -1494,7 +1494,7 @@
                 const icsContent = [
                     'BEGIN:VCALENDAR',
                     'VERSION:2.0',
-                    'PRODID:-//Ecolony//e日程//CN',
+                    'PRODID:-//Classify//班级日程//CN',
                     'CALSCALE:GREGORIAN',
                     'METHOD:PUBLISH',
                     'BEGIN:VEVENT',
@@ -1513,7 +1513,7 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `ecolony_${schedule.date}.ics`;
+                link.download = `classify_${schedule.date}.ics`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -1568,7 +1568,7 @@
 
         // Copy link and trigger subscription
         function copyAndSubscribe() {
-            const url = 'https://ecolony.cn/api/subscribe.ics';
+            const url = 'https://' + (window.__SITE_CONFIG__?.site?.domain || 'localhost:3000') + '/api/subscribe.ics';
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
             if (navigator.clipboard) {
@@ -1581,7 +1581,7 @@
 
             if (isMobile) {
                 setTimeout(() => {
-                    window.location.href = 'webcal://ecolony.cn/api/subscribe.ics';
+                    window.location.href = 'webcal://' + (window.__SITE_CONFIG__?.site?.domain || 'localhost:3000') + '/api/subscribe.ics';
                 }, 300);
             } else {
                 setTimeout(() => {
@@ -1602,7 +1602,7 @@
         // Legacy function for backward compatibility
         function copySubscribeUrl() {
             if (navigator.clipboard) {
-                navigator.clipboard.writeText('https://ecolony.cn/api/subscribe.ics');
+                navigator.clipboard.writeText('https://' + (window.__SITE_CONFIG__?.site?.domain || 'localhost:3000') + '/api/subscribe.ics');
             }
         }
 

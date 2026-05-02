@@ -1,11 +1,11 @@
 /**
- * Theme Manager for ecolony.cn
+ * Theme Manager for Classify
  * Handles light/dark mode toggle with localStorage persistence
  */
 (function() {
     'use strict';
 
-    var STORAGE_KEY = 'ecolony_theme';
+    var STORAGE_KEY = 'classify_theme';
     var LIGHT = 'light';
     var DARK = 'dark';
 

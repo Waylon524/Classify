@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>添加活动 · Ecolony</title>
+    <title>添加活动 · Classify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -167,7 +167,7 @@
         const API_BASE = '/api';
         
         function checkAuth() {
-            const token = localStorage.getItem('ecolony_token');
+            const token = localStorage.getItem('classify_token');
             if (!token) {
                 window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
                 return null;
@@ -176,7 +176,7 @@
         }
         
         function getCurrentUserName() {
-            return localStorage.getItem('ecolony_name') || '';
+            return localStorage.getItem('classify_name') || '';
         }
         
         document.addEventListener('DOMContentLoaded', () => {
@@ -222,7 +222,7 @@
             const mainContent = document.getElementById('mainContent');
             const loading = document.getElementById('loading');
             
-            const token = localStorage.getItem('ecolony_token');
+            const token = localStorage.getItem('classify_token');
             
             const hasLimit = document.querySelector('input[name="hasLimit"]:checked').value;
             const data = {

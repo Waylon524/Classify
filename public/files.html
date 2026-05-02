@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e 文件 · Ecolony</title>
+    <title>文件 · Classify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script>
         function logout() {
-            localStorage.removeItem('ecolony_token');
+            localStorage.removeItem('classify_token');
             window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
         }
     </script>
@@ -272,25 +272,25 @@
     <div class="bg-orb bg-orb-2"></div>
     <div class="noise-overlay"></div>
     <nav>
-        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">
             <a href="/">首页</a>
-            <a href="/schedule.html">e 日程</a>
-            <a href="/files.html" class="active">e 文件</a>
-            <a href="/navi.html">e 导航</a>
-            <a href="/notices.html">e 通知</a>
-            <a href="/form.html">e 表单</a>
+            <a href="/schedule.html">日程</a>
+            <a href="/files.html" class="active">文件</a>
+            <a href="/navi.html">导航</a>
+            <a href="/notices.html">通知</a>
+            <a href="/form.html">表单</a>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
         <a href="/">首页</a>
-        <a href="/schedule.html">e 日程</a>
-        <a href="/files.html" class="active">e 文件</a>
-        <a href="/navi.html">e 导航</a>
-        <a href="/notices.html">e 通知</a>
-        <a href="/form.html">e 表单</a>
+        <a href="/schedule.html">日程</a>
+        <a href="/files.html" class="active">文件</a>
+        <a href="/navi.html">导航</a>
+        <a href="/notices.html">通知</a>
+        <a href="/form.html">表单</a>
         <button class="logout-btn" onclick="logout()">退出登录</button>
     </div>
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
@@ -301,8 +301,8 @@
     </div>
     <div class="reader-main" id="readerMain">
         <div id="knowledgeView">
-            <div class="page-header"><h1>📚 e 文件</h1></div>
-            <div class="breadcrumb" id="kbBreadcrumb"><a href="#" onclick="navigateKB(null); return false;">e 文件</a></div>
+            <div class="page-header"><h1>📚 文件</h1></div>
+            <div class="breadcrumb" id="kbBreadcrumb"><a href="#" onclick="navigateKB(null); return false;">文件</a></div>
             <div id="knowledgeContainer"><div class="loading">加载中</div></div>
         </div>
         <div id="readerView" style="display:none">
@@ -328,13 +328,13 @@
     <div class="toast" id="toast"></div>
     <script>
         // Check login status on page load - redirect to login if not authenticated
-        const token = localStorage.getItem('ecolony_token');
+        const token = localStorage.getItem('classify_token');
         if (!token) {
             window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
         }
         
         const API = '';
-        let currentParentId = null; // 默认进入根目录 (efile 文件夹)
+        let currentParentId = null; // 默认进入根目录 (efil文件夹)
         let currentContent = '';
         let currentFileName = '';
         let currentFileParentId = null;
@@ -393,7 +393,7 @@
                 const [allFolders, files] = await Promise.all([apiFetch('/api/folders'), apiFetch('/api/files')]);
                 if (thisRenderId !== renderId) return;
                 const folders = allFolders.filter(f => f.parentId === currentParentId);
-                let bcHtml = '<a href="#" onclick="navigateKB(null); return false;">e 文件</a>';
+                let bcHtml = '<a href="#" onclick="navigateKB(null); return false;">文件</a>';
                 let backBtn = '';
                 if (currentParentId) {
                     const folderMap = {}; allFolders.forEach(f => folderMap[f.id] = f);

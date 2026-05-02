@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e生菌 AI · Ecolony</title>
+    <title>AI 助手 · Classify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
         (function() {
-            const token = localStorage.getItem('ecolony_token');
+            const token = localStorage.getItem('classify_token');
             if (!token) {
                 window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
             }
@@ -138,32 +138,32 @@
     <div class="bg-orb bg-orb-2"></div>
     <div class="noise-overlay"></div>
     <nav>
-        <div class="logo"><span>🧬</span><span>Ecolony</span></div>
+        <div class="logo"><span>🧬</span><span>Classify</span></div>
         <div class="nav-links">
             <a href="/">首页</a>
-            <a href="/schedule.html">e 日程</a>
-            <a href="/files.html">e 文件</a>
-            <a href="/navi.html">e 导航</a>
-            <a href="/notices.html">e 通知</a>
-            <a href="/form.html">e 表单</a>
+            <a href="/schedule.html">日程</a>
+            <a href="/files.html">文件</a>
+            <a href="/navi.html">导航</a>
+            <a href="/notices.html">通知</a>
+            <a href="/form.html">表单</a>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
         <a href="/">首页</a>
-        <a href="/schedule.html">e 日程</a>
-        <a href="/files.html">e 文件</a>
-        <a href="/navi.html">e 导航</a>
-        <a href="/notices.html">e 通知</a>
-        <a href="/form.html">e 表单</a>
+        <a href="/schedule.html">日程</a>
+        <a href="/files.html">文件</a>
+        <a href="/navi.html">导航</a>
+        <a href="/notices.html">通知</a>
+        <a href="/form.html">表单</a>
         <button class="logout-btn" onclick="logout()">退出登录</button>
     </div>
 
     <main>
-        <a href="/navi.html" class="back-link">← 返回 e 导航</a>
+        <a href="/navi.html" class="back-link">← 返回 导航</a>
         <div class="chat-header">
-            <h1><span>🍄</span> e 生菌 AI 助手</h1>
+            <h1><span>🍄</span> AI 助手 助手</h1>
             <div class="header-actions"><button class="new-chat-btn" onclick="newConversation()">新对话</button></div>
             <p>基于你的日程、通知和知识库内容回答问题</p>
         </div>
@@ -306,7 +306,7 @@
             loading.id = 'loadingMsg';
             loading.innerHTML = `
                 <div class="avatar">🍄</div>
-                <div class="bubble"><div class="loading">e 生菌正在思考...</div></div>
+                <div class="bubble"><div class="loading">Classify正在思考...</div></div>
             `;
             container.appendChild(loading);
             container.scrollTop = container.scrollHeight;
@@ -388,7 +388,7 @@ function newConversation() {
             
             // 检查访问次数限制
             try {
-                const token = localStorage.getItem('ecolony_token');
+                const token = localStorage.getItem('classify_token');
                 if (token) {
                     const rateRes = await fetch('/api/rate-limit', {
                         headers: { 'Authorization': 'Bearer ' + token }
@@ -433,7 +433,7 @@ function newConversation() {
                 const dataFiles = await loadDataFiles();
                 
                 const today = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-                const systemPrompt = `你是e生菌，一个基于复旦校园数据平台的智能助手。请根据用户提供的问题，在以下文件中查找相关信息并回答。
+                const systemPrompt = `你是Classify，一个基于复旦校园数据平台的智能助手。请根据用户提供的问题，在以下文件中查找相关信息并回答。
 
 【当前日期】${today}
 
@@ -442,7 +442,7 @@ ${Object.entries(dataFiles).map(([name, content]) => { if (name === 'fudan_files
 
 请按照用户的要求查找相关内容信息并回复。
 
-重要提示：如果用户询问有关文件的内容（如课程笔记、教材等），请在回复末尾提供该文件在e文件中的地址路径，格式如：📂 e文件 > 文件夹名称
+重要提示：如果用户询问有关文件的内容（如课程笔记、教材等），请在回复末尾提供该文件在知识库中的地址路径，格式如：📂 知识库 > 文件夹名称
 
 重要提示2：回复内容要简洁，减少不必要的空行，保持紧凑的排版格式。重要提示3：保持友好的态度，可以使用emoji增加与用户的亲和力。
 

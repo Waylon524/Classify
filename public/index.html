@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecolony · e生菌落</title>
+    <title>Classify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
         (function() {
-            const token = localStorage.getItem('ecolony_token');
+            const token = localStorage.getItem('classify_token');
             if (!token) {
                 window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
             }
         })();
         function logout() {
-            localStorage.removeItem('ecolony_token');
+            localStorage.removeItem('classify_token');
             window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
         }
     </script>
@@ -219,61 +219,61 @@
     <div class="noise-overlay"></div>
 
     <nav>
-        <div class="logo"><span class="logo-icon">🧬</span><span>Ecolony</span></div>
+        <div class="logo"><span class="logo-icon">🧬</span><span>Classify</span></div>
         <div class="nav-links">
             <a href="/" class="active">首页</a>
-            <a href="/schedule.html">e 日程</a>
-            <a href="/files.html">e 文件</a>
-            <a href="/navi.html">e 导航</a>
-            <a href="/notices.html">e 通知</a>
-            <a href="/form.html">e 表单</a>
+            <a href="/schedule.html">日程</a>
+            <a href="/files.html">文件</a>
+            <a href="/navi.html">导航</a>
+            <a href="/notices.html">通知</a>
+            <a href="/form.html">表单</a>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
         <a href="/">首页</a>
-        <a href="/schedule.html">e 日程</a>
-        <a href="/files.html">e 文件</a>
-        <a href="/navi.html">e 导航</a>
-        <a href="/notices.html">e 通知</a>
-        <a href="/form.html">e 表单</a>
+        <a href="/schedule.html">日程</a>
+        <a href="/files.html">文件</a>
+        <a href="/navi.html">导航</a>
+        <a href="/notices.html">通知</a>
+        <a href="/form.html">表单</a>
         <button class="logout-btn" onclick="logout()">退出登录</button>
     </div>
 
     <main>
         <section class="hero-section">
-            <div class="hero-badge"><span class="pulse-dot"></span> 复旦 · e生菌落</div>
-            <h1 class="hero-title"><span class="glow-text">Ecolony</span></h1>
-            <p class="hero-subtitle">e 生菌落 · e 生菌们共同的家园</p>
+            <div class="hero-badge"><span class="pulse-dot"></span> 一站式班级服务平台</div>
+            <h1 class="hero-title"><span class="glow-text">Classify</span></h1>
+            <p class="hero-subtitle">日程 · 文件 · 导航 · 通知 · 表单</p>
             <div class="menu-grid">
                 <div class="menu-card" onclick="window.location.href='/schedule.html'">
                     <div class="icon">📅</div>
-                    <div class="title">e 日程</div>
+                    <div class="title">日程</div>
                     <div class="desc">复旦活动日程 · 公众号精选</div>
                     <div class="count" id="scheduleCount">查看日程</div>
                 </div>
                 <div class="menu-card" onclick="window.location.href='/files.html'">
                     <div class="icon">📚</div>
-                    <div class="title">e 文件</div>
+                    <div class="title">文件</div>
                     <div class="desc">复旦知识库 · 课程教材</div>
                     <div class="count" id="fileCount">加载中...</div>
                 </div>
                 <div class="menu-card" onclick="window.location.href='/navi.html'">
                     <div class="icon">💻</div>
-                    <div class="title">e 导航</div>
+                    <div class="title">导航</div>
                     <div class="desc">搜索工具 · 在线应用</div>
                     <div class="count">浏览器主页</div>
                 </div>
                 <div class="menu-card" onclick="window.location.href='/notices.html'">
                     <div class="icon">📢</div>
-                    <div class="title">e 通知</div>
+                    <div class="title">通知</div>
                     <div class="desc">教务通知 · 平台公告</div>
                     <div class="count" id="noticeCount">查看通知</div>
                 </div>
                 <div class="menu-card" onclick="window.location.href='/form.html'">
                     <div class="icon">📋</div>
-                    <div class="title">e 表单</div>
+                    <div class="title">表单</div>
                     <div class="desc">投票评选 · 表单收集</div>
                     <div class="count" id="formCount">查看表单</div>
                 </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e 导航 · Ecolony</title>
+    <title>导航 · Classify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -520,25 +520,25 @@
     <div class="bg-orb bg-orb-2"></div>
     <div class="noise-overlay"></div>
     <nav>
-        <div class="logo"><a href="/">🧬</a><a href="/">Ecolony</a></div>
+        <div class="logo"><a href="/">🧬</a><a href="/">Classify</a></div>
         <div class="nav-links">
             <a href="/">首页</a>
-            <a href="/schedule.html">e 日程</a>
-            <a href="/files.html">e 文件</a>
-            <a href="/navi.html" class="active">e 导航</a>
-            <a href="/notices.html">e 通知</a>
-            <a href="/form.html">e 表单</a>
+            <a href="/schedule.html">日程</a>
+            <a href="/files.html">文件</a>
+            <a href="/navi.html" class="active">导航</a>
+            <a href="/notices.html">通知</a>
+            <a href="/form.html">表单</a>
             <button onclick="logout()" class="logout-btn-nav">退出登录</button>
         </div>
         <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">☰</button>
     </nav>
     <div class="mobile-menu" id="mobileMenu">
         <a href="/">首页</a>
-        <a href="/schedule.html">e 日程</a>
-        <a href="/files.html">e 文件</a>
-        <a href="/navi.html" class="active">e 导航</a>
-        <a href="/notices.html">e 通知</a>
-        <a href="/form.html">e 表单</a>
+        <a href="/schedule.html">日程</a>
+        <a href="/files.html">文件</a>
+        <a href="/navi.html" class="active">导航</a>
+        <a href="/notices.html">通知</a>
+        <a href="/form.html">表单</a>
         <button class="logout-btn" onclick="logout()">退出登录</button>
     </div>
     
@@ -558,7 +558,7 @@
                             <button type="button" class="engine-option" data-engine="google" data-url="https://www.google.com/search" data-param="q">● Google</button>
                             <button type="button" class="engine-option" data-engine="baidu" data-url="https://www.baidu.com/s" data-param="wd">● 百度</button>
                             <button type="button" class="engine-option" data-engine="douyin" data-url="https://so.douyin.com/s" data-param="keyword">● 抖音</button>
-                            <button type="button" class="engine-option" data-engine="eai" data-url="" data-param="">● e生菌</button>
+                            <button type="button" class="engine-option" data-engine="eai" data-url="" data-param="">● Classify</button>
                         </div>
                     </div>
                     <input type="text" class="search-input" name="q" id="searchInput" placeholder="输入关键词搜索..." autocomplete="off">
@@ -634,13 +634,13 @@
     
     <script>
         // Check login status on page load - redirect to login if not authenticated
-        const token = localStorage.getItem('ecolony_token');
+        const token = localStorage.getItem('classify_token');
         if (!token) {
             window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
         }
         
         const API = '/api';
-        let authToken = localStorage.getItem('ecolony_token') || null;
+        let authToken = localStorage.getItem('classify_token') || null;
         let linksData = [];
         let editLinksData = [];
         let draggedCard = null;
@@ -724,7 +724,7 @@
             if (!keyword) return;
             
             if (currentEngineName === 'eai') {
-                // e生菌 AI - 跳转到独立对话页面
+                // AI 助手 - 跳转到独立对话页面
                 const encodedKeyword = encodeURIComponent(keyword);
                 window.location.href = '/aichat.html?q=' + encodedKeyword;
             } else if (currentEngine.includes('douyin')) {
@@ -1078,7 +1078,7 @@
             try {
                 const res = await fetch(API + '/check-device');
                 const data = await res.json();
-                if (!data.success) { localStorage.removeItem('ecolony_token'); authToken = null; }
+                if (!data.success) { localStorage.removeItem('classify_token'); authToken = null; }
             } catch (e) { /* Ignore */ }
         }
         
@@ -1090,7 +1090,7 @@
             setActiveEngine(savedEngine);
         });
         function logout() {
-            localStorage.removeItem('ecolony_token');
+            localStorage.removeItem('classify_token');
             window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.href);
         }
 

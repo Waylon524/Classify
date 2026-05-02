@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (path === '/login.html') {
     var headings = document.querySelectorAll('h1');
     headings.forEach(function (h) {
-      if (h.textContent.indexOf('e 生菌落') !== -1 || h.textContent.indexOf('Ecolony') !== -1) {
+      if (h.textContent.indexOf('Classify') !== -1 || h.textContent.indexOf('登录') !== -1) {
         h.textContent = C.login.heading;
       }
     });
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 特殊：navi 页面和 add-schedule 页面没有 .page-header
     var heroH1 = document.querySelector('.hero-title');
     if (heroH1 && C.sections.navi.page === path) {
-      heroH1.innerHTML = '<span>e</span> ' + C.sections.navi.name.slice(2);
+      heroH1.textContent = C.sections.navi.name;
     }
   }
 });

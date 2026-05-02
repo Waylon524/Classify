@@ -1,28 +1,28 @@
 {
-  "_comment": "===== ecolony.cn 网站配置文件 =====",
+  "_comment": "===== Classify 站点配置文件 =====",
   "_usage": "修改此文件即可自定义站点名称、栏目名称、简介等，前后端自动同步",
 
   "site": {
-    "name": "Ecolony",
-    "nameCN": "e生菌落",
-    "logo": "🧬",
-    "domain": "ecolony.cn",
-    "heroBadge": "复旦 · e生菌落",
-    "heroTitle": "Ecolony",
-    "heroSubtitle": "e 生菌落 · e 生菌们共同的家园",
-    "footer": "Ecolony · 复旦大学生命科学学院"
+    "name": "Classify",
+    "nameCN": "班级服务",
+    "logo": "🏫",
+    "domain": "example.com",
+    "heroBadge": "一站式班级服务平台",
+    "heroTitle": "Classify",
+    "heroSubtitle": "日程 · 文件 · 导航 · 通知 · 表单",
+    "footer": "Classify"
   },
 
   "sections": {
     "home":     { "name": "首页",     "icon": "🏠", "page": "/index.html" },
-    "schedule": { "name": "e 日程",   "icon": "📅", "page": "/schedule.html",     "desc": "班级日程与活动管理" },
-    "files":    { "name": "e 文件",   "icon": "📚", "page": "/files.html",        "desc": "知识库与文件共享" },
-    "navi":     { "name": "e 导航",   "icon": "💻", "page": "/navi.html",         "desc": "常用网站一站式导航" },
-    "notices":  { "name": "e 通知",   "icon": "📢", "page": "/notices.html",      "desc": "班级通知与学工备忘" },
-    "forms":    { "name": "e 表单",   "icon": "📋", "page": "/form.html",         "desc": "投票与表单收集" },
-    "teams":    { "name": "e 组队",   "icon": "👥", "page": "/vote.html",         "desc": "活动组队协作" },
-    "ai":       { "name": "e生菌 AI", "icon": "🍄", "page": "/aichat.html",       "desc": "班级智能助手" },
-    "memo":     { "name": "学工备忘", "icon": "📝", "page": "/memo.html",         "desc": "学工备忘阅读" },
+    "schedule": { "name": "日程",     "icon": "📅", "page": "/schedule.html",     "desc": "班级日程与活动管理" },
+    "files":    { "name": "文件",     "icon": "📚", "page": "/files.html",        "desc": "知识库与文件共享" },
+    "navi":     { "name": "导航",     "icon": "💻", "page": "/navi.html",         "desc": "常用网站一站式导航" },
+    "notices":  { "name": "通知",     "icon": "📢", "page": "/notices.html",      "desc": "班级通知与备忘" },
+    "forms":    { "name": "表单",     "icon": "📋", "page": "/form.html",         "desc": "投票与表单收集" },
+    "teams":    { "name": "组队",     "icon": "👥", "page": "/vote.html",         "desc": "活动组队协作" },
+    "ai":       { "name": "AI 助手",  "icon": "🤖", "page": "/aichat.html",       "desc": "班级智能助手" },
+    "memo":     { "name": "备忘",     "icon": "📝", "page": "/memo.html",         "desc": "备忘阅读" },
     "upload":   { "name": "上传文件", "icon": "📤", "page": "/upload.html",       "desc": "上传文件到知识库" },
     "addSchedule": { "name": "添加活动", "icon": "➕", "page": "/add-schedule.html" }
   },
@@ -30,15 +30,15 @@
   "admins": [],
 
   "login": {
-    "title": "e 生菌落 · 登录",
-    "heading": "e 生菌落",
-    "subtitle": "复旦大学生物技术强基计划一站式服务平台"
+    "title": "Classify · 登录",
+    "heading": "Classify",
+    "subtitle": "一站式班级服务平台"
   },
 
   "ics": {
-    "productId": "-//Ecolony//e日程//CN",
-    "calendarName": "e日程",
-    "filename": "ecolony_schedules.ics"
+    "productId": "-//Classify//Schedule//CN",
+    "calendarName": "班级日程",
+    "filename": "schedule.ics"
   },
 
   "navi": {
