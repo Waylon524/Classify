@@ -12,20 +12,8 @@ if (!fs.existsSync(PERSONAL_DATA_DIR)) {
     fs.mkdirSync(PERSONAL_DATA_DIR, { recursive: true });
 }
 
-// Default links
-const DEFAULT_LINKS = [
-    { id: "d1", name: "复旦大学", url: "https://www.fudan.edu.cn", icon: "🏛️", description: "复旦大学官方网站", isDefault: true },
-    { id: "d2", name: "教务处", url: "https://jwc.fudan.edu.cn", icon: "📚", description: "复旦大学教务处", isDefault: true },
-    { id: "d3", name: "选课系统", url: "https://xk.fudan.edu.cn", icon: "🎓", description: "本科生选课系统", isDefault: true },
-    { id: "d4", name: "eLearning", url: "https://elearning.fudan.edu.cn", icon: "💻", description: "复旦大学在线学习平台", isDefault: true },
-    { id: "d5", name: "教务管理系统", url: "https://fdjwgl.fudan.edu.cn/student/home", icon: "📋", description: "复旦教务管理系统", isDefault: true },
-    { id: "d6", name: "超星学习平台", url: "https://i.mooc.chaoxing.com/space/index?ws=1", icon: "📱", description: "超星尔雅网络学习平台", isDefault: true },
-    { id: "d7", name: "复旦 eHall", url: "https://ehall.fudan.edu.cn/pages/fusionH5Mh/site/home", icon: "🏢", description: "复旦一网通办移动端", isDefault: true },
-    { id: "d8", name: "复旦总务", url: "https://workflow5.fudan.edu.cn/fe/site/m_themeServiceTALl?topic_id=18&platform_id=43", icon: "🏗️", description: "复旦总务服务平台", isDefault: true },
-    { id: "d9", name: "生命科学学院", url: "https://life.fudan.edu.cn", icon: "🧬", description: "复旦大学生命科学学院", isDefault: true },
-    { id: "d10", name: "哔哩哔哩", url: "https://www.bilibili.com", icon: "📺", description: "世界上最大的线上学习平台", isDefault: true },
-    { id: "d11", name: "Web of Science", url: "https://www.webofscience.com", icon: "🔬", description: "学术文献检索平台", isDefault: true }
-];
+// Default links (empty — users add their own)
+const DEFAULT_LINKS = [];
 
 function isValidName(name) {
     if (!name || typeof name !== 'string') return false;
