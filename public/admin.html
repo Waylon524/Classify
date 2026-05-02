@@ -106,6 +106,21 @@
 
         <!-- Panel: Schedules -->
         <div class="admin-panel active" id="panel-schedules">
+            <div class="card"><h3>添加日程</h3>
+                <div class="form-row">
+                    <input type="text" id="schedTitle" placeholder="活动名称">
+                    <input type="date" id="schedDate">
+                    <input type="text" id="schedTime" placeholder="时间，如 14:00-15:00">
+                </div>
+                <div class="form-row">
+                    <input type="text" id="schedLocation" placeholder="地点">
+                    <input type="text" id="schedOrganizer" placeholder="发起人姓名">
+                    <button class="btn-primary" onclick="addSchedule()">添加</button>
+                </div>
+                <div class="form-row">
+                    <textarea id="schedDesc" placeholder="活动简介（可选）"></textarea>
+                </div>
+            </div>
             <div class="card"><h3>全部日程（<span id="schedCount">0</span>）</h3>
             <div style="overflow-x:auto"><table class="admin-table">
                 <thead><tr><th>日期</th><th>时间</th><th>标题</th><th>发起人</th><th>参与</th><th>操作</th></tr></thead>
@@ -138,6 +153,17 @@
 
         <!-- Panel: Notices -->
         <div class="admin-panel" id="panel-notices">
+            <div class="card"><h3>添加通知</h3>
+                <div class="form-row">
+                    <input type="text" id="noticeTitle" placeholder="通知标题">
+                    <input type="date" id="noticeDate">
+                    <input type="text" id="noticeSource" placeholder="来源（如：教务处）">
+                </div>
+                <div class="form-row">
+                    <textarea id="noticeContent" placeholder="通知内容"></textarea>
+                    <button class="btn-primary" onclick="addNotice()">添加</button>
+                </div>
+            </div>
             <div class="card"><h3>通知列表（<span id="noticeCount">0</span>）</h3>
             <div style="overflow-x:auto"><table class="admin-table">
                 <thead><tr><th>日期</th><th>标题</th><th>来源</th><th>置顶</th><th>操作</th></tr></thead>
@@ -147,6 +173,10 @@
 
         <!-- Panel: Votes -->
         <div class="admin-panel" id="panel-votes">
+            <div class="card" style="background:var(--surface-soft);border-color:var(--accent-amber)">
+                <h3 style="font-family:var(--font-body);font-size:16px">💡 表单/投票通过配置文件管理</h3>
+                <p style="color:var(--muted);font-size:14px;margin-top:8px">编辑 <code style="background:var(--surface-card);padding:2px 6px;border-radius:4px">data/content/votes.json</code> 添加投票和候选人，投票结果自动存入 <code style="background:var(--surface-card);padding:2px 6px;border-radius:4px">data/content/votes/</code> 目录。详细格式见 README。</p>
+            </div>
             <div class="card"><h3>投票列表（<span id="voteCount">0</span>）</h3>
             <div style="overflow-x:auto"><table class="admin-table">
                 <thead><tr><th>标题</th><th>截止日期</th><th>类型</th><th>最多选</th><th>候选人</th><th>状态</th></tr></thead>
@@ -283,6 +313,26 @@ function editSchedule(id) {
     }).then(r => r.ok ? loadData() : r.json().then(d => alert(d.error || '编辑失败')));
 }
 
+async function addSchedule() {
+    const title = document.getElementById('schedTitle').value.trim();
+    const date = document.getElementById('schedDate').value;
+    const time = document.getElementById('schedTime').value.trim();
+    const location = document.getElementById('schedLocation').value.trim();
+    const organizer = document.getElementById('schedOrganizer').value.trim();
+    const desc = document.getElementById('schedDesc').value.trim();
+    if (!title || !date) return alert('活动名称和日期必填');
+    const token = localStorage.getItem('classify_token');
+    const body = { title, date, time: time || null, location: location || null, description: desc || null, organizer: organizer || null };
+    if (organizer) {
+        body.startTime = new Date(date + 'T' + (time ? time.split('-')[0] : '00:00') + ':00').toISOString();
+        body.endTime = time && time.includes('-') ? new Date(date + 'T' + time.split('-')[1] + ':00').toISOString() : null;
+        body.maxParticipants = null;
+    }
+    const res = await fetch('/api/schedules', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(body) });
+    if (res.ok) { document.getElementById('schedTitle').value = ''; document.getElementById('schedDate').value = ''; document.getElementById('schedTime').value = ''; document.getElementById('schedLocation').value = ''; document.getElementById('schedOrganizer').value = ''; document.getElementById('schedDesc').value = ''; loadData(); }
+    else { const r = await res.json(); alert(r.error || '添加失败'); }
+}
+
 async function deleteSchedule(id) {
     if (!confirm('确定删除此日程？')) return;
     const token = localStorage.getItem('classify_token');
@@ -369,6 +419,19 @@ function renderNotices() {
             </td>
         </tr>`
     ).join('') || '<tr><td colspan="5" class="empty">无数据</td></tr>';
+}
+
+async function addNotice() {
+    const title = document.getElementById('noticeTitle').value.trim();
+    const date = document.getElementById('noticeDate').value;
+    const source = document.getElementById('noticeSource').value.trim();
+    const content = document.getElementById('noticeContent').value.trim();
+    if (!title || !date) return alert('标题和日期必填');
+    const notice = { id: Date.now(), title, date, source: source || '系统通知', content, unread: true, pinned: false };
+    allData.notices.push(notice);
+    await saveNotices(allData.notices);
+    document.getElementById('noticeTitle').value = ''; document.getElementById('noticeDate').value = '';
+    document.getElementById('noticeSource').value = ''; document.getElementById('noticeContent').value = '';
 }
 
 async function togglePin(id) {
