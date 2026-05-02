@@ -55,13 +55,12 @@
         }
         .form-error.show { display: block; }
         .submit-btn {
-            width: 100%; padding: 16px; font-size: 16px; font-weight: 600;
-            color: var(--canvas); background: linear-gradient(135deg, var(--primary), var(--accent-teal));
-            border: none; border-radius: 10px; cursor: pointer; box-sizing: border-box;
-            transition: all 0.2s;
+            width: 100%; padding: 14px; font-size: 14px; font-weight: 500;
+            color: var(--on-primary); background: var(--primary);
+            border: none; border-radius: var(--radius-md); cursor: pointer;
+            font-family: var(--font-body); transition: background 0.2s;
         }
-        .submit-btn:hover { box-shadow: 0 8px 24px rgba(204,120,92,0.25); transform: translateY(-1px); }
-        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:hover { background: var(--primary-active); }
         .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
         .loading {
             display: flex; align-items: center; justify-content: center;
