@@ -263,7 +263,7 @@
             
             const msg = document.createElement('div');
             msg.className = 'message ' + role;
-            const avatar = role === 'ai' ? '🍄' : '👤';
+            const avatar = role === 'ai' ? '🤖' : '👤';
             msg.innerHTML = `
                 <div class="avatar">${avatar}</div>
                 <div class="bubble">${role === 'ai' ? renderMarkdown(content) : escapeHtml(content)}</div>
@@ -279,7 +279,7 @@
             loading.className = 'message ai';
             loading.id = 'loadingMsg';
             loading.innerHTML = `
-                <div class="avatar">🍄</div>
+                <div class="avatar">🤖</div>
                 <div class="bubble"><div class="loading">Classify正在思考...</div></div>
             `;
             container.appendChild(loading);
