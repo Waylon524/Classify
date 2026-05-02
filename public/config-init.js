@@ -88,4 +88,14 @@ document.addEventListener('DOMContentLoaded', function () {
       heroH1.textContent = C.sections.navi.name;
     }
   }
+
+  // 7. Footer（备案信息）
+  var footerText = document.getElementById('footerText');
+  if (footerText) footerText.textContent = C.site.footer || '';
+  var footerIcp = document.getElementById('footerIcp');
+  if (footerIcp && C.site.icp) {
+    footerIcp.textContent = C.site.icp;
+    footerIcp.href = C.site.icpUrl || 'https://beian.miit.gov.cn';
+    footerIcp.style.display = '';
+  }
 });

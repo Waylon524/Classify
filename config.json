@@ -10,7 +10,9 @@
     "heroBadge": "一站式班级服务平台",
     "heroTitle": "Classify",
     "heroSubtitle": "日程 · 文件 · 导航 · 通知 · 表单",
-    "footer": "Classify"
+    "footer": "Classify",
+    "icp": "",
+    "icpUrl": "https://beian.miit.gov.cn"
   },
 
   "sections": {
